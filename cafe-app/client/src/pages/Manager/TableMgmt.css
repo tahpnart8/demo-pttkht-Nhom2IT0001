@@ -1,0 +1,8 @@
+.table-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.table-card-mgmt { background: var(--bg-white); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); border: 2px solid var(--border-light); transition: var(--transition); }
+.table-card-mgmt.free { border-color: var(--success); border-style: solid; }
+.table-card-mgmt.occupied { border-color: var(--warning); background: var(--warning-bg); }
+.tcm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.tcm-header h3 { font-size: 1rem; }
+.tcm-id { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+.tcm-actions { display: flex; gap: 6px; }

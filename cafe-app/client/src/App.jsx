@@ -5,6 +5,11 @@ import CustomerMenu from './pages/Customer/CustomerMenu';
 import Cart from './pages/Customer/Cart';
 import OrderStatus from './pages/Customer/OrderStatus';
 import OrderBoard from './pages/Staff/OrderBoard';
+import Payment from './pages/Cashier/Payment';
+import InvoiceList from './pages/Cashier/InvoiceList';
+import MenuMgmt from './pages/Manager/MenuMgmt';
+import TableMgmt from './pages/Manager/TableMgmt';
+import StaffMgmt from './pages/Manager/StaffMgmt';
 import './App.css';
 
 function ProtectedRoute({ children, roles }) {
@@ -13,16 +18,6 @@ function ProtectedRoute({ children, roles }) {
   if (!user) return <Navigate to="/login" />;
   if (roles && !roles.includes(user.role)) return <Navigate to="/login" />;
   return children;
-}
-
-// Placeholder pages — sẽ được xây dựng ở các Phase tiếp theo
-function PlaceholderPage({ title }) {
-  return (
-    <div className="page-loading">
-      <h2>{title}</h2>
-      <p style={{ color: 'var(--text-muted)' }}>Đang phát triển...</p>
-    </div>
-  );
 }
 
 function AppRoutes() {
@@ -47,29 +42,29 @@ function AppRoutes() {
       {/* Cashier routes */}
       <Route path="/cashier/payment" element={
         <ProtectedRoute roles={['thungan', 'admin']}>
-          <PlaceholderPage title="Thanh Toán" />
+          <Payment />
         </ProtectedRoute>
       } />
       <Route path="/cashier/invoices" element={
         <ProtectedRoute roles={['thungan', 'admin']}>
-          <PlaceholderPage title="Quản Lý Hóa Đơn" />
+          <InvoiceList />
         </ProtectedRoute>
       } />
 
       {/* Manager routes */}
       <Route path="/manager/menu" element={
         <ProtectedRoute roles={['admin']}>
-          <PlaceholderPage title="Quản Lý Menu" />
+          <MenuMgmt />
         </ProtectedRoute>
       } />
       <Route path="/manager/tables" element={
         <ProtectedRoute roles={['admin']}>
-          <PlaceholderPage title="Quản Lý Bàn" />
+          <TableMgmt />
         </ProtectedRoute>
       } />
       <Route path="/manager/staff" element={
         <ProtectedRoute roles={['admin']}>
-          <PlaceholderPage title="Quản Lý Nhân Viên" />
+          <StaffMgmt />
         </ProtectedRoute>
       } />
 
