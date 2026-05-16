@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login/Login';
+import CustomerMenu from './pages/Customer/CustomerMenu';
+import Cart from './pages/Customer/Cart';
+import OrderStatus from './pages/Customer/OrderStatus';
+import OrderBoard from './pages/Staff/OrderBoard';
 import './App.css';
 
 function ProtectedRoute({ children, roles }) {
@@ -29,14 +33,14 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
 
       {/* Customer routes — không cần đăng nhập */}
-      <Route path="/order/:tableId" element={<PlaceholderPage title="Menu Gọi Món" />} />
-      <Route path="/cart/:tableId" element={<PlaceholderPage title="Giỏ Hàng" />} />
-      <Route path="/order-status/:orderId" element={<PlaceholderPage title="Trạng Thái Order" />} />
+      <Route path="/order/:tableId" element={<CustomerMenu />} />
+      <Route path="/cart/:tableId" element={<Cart />} />
+      <Route path="/order-status/:orderId" element={<OrderStatus />} />
 
       {/* Staff routes */}
       <Route path="/staff/orders" element={
         <ProtectedRoute roles={['phucvu', 'barista', 'thungan', 'admin']}>
-          <PlaceholderPage title="Bảng Order" />
+          <OrderBoard />
         </ProtectedRoute>
       } />
 
