@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #5C2E0A 0%, #8B4513 50%, #A0522D 100%);
   position: relative;
   overflow: hidden;
   padding: var(--space-md);
@@ -11,12 +10,20 @@
 
 .login-bg-pattern {
   position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(210,166,121,0.1) 0%, transparent 50%);
+  inset: -20px; /* Slight negative inset to prevent blurred edges from showing white */
+  background: url('/images/background.jpg') center/cover no-repeat;
+  filter: blur(10px);
   pointer-events: none;
+  z-index: 0;
+}
+
+.login-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Dark overlay to make the login card stand out */
+  pointer-events: none;
+  z-index: 0;
 }
 
 .login-card {
