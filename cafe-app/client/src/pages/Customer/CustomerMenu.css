@@ -1,19 +1,42 @@
 .customer-page {
-  max-width: 480px;
+  max-width: 430px; /* Tối ưu kích thước iPhone 14 Pro Max */
   margin: 0 auto;
-  padding-bottom: 100px;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
   min-height: 100vh;
-  background: var(--bg-cream);
+  min-height: 100dvh;
+  position: relative;
+}
+
+.customer-page::before {
+  content: '';
+  position: fixed;
+  inset: -20px; /* Tránh viền trắng khi blur */
+  background: url('/images/menu-background.jpg') center/cover no-repeat;
+  filter: blur(8px);
+  z-index: -2;
+  pointer-events: none;
+}
+
+.customer-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4); /* Overlay sáng để nổi bật chữ */
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Header */
 .customer-header {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  background: rgba(139, 69, 19, 0.85); /* Tone nâu trong suốt */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: white;
   padding: 20px;
   position: sticky;
   top: 0;
   z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 .customer-brand {
   display: flex;
@@ -40,20 +63,23 @@
   position: sticky;
   top: 68px;
   z-index: 40;
-  background: var(--bg-cream);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 .customer-search input {
   flex: 1;
   padding: 10px 12px 10px 36px;
-  border: 1.5px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--radius-full);
   font-size: 0.9rem;
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.8);
   outline: none;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 .customer-search input:focus { border-color: var(--primary); }
 .search-icon {
@@ -83,20 +109,24 @@
   position: sticky;
   top: 120px;
   z-index: 30;
-  background: var(--bg-cream);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 .category-tabs::-webkit-scrollbar { display: none; }
 .cat-tab {
   padding: 8px 18px;
-  border: 1.5px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--radius-full);
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.85);
   color: var(--text-body);
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
   transition: var(--transition);
   flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 .cat-tab.active {
   background: var(--primary);
@@ -134,11 +164,13 @@
 }
 
 .menu-card {
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   transition: var(--transition);
 }
 .menu-card.adding {

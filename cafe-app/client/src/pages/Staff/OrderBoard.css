@@ -1,9 +1,10 @@
 .board-page {
-  max-width: 520px;
+  max-width: 430px;
   margin: 0 auto;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-cream);
-  padding-bottom: 60px;
+  padding-bottom: calc(60px + env(safe-area-inset-bottom));
 }
 
 /* Header */

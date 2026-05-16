@@ -1,8 +1,10 @@
 .cart-page {
-  max-width: 480px;
+  max-width: 430px;
   margin: 0 auto;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-cream);
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
 }
 
 .cart-header {
@@ -153,10 +155,10 @@
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 480px;
+  max-width: 430px;
   background: var(--bg-white);
   border-top: 1px solid var(--border);
-  padding: 16px;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
   box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
   z-index: 100;
 }
