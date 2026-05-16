@@ -60,16 +60,11 @@
 /* Search */
 .customer-search {
   padding: 12px 16px;
-  position: sticky;
-  top: 68px;
-  z-index: 40;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
 }
 .customer-search input {
   flex: 1;
@@ -101,18 +96,20 @@
 /* Category Tabs */
 .category-tabs {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 12px 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   position: sticky;
-  top: 120px;
-  z-index: 30;
+  top: 68px;
+  z-index: 40;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
 }
 .category-tabs::-webkit-scrollbar { display: none; }
 .cat-tab {
@@ -132,6 +129,32 @@
   background: var(--primary);
   color: white;
   border-color: var(--primary);
+}
+
+/* Compact Search Button */
+.compact-search-btn {
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+.category-tabs.scrolled .compact-search-btn {
+  width: 36px;
+  height: 36px;
+  opacity: 1;
+  margin-right: 4px;
 }
 
 /* Category Sections */

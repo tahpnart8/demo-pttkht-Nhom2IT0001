@@ -14,6 +14,15 @@ export default function CustomerMenu() {
   const [loading, setLoading] = useState(true);
   const [addingItem, setAddingItem] = useState(null);
   const [activeOrder, setActiveOrder] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     api.getMenu().then(data => {
@@ -154,7 +163,16 @@ export default function CustomerMenu() {
       </div>
 
       {/* Category Tabs */}
-      <div className="category-tabs">
+      <div className={`category-tabs ${isScrolled ? 'scrolled' : ''}`}>
+        <button 
+          className="compact-search-btn"
+          onClick={() => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            setTimeout(() => document.querySelector('.customer-search input')?.focus(), 300);
+          }}
+        >
+          <Search size={18} />
+        </button>
         <button
           className={`cat-tab ${activeMenu === 'all' ? 'active' : ''}`}
           onClick={() => setActiveMenu('all')}
