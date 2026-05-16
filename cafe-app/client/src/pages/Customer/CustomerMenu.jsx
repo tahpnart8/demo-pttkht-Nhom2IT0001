@@ -15,10 +15,13 @@ export default function CustomerMenu() {
   const [addingItem, setAddingItem] = useState(null);
   const [activeOrder, setActiveOrder] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      const scrolled = window.scrollY > 40;
+      setIsScrolled(scrolled);
+      if (!scrolled) setSearchExpanded(false);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -150,40 +153,45 @@ export default function CustomerMenu() {
         </button>
       </header>
 
-      {/* Search */}
-      <div className="customer-search">
-        <Search size={18} className="search-icon" />
-        <input
-          type="text"
-          placeholder="Tìm món..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
-        {search && <button className="search-clear" onClick={() => setSearch('')}><X size={16} /></button>}
-      </div>
+      {/* Sticky Header Group */}
+      <div className="sticky-nav-group">
+        {/* Search */}
+        <div className={`customer-search ${isScrolled && !searchExpanded ? 'collapsed' : ''}`}>
+          <div className="search-inner">
+            <Search size={18} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Tìm món..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            {search && <button className="search-clear" onClick={() => setSearch('')}><X size={16} /></button>}
+          </div>
+        </div>
 
-      {/* Category Tabs */}
-      <div className={`category-tabs ${isScrolled ? 'scrolled' : ''}`}>
-        <button 
-          className="compact-search-btn"
-          onClick={() => {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-            setTimeout(() => document.querySelector('.customer-search input')?.focus(), 300);
-          }}
-        >
-          <Search size={18} />
-        </button>
-        <button
-          className={`cat-tab ${activeMenu === 'all' ? 'active' : ''}`}
-          onClick={() => setActiveMenu('all')}
-        >Tất cả</button>
-        {menus.map(m => (
+        {/* Category Tabs */}
+        <div className="category-tabs">
+          <button 
+            className={`compact-search-btn ${isScrolled && !searchExpanded ? 'visible' : ''}`}
+            onClick={() => {
+              setSearchExpanded(true);
+              setTimeout(() => document.querySelector('.search-inner input')?.focus(), 100);
+            }}
+          >
+            <Search size={18} />
+          </button>
           <button
-            key={m.MaMenu}
-            className={`cat-tab ${activeMenu === m.MaMenu ? 'active' : ''}`}
-            onClick={() => setActiveMenu(m.MaMenu)}
-          >{m.TenMenu}</button>
-        ))}
+            className={`cat-tab ${activeMenu === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveMenu('all')}
+          >Tất cả</button>
+          {menus.map(m => (
+            <button
+              key={m.MaMenu}
+              className={`cat-tab ${activeMenu === m.MaMenu ? 'active' : ''}`}
+              onClick={() => setActiveMenu(m.MaMenu)}
+            >{m.TenMenu}</button>
+          ))}
+        </div>
       </div>
 
       {/* Menu Grid */}
