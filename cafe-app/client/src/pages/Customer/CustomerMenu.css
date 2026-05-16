@@ -104,6 +104,27 @@
   border-color: var(--primary);
 }
 
+/* Category Sections */
+.menu-category-section {
+  margin-bottom: var(--space-md);
+}
+.menu-category-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin: var(--space-md) var(--space-md) 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.menu-category-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+}
+
 /* Menu Grid — 2 columns on mobile */
 .menu-grid {
   display: grid;

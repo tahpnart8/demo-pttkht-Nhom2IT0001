@@ -84,6 +84,39 @@ export default function CustomerMenu() {
 
   if (loading) return <div className="page-loading"><div className="spinner" /><p>Đang tải menu...</p></div>;
 
+  const renderItem = (item) => {
+    const qty = getItemQty(item.MaMon);
+    return (
+      <div key={item.MaMon} className={`menu-card ${addingItem === item.MaMon ? 'adding' : ''}`}>
+        <div className="menu-card-img">
+          <img
+            src={`/images/menu/${item.HinhAnh}`}
+            alt={item.TenMon}
+            onError={(e) => { e.target.src = `https://placehold.co/300x200/F5E6D3/8B4513?text=${encodeURIComponent(item.TenMon)}`; }}
+          />
+          {item.TrangThai === 'HetMon' && <div className="sold-out-badge">Hết món</div>}
+        </div>
+        <div className="menu-card-info">
+          <h3>{item.TenMon}</h3>
+          <p className="menu-price">{formatPrice(item.DonGia)}</p>
+          <div className="menu-card-actions">
+            {qty > 0 ? (
+              <div className="qty-control">
+                <button className="qty-btn" onClick={() => updateQty(item.MaMon, -1)}><Minus size={16} /></button>
+                <span className="qty-value">{qty}</span>
+                <button className="qty-btn" onClick={() => updateQty(item.MaMon, 1)}><Plus size={16} /></button>
+              </div>
+            ) : (
+              <button className="btn btn-primary btn-sm add-btn" onClick={() => addToCart(item)}>
+                <Plus size={16} /> Thêm
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="customer-page">
       {/* Header */}
@@ -136,40 +169,28 @@ export default function CustomerMenu() {
       </div>
 
       {/* Menu Grid */}
-      <div className="menu-grid">
-        {filtered.map(item => {
-          const qty = getItemQty(item.MaMon);
-          return (
-            <div key={item.MaMon} className={`menu-card ${addingItem === item.MaMon ? 'adding' : ''}`}>
-              <div className="menu-card-img">
-                <img
-                  src={`/images/menu/${item.HinhAnh}`}
-                  alt={item.TenMon}
-                  onError={(e) => { e.target.src = `https://placehold.co/300x200/F5E6D3/8B4513?text=${encodeURIComponent(item.TenMon)}`; }}
-                />
-                {item.TrangThai === 'HetMon' && <div className="sold-out-badge">Hết món</div>}
-              </div>
-              <div className="menu-card-info">
-                <h3>{item.TenMon}</h3>
-                <p className="menu-price">{formatPrice(item.DonGia)}</p>
-                <div className="menu-card-actions">
-                  {qty > 0 ? (
-                    <div className="qty-control">
-                      <button className="qty-btn" onClick={() => updateQty(item.MaMon, -1)}><Minus size={16} /></button>
-                      <span className="qty-value">{qty}</span>
-                      <button className="qty-btn" onClick={() => updateQty(item.MaMon, 1)}><Plus size={16} /></button>
-                    </div>
-                  ) : (
-                    <button className="btn btn-primary btn-sm add-btn" onClick={() => addToCart(item)}>
-                      <Plus size={16} /> Thêm
-                    </button>
-                  )}
-                </div>
-              </div>
+      {activeMenu === 'all' && !search ? (
+        Object.entries(
+          filtered.reduce((acc, item) => {
+            if (!acc[item.TenMenu]) acc[item.TenMenu] = [];
+            acc[item.TenMenu].push(item);
+            return acc;
+          }, {})
+        ).map(([category, items]) => (
+          <div key={category} className="menu-category-section">
+            <h2 className="menu-category-title">
+              <span>{category}</span>
+            </h2>
+            <div className="menu-grid">
+              {items.map(renderItem)}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        ))
+      ) : (
+        <div className="menu-grid">
+          {filtered.map(renderItem)}
+        </div>
+      )}
 
       {filtered.length === 0 && (
         <div className="empty-state">
