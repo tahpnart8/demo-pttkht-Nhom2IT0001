@@ -54,10 +54,33 @@ router.post('/', async (req, res) => {
     } catch (err) { res.status(500).json({ error: 'Lỗi server: ' + err.message }); }
 });
 
-// PATCH /api/orders/:id/status
-router.patch('/:id/status', async (req, res) => {
+// PATCH /api/orders/:id/status — Phân quyền chuyển trạng thái
+// Barista: Chờ → Đang làm, Đang làm → Hoàn thành
+// Phục vụ: Hoàn thành → Đã giao
+// Admin: tất cả
+router.patch('/:id/status', authMiddleware(['barista', 'phucvu', 'admin']), async (req, res) => {
+    const { TrangThaiOrder } = req.body;
+    const role = req.user.role;
+
+    // Lấy trạng thái hiện tại
+    const { data: current } = await supabase.from('DONHANG').select('TrangThaiOrder').eq('MaDH', req.params.id).single();
+    if (!current) return res.status(404).json({ error: 'Không tìm thấy đơn hàng' });
+
+    const from = current.TrangThaiOrder;
+    const to = TrangThaiOrder;
+
+    // Kiểm tra quyền chuyển trạng thái
+    if (role !== 'admin') {
+        if (role === 'barista' && !((from === 'Cho' && to === 'DangLam') || (from === 'DangLam' && to === 'HoanThanh'))) {
+            return res.status(403).json({ error: 'Barista chỉ được chuyển: Chờ → Đang làm → Hoàn thành' });
+        }
+        if (role === 'phucvu' && !(from === 'HoanThanh' && to === 'DaGiao')) {
+            return res.status(403).json({ error: 'Phục vụ chỉ được chuyển: Hoàn thành → Đã giao' });
+        }
+    }
+
     try {
-        const { data, error } = await supabase.from('DONHANG').update({ TrangThaiOrder: req.body.TrangThaiOrder }).eq('MaDH', req.params.id).select();
+        const { data, error } = await supabase.from('DONHANG').update({ TrangThaiOrder: to }).eq('MaDH', req.params.id).select();
         if (error) return res.status(400).json({ error: error.message });
         res.json(data[0]);
     } catch (err) { res.status(500).json({ error: 'Lỗi server' }); }

@@ -30,13 +30,15 @@ export default function Payment() {
     setOrders(data.filter(o => !o.MaHD));
   };
 
-  const toggleOrder = (maDH) => {
+  const toggleOrder = (maDH, trangThai) => {
+    if (trangThai !== 'DaGiao') return;
     setSelectedOrders(prev => prev.includes(maDH) ? prev.filter(id => id !== maDH) : [...prev, maDH]);
   };
 
   const selectAll = () => {
-    if (selectedOrders.length === orders.length) setSelectedOrders([]);
-    else setSelectedOrders(orders.map(o => o.MaDH));
+    const validOrders = orders.filter(o => o.TrangThaiOrder === 'DaGiao');
+    if (selectedOrders.length === validOrders.length && validOrders.length > 0) setSelectedOrders([]);
+    else setSelectedOrders(validOrders.map(o => o.MaDH));
   };
 
   const getTotal = () => {
@@ -95,18 +97,23 @@ export default function Payment() {
                   {selectedOrders.length === orders.length ? 'Bỏ chọn' : 'Chọn tất cả'}
                 </button>
               </div>
-              {orders.map(o => (
-                <label key={o.MaDH} className={`order-select-item ${selectedOrders.includes(o.MaDH) ? 'selected' : ''}`}>
-                  <input type="checkbox" checked={selectedOrders.includes(o.MaDH)} onChange={() => toggleOrder(o.MaDH)} />
+              {orders.map(o => {
+                const canPay = o.TrangThaiOrder === 'DaGiao';
+                return (
+                <label key={o.MaDH} className={`order-select-item ${selectedOrders.includes(o.MaDH) ? 'selected' : ''}`} style={!canPay ? {opacity: 0.6, cursor: 'not-allowed'} : {}}>
+                  <input type="checkbox" checked={selectedOrders.includes(o.MaDH)} disabled={!canPay} onChange={() => toggleOrder(o.MaDH, o.TrangThaiOrder)} />
                   <div className="osi-info">
                     <span className="osi-id">#{o.MaDH}</span>
                     <span className="osi-time">{new Date(o.ThoiGianDat).toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'})}</span>
+                    {!canPay && <span style={{marginLeft: 8, fontSize: '0.75rem', color: 'var(--danger)', fontWeight: '600'}}>({
+                      o.TrangThaiOrder === 'Cho' ? 'Đang chờ' : o.TrangThaiOrder === 'DangLam' ? 'Đang làm' : 'Hoàn thành (Chưa giao)'
+                    })</span>}
                   </div>
                   <span className="osi-total">
                     {formatPrice((o.CHITIETDONHANG||[]).reduce((s,i)=>s+i.SoLuong*i.DonGia,0))}
                   </span>
                 </label>
-              ))}
+              )})}
             </div>
           )}
         </div>

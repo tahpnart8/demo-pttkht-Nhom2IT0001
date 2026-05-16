@@ -137,23 +137,37 @@ export default function OrderBoard() {
                 ))}
               </div>
 
-              {NEXT_STATUS[order.TrangThaiOrder] && (
-                <button
-                  className="order-action-btn"
-                  style={{ background: STATUSES.find(s => s.key === NEXT_STATUS[order.TrangThaiOrder])?.color }}
-                  onClick={() => updateStatus(order.MaDH, NEXT_STATUS[order.TrangThaiOrder])}
-                  disabled={updating === order.MaDH}
-                >
-                  {updating === order.MaDH ? (
-                    <div className="spinner" style={{width:18,height:18,borderWidth:2,borderColor:'rgba(255,255,255,0.3)',borderTopColor:'white'}} />
-                  ) : (
-                    <>
-                      {ACTION_LABELS[order.TrangThaiOrder]}
-                      <ChevronRight size={16} />
-                    </>
-                  )}
-                </button>
-              )}
+              {(() => {
+                const next = NEXT_STATUS[order.TrangThaiOrder];
+                if (!next) return null;
+                // Phân quyền: barista chỉ Chờ→Đang làm, Đang làm→Hoàn thành
+                //              phucvu chỉ Hoàn thành→Đã giao
+                //              admin được tất cả
+                const role = user?.role;
+                const from = order.TrangThaiOrder;
+                let canAct = role === 'admin';
+                if (role === 'barista' && (from === 'Cho' || from === 'DangLam')) canAct = true;
+                if (role === 'phucvu' && from === 'HoanThanh') canAct = true;
+                if (!canAct) return null;
+
+                return (
+                  <button
+                    className="order-action-btn"
+                    style={{ background: STATUSES.find(s => s.key === next)?.color }}
+                    onClick={() => updateStatus(order.MaDH, next)}
+                    disabled={updating === order.MaDH}
+                  >
+                    {updating === order.MaDH ? (
+                      <div className="spinner" style={{width:18,height:18,borderWidth:2,borderColor:'rgba(255,255,255,0.3)',borderTopColor:'white'}} />
+                    ) : (
+                      <>
+                        {ACTION_LABELS[order.TrangThaiOrder]}
+                        <ChevronRight size={16} />
+                      </>
+                    )}
+                  </button>
+                );
+              })()}
             </div>
           ))
         )}

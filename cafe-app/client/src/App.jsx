@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login/Login';
@@ -12,6 +13,13 @@ import TableMgmt from './pages/Manager/TableMgmt';
 import StaffMgmt from './pages/Manager/StaffMgmt';
 import './App.css';
 
+function PageWrapper({ title, children }) {
+  useEffect(() => {
+    document.title = title ? `${title} | Nhà Ba Teria` : 'Nhà Ba Teria';
+  }, [title]);
+  return children;
+}
+
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="page-loading"><div className="spinner" /></div>;
@@ -25,46 +33,46 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<PageWrapper title="Đăng nhập"><Login /></PageWrapper>} />
 
       {/* Customer routes — không cần đăng nhập */}
-      <Route path="/order/:tableId" element={<CustomerMenu />} />
-      <Route path="/cart/:tableId" element={<Cart />} />
-      <Route path="/order-status/:orderId" element={<OrderStatus />} />
+      <Route path="/order/:tableId" element={<PageWrapper title="Đặt món"><CustomerMenu /></PageWrapper>} />
+      <Route path="/cart/:tableId" element={<PageWrapper title="Giỏ hàng"><Cart /></PageWrapper>} />
+      <Route path="/order-status/:orderId" element={<PageWrapper title="Tiến độ đơn hàng"><OrderStatus /></PageWrapper>} />
 
       {/* Staff routes */}
       <Route path="/staff/orders" element={
         <ProtectedRoute roles={['phucvu', 'barista', 'thungan', 'admin']}>
-          <OrderBoard />
+          <PageWrapper title="Phục vụ"><OrderBoard /></PageWrapper>
         </ProtectedRoute>
       } />
 
       {/* Cashier routes */}
       <Route path="/cashier/payment" element={
         <ProtectedRoute roles={['thungan', 'admin']}>
-          <Payment />
+          <PageWrapper title="Thanh toán"><Payment /></PageWrapper>
         </ProtectedRoute>
       } />
       <Route path="/cashier/invoices" element={
         <ProtectedRoute roles={['thungan', 'admin']}>
-          <InvoiceList />
+          <PageWrapper title="Hóa đơn"><InvoiceList /></PageWrapper>
         </ProtectedRoute>
       } />
 
       {/* Manager routes */}
       <Route path="/manager/menu" element={
         <ProtectedRoute roles={['admin']}>
-          <MenuMgmt />
+          <PageWrapper title="Quản lý Menu"><MenuMgmt /></PageWrapper>
         </ProtectedRoute>
       } />
       <Route path="/manager/tables" element={
         <ProtectedRoute roles={['admin']}>
-          <TableMgmt />
+          <PageWrapper title="Quản lý Bàn"><TableMgmt /></PageWrapper>
         </ProtectedRoute>
       } />
       <Route path="/manager/staff" element={
         <ProtectedRoute roles={['admin']}>
-          <StaffMgmt />
+          <PageWrapper title="Nhân viên"><StaffMgmt /></PageWrapper>
         </ProtectedRoute>
       } />
 

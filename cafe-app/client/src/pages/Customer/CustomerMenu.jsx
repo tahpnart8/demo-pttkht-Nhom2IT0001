@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Coffee, ShoppingCart, Search, Plus, Minus, X } from 'lucide-react';
+import { Coffee, ShoppingCart, ShoppingBag, Search, Plus, Minus, X, ClipboardList } from 'lucide-react';
 import { api } from '../../services/api';
 import './CustomerMenu.css';
 
@@ -13,6 +13,7 @@ export default function CustomerMenu() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addingItem, setAddingItem] = useState(null);
+  const [activeOrder, setActiveOrder] = useState(null);
 
   useEffect(() => {
     api.getMenu().then(data => {
@@ -31,6 +32,12 @@ export default function CustomerMenu() {
           GhiChu: i.GhiChu || ''
         })));
       }
+    }).catch(() => {});
+
+    api.getOrders({ table: tableId }).then(data => {
+      // Tìm đơn hàng chưa thanh toán (bao gồm cả đã giao nhưng chưa tính tiền)
+      const active = data.find(o => !o.MaHD);
+      if (active) setActiveOrder(active.MaDH);
     }).catch(() => {});
   }, [tableId]);
 
@@ -80,7 +87,7 @@ export default function CustomerMenu() {
   return (
     <div className="customer-page">
       {/* Header */}
-      <header className="customer-header">
+      <header className="customer-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <div className="customer-brand">
           <Coffee size={24} />
           <div>
@@ -88,6 +95,17 @@ export default function CustomerMenu() {
             <span className="table-tag">Bàn {tableId.replace('B', '')}</span>
           </div>
         </div>
+        <button 
+          className="btn btn-icon" 
+          style={{color: 'white', background: 'rgba(255,255,255,0.2)', padding: '8px', display: 'flex', borderRadius: '50%'}} 
+          onClick={() => {
+            if (activeOrder) navigate(`/order-status/${activeOrder}?table=${tableId}`);
+            else navigate(`/cart/${tableId}`);
+          }} 
+          title={activeOrder ? "Theo dõi đơn hàng" : "Giỏ hàng"}
+        >
+          <ShoppingBag size={20} />
+        </button>
       </header>
 
       {/* Search */}
