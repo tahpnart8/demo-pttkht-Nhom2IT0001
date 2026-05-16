@@ -27,7 +27,10 @@
 }
 
 .login-card {
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.85); /* Nền trắng mờ (Glassmorphism) */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Viền sáng nhẹ */
   border-radius: var(--radius-xl);
   padding: var(--space-2xl) var(--space-xl);
   width: 100%;
