@@ -214,71 +214,170 @@ graph TB
     P34 -->|"BAN.TrangThai = Trong"| D6
 ```
 
-## 4. Sequence Diagram — Luồng Gọi Món và Xử Lý Đơn Hàng
+## 4. Sequence Diagram — Luồng Gọi Món
+
+> **Kịch bản:** Khách hàng quét mã QR trên bàn, xem menu, thêm món vào giỏ hàng và gửi đơn hàng.
 
 ```mermaid
 sequenceDiagram
     participant KH as Khach hang
     participant FE as Frontend
     participant API as API Server
-    participant DB as Database
+    participant MENU as MENU
+    participant MON as MON
+    participant GH as GIOHANG
+    participant CTGH as CHITIETGIOHANG
+    participant DH as DONHANG
+    participant CTDH as CHITIETDONHANG
+    participant BAN as BAN
+
+    Note over KH,BAN: 1. Khach hang quet QR va xem menu
+    KH->>FE: 1. Quet ma QR tren ban
+    FE->>API: 2. GET /api/menu
+    API->>MENU: 3. SELECT * FROM MENU
+    MENU-->>API: 4. Danh sach danh muc
+    API->>MON: 5. SELECT * FROM MON WHERE MaMenu
+    MON-->>API: 6. Danh sach mon theo menu
+    API-->>FE: 7. JSON danh sach menu va mon
+    FE-->>KH: 8. Hien thi giao dien dat mon
+
+    Note over KH,BAN: 2. Khach hang them mon vao gio hang
+    KH->>FE: 9. Chon mon va bam Them
+    FE->>API: 10. POST /api/cart/B01/items (MaMon, SoLuong)
+    API->>GH: 11. SELECT MaGio FROM GIOHANG WHERE MaBan = B01
+    alt Gio hang chua ton tai
+        API->>GH: 12a. INSERT INTO GIOHANG (MaGio, MaBan)
+        GH-->>API: 13a. MaGio moi
+    end
+    API->>CTGH: 14. INSERT INTO CHITIETGIOHANG (MaGio, MaMon, SoLuong)
+    CTGH-->>API: 15. OK da them vao gio
+    API-->>FE: 16. Xac nhan item da them
+    FE-->>KH: 17. Cap nhat so luong tren icon gio hang
+
+    Note over KH,BAN: 3. Khach hang gui don hang
+    KH->>FE: 18. Bam Gui don hang
+    FE->>API: 19. POST /api/orders (MaBan = B01)
+    API->>GH: 20. SELECT MaGio FROM GIOHANG WHERE MaBan
+    API->>CTGH: 21. SELECT MaMon, SoLuong, GhiChu FROM CHITIETGIOHANG
+    CTGH-->>API: 22. Danh sach mon trong gio
+    API->>MON: 23. SELECT DonGia FROM MON WHERE MaMon
+    MON-->>API: 24. Don gia tung mon
+    API->>DH: 25. INSERT INTO DONHANG (MaDH, TrangThaiOrder = Cho, MaBan)
+    DH-->>API: 26. MaDH moi
+    API->>CTDH: 27. INSERT INTO CHITIETDONHANG (MaDH, MaMon, SoLuong, DonGia)
+    CTDH-->>API: 28. OK chi tiet da luu
+    API->>BAN: 29. UPDATE BAN SET TrangThai = DangCoKhach WHERE MaBan
+    BAN-->>API: 30. OK trang thai ban da cap nhat
+    API->>CTGH: 31. DELETE FROM CHITIETGIOHANG WHERE MaGio
+    API->>GH: 32. DELETE FROM GIOHANG WHERE MaGio
+    GH-->>API: 33. OK gio hang da xoa
+    API-->>FE: 34. MaDH va thong bao dat hang thanh cong
+    FE-->>KH: 35. Chuyen sang trang theo doi don hang
+```
+
+**Giải thích:**
+
+| Bước | Mô tả |
+|:----:|-------|
+| 1-8 | Khách quét QR, hệ thống truy vấn bảng `MENU` và `MON` để hiển thị thực đơn |
+| 9-17 | Khách thêm món, hệ thống tạo `GIOHANG` (nếu chưa có) rồi INSERT vào `CHITIETGIOHANG` |
+| 18-35 | Khách gửi đơn → tạo `DONHANG` + `CHITIETDONHANG`, cập nhật `BAN`, xóa giỏ hàng |
+
+---
+
+## 4b. Sequence Diagram — Luồng Xử Lý Đơn Hàng
+
+> **Kịch bản:** Barista nhận đơn và pha chế, Phục vụ giao món cho khách. Khách theo dõi trạng thái đơn hàng theo thời gian thực.
+
+```mermaid
+sequenceDiagram
     participant BA as Barista
     participant PV as Phuc vu
+    participant FE as Frontend
+    participant API as API Server
+    participant MW as Auth Middleware
+    participant NV as NHANVIEN
+    participant TK as TAIKHOAN
+    participant DH as DONHANG
+    participant KH as Khach hang
 
-    Note over KH,PV: GIAI DOAN 1 - QUET QR VA XEM MENU
-    KH->>FE: Quet ma QR tren ban
-    FE->>API: GET /api/menu
-    API->>DB: SELECT MENU JOIN MON
-    DB-->>API: Danh sach menu va mon
-    API-->>FE: JSON menu data
-    FE-->>KH: Hien thi giao dien Menu
+    Note over BA,KH: 1. Barista dang nhap he thong
+    BA->>FE: 1. Nhap tai khoan va mat khau
+    FE->>API: 2. POST /api/auth/login (TenDangNhap, MatKhau)
+    API->>TK: 3. SELECT * FROM TAIKHOAN WHERE TenDangNhap
+    TK-->>API: 4. Thong tin tai khoan (QuyenHan = barista)
+    API->>NV: 5. SELECT * FROM NHANVIEN WHERE MaNV
+    NV-->>API: 6. Thong tin nhan vien
+    API-->>FE: 7. JWT Token (role = barista) va user info
+    FE-->>BA: 8. Hien thi man hinh Quan ly don hang
 
-    Note over KH,PV: GIAI DOAN 2 - THEM MON VAO GIO
-    KH->>FE: Bam nut Them mon
-    FE->>API: POST /api/cart/B01/items
-    API->>DB: Tim hoac tao GIOHANG
-    API->>DB: INSERT CHITIETGIOHANG
-    DB-->>API: OK
-    API-->>FE: Item da them
-    FE-->>KH: Cap nhat badge gio hang
+    Note over BA,KH: 2. Barista xem danh sach don cho xu ly
+    FE->>MW: 9. GET /api/orders (Authorization Bearer JWT)
+    MW->>MW: 10. Verify JWT va kiem tra role
+    MW->>API: 11. Cho phep truy cap
+    API->>DH: 12. SELECT * FROM DONHANG WHERE TrangThaiOrder = Cho
+    DH-->>API: 13. Danh sach don hang dang cho
+    API-->>FE: 14. JSON danh sach don hang
+    FE-->>BA: 15. Hien thi cac don o trang thai Cho
 
-    Note over KH,PV: GIAI DOAN 3 - GUI DON HANG
-    KH->>FE: Bam Gui order
-    FE->>API: POST /api/orders
-    API->>DB: SELECT GIOHANG + CHITIETGIOHANG
-    API->>DB: INSERT DONHANG (TrangThai = Cho)
-    API->>DB: INSERT CHITIETDONHANG
-    API->>DB: UPDATE BAN SET TrangThai = DangCoKhach
-    API->>DB: DELETE CHITIETGIOHANG va GIOHANG
-    DB-->>API: OK
-    API-->>FE: MaDH + Dat hang thanh cong
-    FE-->>KH: Chuyen toi trang theo doi
+    Note over BA,KH: 3. Barista bat dau pha che
+    BA->>FE: 16. Bam nut Bat dau lam tren don DH001
+    FE->>MW: 17. PATCH /api/orders/DH001/status (TrangThai = DangLam)
+    MW->>MW: 18. Verify JWT role = barista OK
+    MW->>API: 19. Chuyen tiep request
+    API->>DH: 20. SELECT TrangThaiOrder FROM DONHANG WHERE MaDH = DH001
+    DH-->>API: 21. TrangThaiOrder = Cho
+    API->>API: 22. Kiem tra: barista duoc chuyen Cho sang DangLam = OK
+    API->>DH: 23. UPDATE DONHANG SET TrangThaiOrder = DangLam WHERE MaDH = DH001
+    DH-->>API: 24. OK da cap nhat
+    API-->>FE: 25. Don hang da chuyen sang DangLam
+    FE-->>BA: 26. Don chuyen qua tab Dang lam
 
-    Note over KH,PV: GIAI DOAN 4 - BARISTA PHA CHE
-    BA->>FE: Dang nhap tai khoan barista
-    FE->>API: POST /api/auth/login
-    API-->>FE: JWT Token role = barista
-    BA->>FE: Bam Bat dau lam
-    FE->>API: PATCH /api/orders/id/status DangLam
-    API->>API: Kiem tra role barista Cho to DangLam = OK
-    API->>DB: UPDATE DONHANG SET TrangThaiOrder = DangLam
-    API-->>FE: Don da cap nhat
-    BA->>FE: Bam Hoan thanh
-    FE->>API: PATCH /api/orders/id/status HoanThanh
-    API->>DB: UPDATE TrangThaiOrder = HoanThanh
-    API-->>FE: Don da cap nhat
+    Note over BA,KH: 4. Barista hoan thanh pha che
+    BA->>FE: 27. Bam nut Hoan thanh tren don DH001
+    FE->>MW: 28. PATCH /api/orders/DH001/status (TrangThai = HoanThanh)
+    MW->>API: 29. Chuyen tiep (role barista OK)
+    API->>DH: 30. UPDATE DONHANG SET TrangThaiOrder = HoanThanh
+    DH-->>API: 31. OK da cap nhat
+    API-->>FE: 32. Don hang da hoan thanh pha che
+    FE-->>BA: 33. Don chuyen qua tab Hoan thanh
 
-    Note over KH,PV: GIAI DOAN 5 - PHUC VU GIAO MON
-    PV->>FE: Dang nhap tai khoan phucvu
-    FE->>API: POST /api/auth/login
-    API-->>FE: JWT Token role = phucvu
-    PV->>FE: Bam Da giao
-    FE->>API: PATCH /api/orders/id/status DaGiao
-    API->>API: Kiem tra role phucvu HoanThanh to DaGiao = OK
-    API->>DB: UPDATE TrangThaiOrder = DaGiao
-    API-->>FE: Don da cap nhat
-    FE-->>KH: Polling nhan trang thai Da giao
+    Note over BA,KH: 5. Phuc vu giao mon cho khach
+    PV->>FE: 34. Dang nhap (role = phucvu)
+    FE->>MW: 35. GET /api/orders (Authorization Bearer JWT)
+    MW->>API: 36. Cho phep truy cap
+    API->>DH: 37. SELECT * FROM DONHANG WHERE TrangThaiOrder = HoanThanh
+    DH-->>API: 38. Danh sach don can giao
+    API-->>FE: 39. JSON don hang hoan thanh
+    FE-->>PV: 40. Hien thi cac don cho giao
+    PV->>FE: 41. Bam Da giao tren don DH001
+    FE->>MW: 42. PATCH /api/orders/DH001/status (TrangThai = DaGiao)
+    MW->>API: 43. Chuyen tiep (role phucvu OK)
+    API->>API: 44. Kiem tra: phucvu duoc chuyen HoanThanh sang DaGiao = OK
+    API->>DH: 45. UPDATE DONHANG SET TrangThaiOrder = DaGiao
+    DH-->>API: 46. OK da cap nhat
+    API-->>FE: 47. Don hang da giao thanh cong
+    FE-->>PV: 48. Don chuyen qua tab Da giao
+
+    Note over BA,KH: 6. Khach hang nhan trang thai da giao
+    KH->>FE: 49. Polling GET /api/orders?table=B01
+    FE->>API: 50. GET /api/orders?table=B01
+    API->>DH: 51. SELECT TrangThaiOrder FROM DONHANG WHERE MaDH = DH001
+    DH-->>API: 52. TrangThaiOrder = DaGiao
+    API-->>FE: 53. JSON trang thai moi nhat
+    FE-->>KH: 54. Hien thi trang thai Da giao cho khach
 ```
+
+**Giải thích:**
+
+| Bước | Mô tả |
+|:----:|-------|
+| 1-8 | Barista đăng nhập → truy vấn `TAIKHOAN` và `NHANVIEN` → nhận JWT Token |
+| 9-15 | Hệ thống lọc `DONHANG` theo trạng thái `Chờ` để hiển thị |
+| 16-26 | Barista chuyển đơn từ `Chờ` → `Đang làm` (validate quyền qua Middleware) |
+| 27-33 | Barista chuyển đơn từ `Đang làm` → `Hoàn thành` |
+| 34-48 | Phục vụ đăng nhập, lọc đơn `Hoàn thành`, chuyển sang `Đã giao` |
+| 49-54 | Khách hàng polling để nhận trạng thái mới nhất từ `DONHANG` |
 
 ---
 
