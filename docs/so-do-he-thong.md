@@ -220,59 +220,52 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant KH as Khach hang
-    participant FE as Frontend
-    participant API as API Server
-    participant MENU as MENU
-    participant MON as MON
-    participant GH as GIOHANG
-    participant CTGH as CHITIETGIOHANG
-    participant DH as DONHANG
-    participant CTDH as CHITIETDONHANG
-    participant BAN as BAN
+    participant KH as Khách hàng
+    participant UI as Giao diện UI
+    participant MC as MenuController
+    participant OC as OrderController
+    participant DB as Database
 
-    Note over KH,BAN: 1. Khach hang quet QR va xem menu
-    KH->>FE: 1. scanQR()
-    FE->>API: 2. getMenuData()
-    API->>MENU: 3. getAllCategories()
-    MENU-->>API: 4. categoryList
-    API->>MON: 5. getItemsByCategory()
-    MON-->>API: 6. itemList
-    API-->>FE: 7. menuData
-    FE-->>KH: 8. displayMenu()
+    Note over KH,DB: 1. Khách hàng quét QR và xem menu
+    KH->>UI: 1. scanQR()
+    UI->>MC: 2. getMenuData()
+    MC->>DB: 3. getAllCategories()
+    DB-->>MC: 4. categoryList
+    MC->>DB: 5. getItemsByCategory()
+    DB-->>MC: 6. itemList
+    MC-->>UI: 7. menuData
+    UI-->>KH: 8. displayMenu()
 
-    Note over KH,BAN: 2. Khach hang them mon vao gio hang
-    KH->>FE: 9. addToCart(itemId, quantity)
-    FE->>API: 10. addItemToCart(tableId, itemId, quantity)
-    API->>GH: 11. checkCartExists(tableId)
-    alt Gio hang chua ton tai
-        API->>GH: 12a. createCart(tableId)
-        GH-->>API: 13a. cartId
+    Note over KH,DB: 2. Khách hàng thêm món vào giỏ hàng
+    KH->>UI: 9. addToCart(itemId, quantity)
+    UI->>OC: 10. processAddToCart(tableId, itemId, quantity)
+    OC->>DB: 11. checkCartExists(tableId)
+    alt Giỏ hàng chưa tồn tại
+        OC->>DB: 12. createCart(tableId)
+        DB-->>OC: 13. cartId
     end
-    API->>CTGH: 14. addCartItem(cartId, itemId, quantity)
-    CTGH-->>API: 15. success
-    API-->>FE: 16. confirmItemAdded()
-    FE-->>KH: 17. updateCartIcon()
+    OC->>DB: 14. addCartItem(cartId, itemId, quantity)
+    DB-->>OC: 15. success
+    OC-->>UI: 16. confirmItemAdded()
+    UI-->>KH: 17. updateCartIcon()
 
-    Note over KH,BAN: 3. Khach hang gui don hang
-    KH->>FE: 18. submitOrder()
-    FE->>API: 19. createOrder(tableId)
-    API->>GH: 20. getCartByTable(tableId)
-    API->>CTGH: 21. getCartItems(cartId)
-    CTGH-->>API: 22. cartItemList
-    API->>MON: 23. getItemPrices(itemIds)
-    MON-->>API: 24. priceList
-    API->>DH: 25. createOrderRecord(tableId, "Cho")
-    DH-->>API: 26. orderId
-    API->>CTDH: 27. createOrderDetails(orderId, cartItemList)
-    CTDH-->>API: 28. success
-    API->>BAN: 29. updateTableStatus(tableId, "DangCoKhach")
-    BAN-->>API: 30. success
-    API->>CTGH: 31. clearCartItems(cartId)
-    API->>GH: 32. deleteCart(cartId)
-    GH-->>API: 33. success
-    API-->>FE: 34. orderSuccess(orderId)
-    FE-->>KH: 35. displayOrderTracking()
+    Note over KH,DB: 3. Khách hàng gửi đơn hàng
+    KH->>UI: 18. submitOrder()
+    UI->>OC: 19. createOrder(tableId)
+    OC->>DB: 20. getCartItems(tableId)
+    DB-->>OC: 21. cartItemList
+    OC->>DB: 22. getItemPrices(itemIds)
+    DB-->>OC: 23. priceList
+    OC->>DB: 24. createOrderRecord(tableId, "Cho")
+    DB-->>OC: 25. orderId
+    OC->>DB: 26. createOrderDetails(orderId, cartItemList)
+    DB-->>OC: 27. success
+    OC->>DB: 28. updateTableStatus(tableId, "DangCoKhach")
+    DB-->>OC: 29. success
+    OC->>DB: 30. clearCart(tableId)
+    DB-->>OC: 31. success
+    OC-->>UI: 32. orderSuccess(orderId)
+    UI-->>KH: 33. displayOrderTracking()
 ```
 
 **Giải thích:**
@@ -292,80 +285,71 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant BA as Barista
-    participant PV as Phuc vu
-    participant FE as Frontend
-    participant API as API Server
-    participant MW as Auth Middleware
-    participant NV as NHANVIEN
-    participant TK as TAIKHOAN
-    participant DH as DONHANG
-    participant KH as Khach hang
+    participant PV as Phục vụ
+    participant KH as Khách hàng
+    participant UI as Giao diện UI
+    participant AC as AuthController
+    participant OC as OrderController
+    participant DB as Database
 
-    Note over BA,KH: 1. Barista dang nhap he thong
-    BA->>FE: 1. login(username, password)
-    FE->>API: 2. authenticateUser(username, password)
-    API->>TK: 3. getAccountByUsername(username)
-    TK-->>API: 4. accountInfo (role = barista)
-    API->>NV: 5. getEmployeeInfo(employeeId)
-    NV-->>API: 6. employeeInfo
-    API-->>FE: 7. authSuccess(token, userInfo)
-    FE-->>BA: 8. displayOrderManagement()
+    Note over BA,DB: 1. Barista đăng nhập hệ thống
+    BA->>UI: 1. login(username, password)
+    UI->>AC: 2. authenticateUser(username, password)
+    AC->>DB: 3. getAccountInfo(username)
+    DB-->>AC: 4. accountInfo (role = barista)
+    AC-->>UI: 5. authSuccess(token)
+    UI-->>BA: 6. displayOrderManagement()
 
-    Note over BA,KH: 2. Barista xem danh sach don cho xu ly
-    FE->>MW: 9. getPendingOrders(token)
-    MW->>MW: 10. verifyToken(token)
-    MW->>API: 11. authorize()
-    API->>DH: 12. getOrdersByStatus("Cho")
-    DH-->>API: 13. pendingOrderList
-    API-->>FE: 14. orderList
-    FE-->>BA: 15. displayPendingOrders()
+    Note over BA,DB: 2. Barista xem danh sách đơn chờ xử lý
+    UI->>OC: 7. getPendingOrders(token)
+    OC->>OC: 8. verifyTokenAndRole()
+    OC->>DB: 9. getOrdersByStatus("Cho")
+    DB-->>OC: 10. pendingOrderList
+    OC-->>UI: 11. orderList
+    UI-->>BA: 12. displayPendingOrders()
 
-    Note over BA,KH: 3. Barista bat dau pha che
-    BA->>FE: 16. startOrder(orderId)
-    FE->>MW: 17. updateOrderStatus(orderId, "DangLam")
-    MW->>MW: 18. verifyTokenAndRole()
-    MW->>API: 19. authorize()
-    API->>DH: 20. getOrderStatus(orderId)
-    DH-->>API: 21. currentStatus ("Cho")
-    API->>API: 22. validateStatusTransition()
-    API->>DH: 23. updateStatus(orderId, "DangLam")
-    DH-->>API: 24. success
-    API-->>FE: 25. statusUpdated
-    FE-->>BA: 26. moveOrderToProcessingTab()
+    Note over BA,DB: 3. Barista bắt đầu pha chế
+    BA->>UI: 13. startOrder(orderId)
+    UI->>OC: 14. updateOrderStatus(orderId, "DangLam")
+    OC->>DB: 15. getOrderStatus(orderId)
+    DB-->>OC: 16. currentStatus ("Cho")
+    OC->>OC: 17. validateStatusTransition()
+    OC->>DB: 18. updateStatus(orderId, "DangLam")
+    DB-->>OC: 19. success
+    OC-->>UI: 20. statusUpdated
+    UI-->>BA: 21. moveOrderToProcessingTab()
 
-    Note over BA,KH: 4. Barista hoan thanh pha che
-    BA->>FE: 27. completeOrder(orderId)
-    FE->>MW: 28. updateOrderStatus(orderId, "HoanThanh")
-    MW->>API: 29. authorize()
-    API->>DH: 30. updateStatus(orderId, "HoanThanh")
-    DH-->>API: 31. success
-    API-->>FE: 32. statusUpdated
-    FE-->>BA: 33. moveOrderToCompletedTab()
+    Note over BA,DB: 4. Barista hoàn thành pha chế
+    BA->>UI: 22. completeOrder(orderId)
+    UI->>OC: 23. updateOrderStatus(orderId, "HoanThanh")
+    OC->>DB: 24. updateStatus(orderId, "HoanThanh")
+    DB-->>OC: 25. success
+    OC-->>UI: 26. statusUpdated
+    UI-->>BA: 27. moveOrderToCompletedTab()
 
-    Note over BA,KH: 5. Phuc vu giao mon cho khach
-    PV->>FE: 34. login(username, password)
-    FE->>MW: 35. getCompletedOrders(token)
-    MW->>API: 36. authorize()
-    API->>DH: 37. getOrdersByStatus("HoanThanh")
-    DH-->>API: 38. completedOrderList
-    API-->>FE: 39. orderList
-    FE-->>PV: 40. displayCompletedOrders()
-    PV->>FE: 41. markAsDelivered(orderId)
-    FE->>MW: 42. updateOrderStatus(orderId, "DaGiao")
-    MW->>API: 43. authorize()
-    API->>API: 44. validateStatusTransition()
-    API->>DH: 45. updateStatus(orderId, "DaGiao")
-    DH-->>API: 46. success
-    API-->>FE: 47. statusUpdated
-    FE-->>PV: 48. moveOrderToDeliveredTab()
+    Note over PV,DB: 5. Phục vụ giao món cho khách
+    PV->>UI: 28. login(username, password)
+    UI->>AC: 29. authenticateUser(username, password)
+    AC-->>UI: 30. authSuccess(token)
+    UI->>OC: 31. getCompletedOrders(token)
+    OC->>DB: 32. getOrdersByStatus("HoanThanh")
+    DB-->>OC: 33. completedOrderList
+    OC-->>UI: 34. orderList
+    UI-->>PV: 35. displayCompletedOrders()
+    PV->>UI: 36. markAsDelivered(orderId)
+    UI->>OC: 37. updateOrderStatus(orderId, "DaGiao")
+    OC->>DB: 38. updateStatus(orderId, "DaGiao")
+    DB-->>OC: 39. success
+    OC-->>UI: 40. statusUpdated
+    UI-->>PV: 41. moveOrderToDeliveredTab()
 
-    Note over BA,KH: 6. Khach hang nhan trang thai da giao
-    KH->>FE: 49. pollOrderStatus(tableId)
-    FE->>API: 50. getLatestOrderStatus(tableId)
-    API->>DH: 51. getOrderStatus(orderId)
-    DH-->>API: 52. currentStatus ("DaGiao")
-    API-->>FE: 53. statusData
-    FE-->>KH: 54. displayOrderStatus("DaGiao")
+    Note over KH,DB: 6. Khách hàng nhận trạng thái đã giao
+    KH->>UI: 42. pollOrderStatus(tableId)
+    UI->>OC: 43. getLatestOrderStatus(tableId)
+    OC->>DB: 44. getOrderStatus(orderId)
+    DB-->>OC: 45. currentStatus ("DaGiao")
+    OC-->>UI: 46. statusData
+    UI-->>KH: 47. displayOrderStatus("DaGiao")
 ```
 
 **Giải thích:**
@@ -385,52 +369,59 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant TN as Thu ngan
-    participant FE as Frontend
-    participant API as API Server
+    participant TN as Thu ngân
+    participant UI as Giao diện UI
+    participant AC as AuthController
+    participant TC as TableController
+    participant PC as PaymentController
     participant DB as Database
 
-    Note over TN,DB: BUOC 1 - DANG NHAP
-    TN->>FE: login(username, password)
-    FE->>API: authenticateUser(username, password)
-    API->>DB: getAccountInfo(username)
-    API->>API: generateToken(role)
-    API-->>FE: authSuccess(token, userInfo)
-    FE-->>TN: redirect(/cashier/payment)
+    Note over TN,DB: BƯỚC 1 - ĐĂNG NHẬP
+    TN->>UI: 1. login(username, password)
+    UI->>AC: 2. authenticateUser(username, password)
+    AC->>DB: 3. getAccountInfo(username)
+    DB-->>AC: 4. accountInfo
+    AC-->>UI: 5. authSuccess(token)
+    UI-->>TN: 6. redirect(/cashier/payment)
 
-    Note over TN,DB: BUOC 2 - CHON BAN VA DON HANG
-    FE->>API: getAllTables()
-    API->>DB: fetchTables()
-    API-->>FE: tableList
-    FE->>FE: filterTables("DangCoKhach")
-    FE-->>TN: displayActiveTables()
-    TN->>FE: selectTable(tableId)
-    FE->>API: getOrdersByTable(tableId)
-    API->>DB: fetchOrdersAndDetails(tableId)
-    API-->>FE: orderList
-    FE->>FE: filterUnpaidOrders()
-    FE-->>TN: displayUnpaidOrders()
+    Note over TN,DB: BƯỚC 2 - CHỌN BÀN VÀ ĐƠN HÀNG
+    UI->>TC: 7. getActiveTables()
+    TC->>DB: 8. fetchTablesByStatus("DangCoKhach")
+    DB-->>TC: 9. tableList
+    TC-->>UI: 10. tableData
+    UI-->>TN: 11. displayActiveTables()
+    TN->>UI: 12. selectTable(tableId)
+    UI->>PC: 13. getUnpaidOrders(tableId)
+    PC->>DB: 14. fetchOrdersAndDetails(tableId)
+    DB-->>PC: 15. orderList
+    PC-->>UI: 16. unpaidOrdersData
+    UI-->>TN: 17. displayUnpaidOrders()
 
-    Note over TN,DB: BUOC 3 - TAO HOA DON VA THANH TOAN
-    TN->>FE: selectOrdersForPayment(orderIds)
-    TN->>FE: confirmPayment(method)
-    FE->>API: createInvoice(orderIds, employeeId)
-    API->>DB: getOrderDetails(orderIds)
-    API->>API: calculateTotalAmount()
-    API->>DB: createInvoiceRecord(totalAmount, employeeId)
-    API->>DB: updateOrdersWithInvoice(invoiceId)
-    API-->>FE: invoiceCreated(invoiceId, totalAmount)
+    Note over TN,DB: BƯỚC 3 - TẠO HÓA ĐƠN
+    TN->>UI: 18. selectOrdersForPayment(orderIds)
+    TN->>UI: 19. confirmPayment(method)
+    UI->>PC: 20. createInvoice(orderIds, employeeId)
+    PC->>DB: 21. getOrderDetails(orderIds)
+    DB-->>PC: 22. orderItems
+    PC->>PC: 23. calculateTotalAmount()
+    PC->>DB: 24. createInvoiceRecord(totalAmount, employeeId)
+    DB-->>PC: 25. invoiceId
+    PC->>DB: 26. updateOrdersWithInvoice(invoiceId)
+    DB-->>PC: 27. success
+    PC-->>UI: 28. invoiceCreated(invoiceId, totalAmount)
 
-    Note over TN,DB: BUOC 4 - XAC NHAN THANH TOAN VA GIAI PHONG BAN
-    FE->>API: processPayment(invoiceId, amount, method)
-    API->>DB: createPaymentRecord(invoiceId, method)
-    API->>DB: getTableByInvoice(invoiceId)
-    API->>DB: checkUnpaidOrders(tableId)
-    alt Khong con don chua thanh toan
-        API->>DB: updateTableStatus(tableId, "Trong")
+    Note over TN,DB: BƯỚC 4 - XÁC NHẬN THANH TOÁN & GIẢI PHÓNG BÀN
+    UI->>PC: 29. processPayment(invoiceId, amount, method)
+    PC->>DB: 30. createPaymentRecord(invoiceId, method)
+    DB-->>PC: 31. success
+    PC->>DB: 32. checkRemainingUnpaidOrders(tableId)
+    DB-->>PC: 33. count = 0
+    alt Không còn đơn chưa thanh toán
+        PC->>DB: 34. updateTableStatus(tableId, "Trong")
+        DB-->>PC: 35. success
     end
-    API-->>FE: paymentSuccess()
-    FE-->>TN: showSuccessMessage()
+    PC-->>UI: 36. paymentSuccess()
+    UI-->>TN: 37. showSuccessMessage()
 ```
 
 ---
@@ -439,49 +430,46 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant QL as Quan ly
-    participant FE as Frontend
-    participant MW as Auth Middleware
-    participant API as API Server
+    participant QL as Quản lý
+    participant UI as Giao diện UI
+    participant AC as AuthController
+    participant SC as StaffController
     participant DB as Database
 
-    Note over QL,DB: BUOC 1 - XAC THUC QUYEN QUAN LY
-    QL->>FE: login(username, password)
-    FE->>API: authenticateUser(username, password)
-    API->>DB: getAccountInfo(username)
-    API->>API: generateToken(role)
-    API-->>FE: authSuccess(token, userInfo)
-    FE-->>QL: redirect(/manager/menu)
-    QL->>FE: navigateToStaffManagement()
+    Note over QL,DB: BƯỚC 1 - XÁC THỰC QUYỀN QUẢN LÝ
+    QL->>UI: 1. login(username, password)
+    UI->>AC: 2. authenticateUser(username, password)
+    AC->>DB: 3. getAccountInfo(username)
+    DB-->>AC: 4. accountInfo (role = admin)
+    AC-->>UI: 5. authSuccess(token)
+    UI-->>QL: 6. redirect(/manager/staff)
 
-    Note over QL,DB: BUOC 2 - TAI DANH SACH NHAN VIEN
-    FE->>MW: getStaffList(token)
-    MW->>MW: verifyTokenAndRole()
-    MW->>API: authorize()
-    API->>DB: fetchAllStaff()
-    DB-->>API: staffList
-    API-->>FE: staffData
-    FE-->>QL: displayStaffTable()
+    Note over QL,DB: BƯỚC 2 - TẢI DANH SÁCH NHÂN VIÊN
+    UI->>SC: 7. getAllStaff(token)
+    SC->>SC: 8. verifyTokenAndRole()
+    SC->>DB: 9. fetchAllStaffRecords()
+    DB-->>SC: 10. staffList
+    SC-->>UI: 11. staffData
+    UI-->>QL: 12. displayStaffTable()
 
-    Note over QL,DB: BUOC 3 - NHAP THONG TIN MOI
-    QL->>FE: clickAddStaff()
-    FE->>FE: openAddStaffModal()
-    QL->>FE: inputStaffDetails(data)
-    QL->>FE: submitNewStaff()
+    Note over QL,DB: BƯỚC 3 - NHẬP THÔNG TIN MỚI
+    QL->>UI: 13. clickAddStaff()
+    UI->>UI: 14. openAddStaffModal()
+    QL->>UI: 15. inputStaffDetails(data)
+    QL->>UI: 16. submitNewStaff()
 
-    Note over QL,DB: BUOC 4 - LUU VAO DATABASE
-    FE->>MW: addStaff(data, token)
-    MW->>MW: verifyTokenAndRole()
-    MW->>API: authorize()
-    API->>DB: createStaffRecord(data)
-    DB-->>API: success
-    alt Co ten dang nhap
-        API->>DB: createAccountRecord(accountData)
-        DB-->>API: success
+    Note over QL,DB: BƯỚC 4 - LƯU VÀO DATABASE
+    UI->>SC: 17. addStaff(data, token)
+    SC->>SC: 18. verifyTokenAndRole()
+    SC->>DB: 19. createStaffRecord(data)
+    DB-->>SC: 20. success
+    alt Có tên đăng nhập
+        SC->>DB: 21. createAccountRecord(accountData)
+        DB-->>SC: 22. success
     end
-    API-->>FE: addStaffSuccess(staffId)
-    FE-->>QL: showSuccessMessage()
-    FE->>FE: closeModalAndRefresh()
+    SC-->>UI: 23. addStaffSuccess(staffId)
+    UI-->>QL: 24. showSuccessMessage()
+    UI->>UI: 25. closeModalAndRefresh()
 ```
 
 ---
