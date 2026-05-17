@@ -223,6 +223,7 @@ sequenceDiagram
     participant KH as Khách hàng
     participant UI as Giao diện UI
     participant MC as MenuController
+    participant CC as CartController
     participant OC as OrderController
     participant DB as Database
 
@@ -238,34 +239,36 @@ sequenceDiagram
 
     Note over KH,DB: 2. Khách hàng thêm món vào giỏ hàng
     KH->>UI: 9. addToCart(itemId, quantity)
-    UI->>OC: 10. processAddToCart(tableId, itemId, quantity)
-    OC->>DB: 11. checkCartExists(tableId)
+    UI->>CC: 10. processAddToCart(tableId, itemId, quantity)
+    CC->>DB: 11. checkCartExists(tableId)
     alt Giỏ hàng chưa tồn tại
-        OC->>DB: 12. createCart(tableId)
-        DB-->>OC: 13. cartId
+        CC->>DB: 12. createCart(tableId)
+        DB-->>CC: 13. cartId
     end
-    OC->>DB: 14. addCartItem(cartId, itemId, quantity)
-    DB-->>OC: 15. success
-    OC-->>UI: 16. confirmItemAdded()
+    CC->>DB: 14. addCartItem(cartId, itemId, quantity)
+    DB-->>CC: 15. success
+    CC-->>UI: 16. confirmItemAdded()
     UI-->>KH: 17. updateCartIcon()
 
     Note over KH,DB: 3. Khách hàng gửi đơn hàng
     KH->>UI: 18. submitOrder()
     UI->>OC: 19. createOrder(tableId)
-    OC->>DB: 20. getCartItems(tableId)
-    DB-->>OC: 21. cartItemList
-    OC->>DB: 22. getItemPrices(itemIds)
-    DB-->>OC: 23. priceList
-    OC->>DB: 24. createOrderRecord(tableId, "Cho")
-    DB-->>OC: 25. orderId
-    OC->>DB: 26. createOrderDetails(orderId, cartItemList)
-    DB-->>OC: 27. success
-    OC->>DB: 28. updateTableStatus(tableId, "DangCoKhach")
-    DB-->>OC: 29. success
-    OC->>DB: 30. clearCart(tableId)
-    DB-->>OC: 31. success
-    OC-->>UI: 32. orderSuccess(orderId)
-    UI-->>KH: 33. displayOrderTracking()
+    OC->>CC: 20. getCartDetails(tableId)
+    CC->>DB: 21. fetchCartItems(tableId)
+    DB-->>CC: 22. dbCartItems
+    CC-->>OC: 23. cartItemList
+    OC->>MC: 24. getItemPrices(itemIds)
+    MC->>DB: 25. fetchPrices(itemIds)
+    DB-->>MC: 26. dbPrices
+    MC-->>OC: 27. priceList
+    OC->>DB: 28. createOrderRecord(tableId, "Cho", cartItemList)
+    DB-->>OC: 29. orderId
+    OC->>CC: 30. clearCart(tableId)
+    CC->>DB: 31. deleteCart(tableId)
+    DB-->>CC: 32. success
+    CC-->>OC: 33. cartCleared
+    OC-->>UI: 34. orderSuccess(orderId)
+    UI-->>KH: 35. displayOrderTracking()
 ```
 
 **Giải thích:**
@@ -373,6 +376,7 @@ sequenceDiagram
     participant UI as Giao diện UI
     participant AC as AuthController
     participant TC as TableController
+    participant OC as OrderController
     participant PC as PaymentController
     participant DB as Database
 
@@ -391,37 +395,45 @@ sequenceDiagram
     TC-->>UI: 10. tableData
     UI-->>TN: 11. displayActiveTables()
     TN->>UI: 12. selectTable(tableId)
-    UI->>PC: 13. getUnpaidOrders(tableId)
-    PC->>DB: 14. fetchOrdersAndDetails(tableId)
-    DB-->>PC: 15. orderList
-    PC-->>UI: 16. unpaidOrdersData
+    UI->>OC: 13. getUnpaidOrders(tableId)
+    OC->>DB: 14. fetchOrdersAndDetails(tableId)
+    DB-->>OC: 15. dbOrderList
+    OC-->>UI: 16. unpaidOrdersData
     UI-->>TN: 17. displayUnpaidOrders()
 
     Note over TN,DB: BƯỚC 3 - TẠO HÓA ĐƠN
     TN->>UI: 18. selectOrdersForPayment(orderIds)
     TN->>UI: 19. confirmPayment(method)
     UI->>PC: 20. createInvoice(orderIds, employeeId)
-    PC->>DB: 21. getOrderDetails(orderIds)
-    DB-->>PC: 22. orderItems
-    PC->>PC: 23. calculateTotalAmount()
-    PC->>DB: 24. createInvoiceRecord(totalAmount, employeeId)
-    DB-->>PC: 25. invoiceId
-    PC->>DB: 26. updateOrdersWithInvoice(invoiceId)
-    DB-->>PC: 27. success
-    PC-->>UI: 28. invoiceCreated(invoiceId, totalAmount)
+    PC->>OC: 21. getOrderDetails(orderIds)
+    OC->>DB: 22. fetchOrderDetails(orderIds)
+    DB-->>OC: 23. dbOrderItems
+    OC-->>PC: 24. orderItems
+    PC->>PC: 25. calculateTotalAmount()
+    PC->>DB: 26. createInvoiceRecord(totalAmount, employeeId)
+    DB-->>PC: 27. invoiceId
+    PC->>OC: 28. markOrdersAsPaid(orderIds, invoiceId)
+    OC->>DB: 29. updateOrdersWithInvoice(invoiceId)
+    DB-->>OC: 30. success
+    OC-->>PC: 31. ordersUpdated
+    PC-->>UI: 32. invoiceCreated(invoiceId, totalAmount)
 
     Note over TN,DB: BƯỚC 4 - XÁC NHẬN THANH TOÁN & GIẢI PHÓNG BÀN
-    UI->>PC: 29. processPayment(invoiceId, amount, method)
-    PC->>DB: 30. createPaymentRecord(invoiceId, method)
-    DB-->>PC: 31. success
-    PC->>DB: 32. checkRemainingUnpaidOrders(tableId)
-    DB-->>PC: 33. count = 0
+    UI->>PC: 33. processPayment(invoiceId, amount, method)
+    PC->>DB: 34. createPaymentRecord(invoiceId, method)
+    DB-->>PC: 35. success
+    PC->>OC: 36. checkRemainingUnpaidOrders(tableId)
+    OC->>DB: 37. countUnpaidOrders(tableId)
+    DB-->>OC: 38. count = 0
+    OC-->>PC: 39. allPaid
     alt Không còn đơn chưa thanh toán
-        PC->>DB: 34. updateTableStatus(tableId, "Trong")
-        DB-->>PC: 35. success
+        PC->>TC: 40. releaseTable(tableId)
+        TC->>DB: 41. updateTableStatus(tableId, "Trong")
+        DB-->>TC: 42. success
+        TC-->>PC: 43. tableReleased
     end
-    PC-->>UI: 36. paymentSuccess()
-    UI-->>TN: 37. showSuccessMessage()
+    PC-->>UI: 44. paymentSuccess()
+    UI-->>TN: 45. showSuccessMessage()
 ```
 
 ---
