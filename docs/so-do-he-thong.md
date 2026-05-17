@@ -225,6 +225,7 @@ sequenceDiagram
     participant MC as MenuController
     participant CC as CartController
     participant OC as OrderController
+    participant TC as TableController
     participant DB as Database
 
     Note over KH,DB: 1. Khách hàng quét QR và xem menu
@@ -267,8 +268,15 @@ sequenceDiagram
     CC->>DB: 31. deleteCart(tableId)
     DB-->>CC: 32. success
     CC-->>OC: 33. cartCleared
-    OC-->>UI: 34. orderSuccess(orderId)
-    UI-->>KH: 35. displayOrderTracking()
+    
+    par Trả kết quả cho khách hàng
+        OC-->>UI: 34a. orderSuccess(orderId)
+        UI-->>KH: 35a. displayOrderTracking()
+    and Cập nhật trạng thái bàn
+        OC->>TC: 34b. updateTableStatus(tableId, "DangCoKhach")
+        TC->>DB: 35b. saveTableStatus(tableId, "DangCoKhach")
+        DB-->>TC: 36b. success
+    end
 ```
 
 **Giải thích:**
