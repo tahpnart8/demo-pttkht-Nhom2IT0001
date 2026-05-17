@@ -232,47 +232,47 @@ sequenceDiagram
     participant BAN as BAN
 
     Note over KH,BAN: 1. Khach hang quet QR va xem menu
-    KH->>FE: 1. Quet ma QR tren ban
-    FE->>API: 2. GET /api/menu
-    API->>MENU: 3. SELECT * FROM MENU
-    MENU-->>API: 4. Danh sach danh muc
-    API->>MON: 5. SELECT * FROM MON WHERE MaMenu
-    MON-->>API: 6. Danh sach mon theo menu
-    API-->>FE: 7. JSON danh sach menu va mon
-    FE-->>KH: 8. Hien thi giao dien dat mon
+    KH->>FE: 1. scanQR()
+    FE->>API: 2. getMenuData()
+    API->>MENU: 3. getAllCategories()
+    MENU-->>API: 4. categoryList
+    API->>MON: 5. getItemsByCategory()
+    MON-->>API: 6. itemList
+    API-->>FE: 7. menuData
+    FE-->>KH: 8. displayMenu()
 
     Note over KH,BAN: 2. Khach hang them mon vao gio hang
-    KH->>FE: 9. Chon mon va bam Them
-    FE->>API: 10. POST /api/cart/B01/items (MaMon, SoLuong)
-    API->>GH: 11. SELECT MaGio FROM GIOHANG WHERE MaBan = B01
+    KH->>FE: 9. addToCart(itemId, quantity)
+    FE->>API: 10. addItemToCart(tableId, itemId, quantity)
+    API->>GH: 11. checkCartExists(tableId)
     alt Gio hang chua ton tai
-        API->>GH: 12a. INSERT INTO GIOHANG (MaGio, MaBan)
-        GH-->>API: 13a. MaGio moi
+        API->>GH: 12a. createCart(tableId)
+        GH-->>API: 13a. cartId
     end
-    API->>CTGH: 14. INSERT INTO CHITIETGIOHANG (MaGio, MaMon, SoLuong)
-    CTGH-->>API: 15. OK da them vao gio
-    API-->>FE: 16. Xac nhan item da them
-    FE-->>KH: 17. Cap nhat so luong tren icon gio hang
+    API->>CTGH: 14. addCartItem(cartId, itemId, quantity)
+    CTGH-->>API: 15. success
+    API-->>FE: 16. confirmItemAdded()
+    FE-->>KH: 17. updateCartIcon()
 
     Note over KH,BAN: 3. Khach hang gui don hang
-    KH->>FE: 18. Bam Gui don hang
-    FE->>API: 19. POST /api/orders (MaBan = B01)
-    API->>GH: 20. SELECT MaGio FROM GIOHANG WHERE MaBan
-    API->>CTGH: 21. SELECT MaMon, SoLuong, GhiChu FROM CHITIETGIOHANG
-    CTGH-->>API: 22. Danh sach mon trong gio
-    API->>MON: 23. SELECT DonGia FROM MON WHERE MaMon
-    MON-->>API: 24. Don gia tung mon
-    API->>DH: 25. INSERT INTO DONHANG (MaDH, TrangThaiOrder = Cho, MaBan)
-    DH-->>API: 26. MaDH moi
-    API->>CTDH: 27. INSERT INTO CHITIETDONHANG (MaDH, MaMon, SoLuong, DonGia)
-    CTDH-->>API: 28. OK chi tiet da luu
-    API->>BAN: 29. UPDATE BAN SET TrangThai = DangCoKhach WHERE MaBan
-    BAN-->>API: 30. OK trang thai ban da cap nhat
-    API->>CTGH: 31. DELETE FROM CHITIETGIOHANG WHERE MaGio
-    API->>GH: 32. DELETE FROM GIOHANG WHERE MaGio
-    GH-->>API: 33. OK gio hang da xoa
-    API-->>FE: 34. MaDH va thong bao dat hang thanh cong
-    FE-->>KH: 35. Chuyen sang trang theo doi don hang
+    KH->>FE: 18. submitOrder()
+    FE->>API: 19. createOrder(tableId)
+    API->>GH: 20. getCartByTable(tableId)
+    API->>CTGH: 21. getCartItems(cartId)
+    CTGH-->>API: 22. cartItemList
+    API->>MON: 23. getItemPrices(itemIds)
+    MON-->>API: 24. priceList
+    API->>DH: 25. createOrderRecord(tableId, "Cho")
+    DH-->>API: 26. orderId
+    API->>CTDH: 27. createOrderDetails(orderId, cartItemList)
+    CTDH-->>API: 28. success
+    API->>BAN: 29. updateTableStatus(tableId, "DangCoKhach")
+    BAN-->>API: 30. success
+    API->>CTGH: 31. clearCartItems(cartId)
+    API->>GH: 32. deleteCart(cartId)
+    GH-->>API: 33. success
+    API-->>FE: 34. orderSuccess(orderId)
+    FE-->>KH: 35. displayOrderTracking()
 ```
 
 **Giải thích:**
@@ -302,70 +302,70 @@ sequenceDiagram
     participant KH as Khach hang
 
     Note over BA,KH: 1. Barista dang nhap he thong
-    BA->>FE: 1. Nhap tai khoan va mat khau
-    FE->>API: 2. POST /api/auth/login (TenDangNhap, MatKhau)
-    API->>TK: 3. SELECT * FROM TAIKHOAN WHERE TenDangNhap
-    TK-->>API: 4. Thong tin tai khoan (QuyenHan = barista)
-    API->>NV: 5. SELECT * FROM NHANVIEN WHERE MaNV
-    NV-->>API: 6. Thong tin nhan vien
-    API-->>FE: 7. JWT Token (role = barista) va user info
-    FE-->>BA: 8. Hien thi man hinh Quan ly don hang
+    BA->>FE: 1. login(username, password)
+    FE->>API: 2. authenticateUser(username, password)
+    API->>TK: 3. getAccountByUsername(username)
+    TK-->>API: 4. accountInfo (role = barista)
+    API->>NV: 5. getEmployeeInfo(employeeId)
+    NV-->>API: 6. employeeInfo
+    API-->>FE: 7. authSuccess(token, userInfo)
+    FE-->>BA: 8. displayOrderManagement()
 
     Note over BA,KH: 2. Barista xem danh sach don cho xu ly
-    FE->>MW: 9. GET /api/orders (Authorization Bearer JWT)
-    MW->>MW: 10. Verify JWT va kiem tra role
-    MW->>API: 11. Cho phep truy cap
-    API->>DH: 12. SELECT * FROM DONHANG WHERE TrangThaiOrder = Cho
-    DH-->>API: 13. Danh sach don hang dang cho
-    API-->>FE: 14. JSON danh sach don hang
-    FE-->>BA: 15. Hien thi cac don o trang thai Cho
+    FE->>MW: 9. getPendingOrders(token)
+    MW->>MW: 10. verifyToken(token)
+    MW->>API: 11. authorize()
+    API->>DH: 12. getOrdersByStatus("Cho")
+    DH-->>API: 13. pendingOrderList
+    API-->>FE: 14. orderList
+    FE-->>BA: 15. displayPendingOrders()
 
     Note over BA,KH: 3. Barista bat dau pha che
-    BA->>FE: 16. Bam nut Bat dau lam tren don DH001
-    FE->>MW: 17. PATCH /api/orders/DH001/status (TrangThai = DangLam)
-    MW->>MW: 18. Verify JWT role = barista OK
-    MW->>API: 19. Chuyen tiep request
-    API->>DH: 20. SELECT TrangThaiOrder FROM DONHANG WHERE MaDH = DH001
-    DH-->>API: 21. TrangThaiOrder = Cho
-    API->>API: 22. Kiem tra: barista duoc chuyen Cho sang DangLam = OK
-    API->>DH: 23. UPDATE DONHANG SET TrangThaiOrder = DangLam WHERE MaDH = DH001
-    DH-->>API: 24. OK da cap nhat
-    API-->>FE: 25. Don hang da chuyen sang DangLam
-    FE-->>BA: 26. Don chuyen qua tab Dang lam
+    BA->>FE: 16. startOrder(orderId)
+    FE->>MW: 17. updateOrderStatus(orderId, "DangLam")
+    MW->>MW: 18. verifyTokenAndRole()
+    MW->>API: 19. authorize()
+    API->>DH: 20. getOrderStatus(orderId)
+    DH-->>API: 21. currentStatus ("Cho")
+    API->>API: 22. validateStatusTransition()
+    API->>DH: 23. updateStatus(orderId, "DangLam")
+    DH-->>API: 24. success
+    API-->>FE: 25. statusUpdated
+    FE-->>BA: 26. moveOrderToProcessingTab()
 
     Note over BA,KH: 4. Barista hoan thanh pha che
-    BA->>FE: 27. Bam nut Hoan thanh tren don DH001
-    FE->>MW: 28. PATCH /api/orders/DH001/status (TrangThai = HoanThanh)
-    MW->>API: 29. Chuyen tiep (role barista OK)
-    API->>DH: 30. UPDATE DONHANG SET TrangThaiOrder = HoanThanh
-    DH-->>API: 31. OK da cap nhat
-    API-->>FE: 32. Don hang da hoan thanh pha che
-    FE-->>BA: 33. Don chuyen qua tab Hoan thanh
+    BA->>FE: 27. completeOrder(orderId)
+    FE->>MW: 28. updateOrderStatus(orderId, "HoanThanh")
+    MW->>API: 29. authorize()
+    API->>DH: 30. updateStatus(orderId, "HoanThanh")
+    DH-->>API: 31. success
+    API-->>FE: 32. statusUpdated
+    FE-->>BA: 33. moveOrderToCompletedTab()
 
     Note over BA,KH: 5. Phuc vu giao mon cho khach
-    PV->>FE: 34. Dang nhap (role = phucvu)
-    FE->>MW: 35. GET /api/orders (Authorization Bearer JWT)
-    MW->>API: 36. Cho phep truy cap
-    API->>DH: 37. SELECT * FROM DONHANG WHERE TrangThaiOrder = HoanThanh
-    DH-->>API: 38. Danh sach don can giao
-    API-->>FE: 39. JSON don hang hoan thanh
-    FE-->>PV: 40. Hien thi cac don cho giao
-    PV->>FE: 41. Bam Da giao tren don DH001
-    FE->>MW: 42. PATCH /api/orders/DH001/status (TrangThai = DaGiao)
-    MW->>API: 43. Chuyen tiep (role phucvu OK)
-    API->>API: 44. Kiem tra: phucvu duoc chuyen HoanThanh sang DaGiao = OK
-    API->>DH: 45. UPDATE DONHANG SET TrangThaiOrder = DaGiao
-    DH-->>API: 46. OK da cap nhat
-    API-->>FE: 47. Don hang da giao thanh cong
-    FE-->>PV: 48. Don chuyen qua tab Da giao
+    PV->>FE: 34. login(username, password)
+    FE->>MW: 35. getCompletedOrders(token)
+    MW->>API: 36. authorize()
+    API->>DH: 37. getOrdersByStatus("HoanThanh")
+    DH-->>API: 38. completedOrderList
+    API-->>FE: 39. orderList
+    FE-->>PV: 40. displayCompletedOrders()
+    PV->>FE: 41. markAsDelivered(orderId)
+    FE->>MW: 42. updateOrderStatus(orderId, "DaGiao")
+    MW->>API: 43. authorize()
+    API->>API: 44. validateStatusTransition()
+    API->>DH: 45. updateStatus(orderId, "DaGiao")
+    DH-->>API: 46. success
+    API-->>FE: 47. statusUpdated
+    FE-->>PV: 48. moveOrderToDeliveredTab()
 
     Note over BA,KH: 6. Khach hang nhan trang thai da giao
-    KH->>FE: 49. Polling GET /api/orders?table=B01
-    FE->>API: 50. GET /api/orders?table=B01
-    API->>DH: 51. SELECT TrangThaiOrder FROM DONHANG WHERE MaDH = DH001
-    DH-->>API: 52. TrangThaiOrder = DaGiao
-    API-->>FE: 53. JSON trang thai moi nhat
-    FE-->>KH: 54. Hien thi trang thai Da giao cho khach
+    KH->>FE: 49. pollOrderStatus(tableId)
+    FE->>API: 50. getLatestOrderStatus(tableId)
+    API->>DH: 51. getOrderStatus(orderId)
+    DH-->>API: 52. currentStatus ("DaGiao")
+    API-->>FE: 53. statusData
+    FE-->>KH: 54. displayOrderStatus("DaGiao")
 ```
 
 **Giải thích:**
@@ -391,46 +391,46 @@ sequenceDiagram
     participant DB as Database
 
     Note over TN,DB: BUOC 1 - DANG NHAP
-    TN->>FE: Nhap tai khoan thu ngan
-    FE->>API: POST /api/auth/login
-    API->>DB: SELECT TAIKHOAN JOIN NHANVIEN
-    API->>API: Tao JWT (role = thungan)
-    API-->>FE: Token va user info
-    FE-->>TN: Redirect toi /cashier/payment
+    TN->>FE: login(username, password)
+    FE->>API: authenticateUser(username, password)
+    API->>DB: getAccountInfo(username)
+    API->>API: generateToken(role)
+    API-->>FE: authSuccess(token, userInfo)
+    FE-->>TN: redirect(/cashier/payment)
 
     Note over TN,DB: BUOC 2 - CHON BAN VA DON HANG
-    FE->>API: GET /api/tables
-    API->>DB: SELECT FROM BAN
-    API-->>FE: Danh sach ban
-    FE->>FE: Loc ban TrangThai = DangCoKhach
-    FE-->>TN: Hien thi grid cac ban co khach
-    TN->>FE: Bam chon Ban 01
-    FE->>API: GET /api/orders?table=B01
-    API->>DB: SELECT DONHANG + CHITIETDONHANG
-    API-->>FE: DS don hang cua ban
-    FE->>FE: Loc don chua co MaHD
-    FE-->>TN: Hien thi DS don (DaGiao cho tick - khac mo di)
+    FE->>API: getAllTables()
+    API->>DB: fetchTables()
+    API-->>FE: tableList
+    FE->>FE: filterTables("DangCoKhach")
+    FE-->>TN: displayActiveTables()
+    TN->>FE: selectTable(tableId)
+    FE->>API: getOrdersByTable(tableId)
+    API->>DB: fetchOrdersAndDetails(tableId)
+    API-->>FE: orderList
+    FE->>FE: filterUnpaidOrders()
+    FE-->>TN: displayUnpaidOrders()
 
     Note over TN,DB: BUOC 3 - TAO HOA DON VA THANH TOAN
-    TN->>FE: Tick chon don DaGiao va chon phuong thuc TT
-    TN->>FE: Bam Xac nhan thanh toan
-    FE->>API: POST /api/invoices (orderIds + MaNV)
-    API->>DB: SELECT SoLuong DonGia FROM CHITIETDONHANG
-    API->>API: Tinh TongTien = SUM(SoLuong x DonGia)
-    API->>DB: INSERT HOADON (MaHD TongTien MaNV)
-    API->>DB: UPDATE DONHANG SET MaHD
-    API-->>FE: MaHD va TongTien
+    TN->>FE: selectOrdersForPayment(orderIds)
+    TN->>FE: confirmPayment(method)
+    FE->>API: createInvoice(orderIds, employeeId)
+    API->>DB: getOrderDetails(orderIds)
+    API->>API: calculateTotalAmount()
+    API->>DB: createInvoiceRecord(totalAmount, employeeId)
+    API->>DB: updateOrdersWithInvoice(invoiceId)
+    API-->>FE: invoiceCreated(invoiceId, totalAmount)
 
     Note over TN,DB: BUOC 4 - XAC NHAN THANH TOAN VA GIAI PHONG BAN
-    FE->>API: POST /api/payments (MaHD SoTien PhuongThuc)
-    API->>DB: INSERT THANHTOAN
-    API->>DB: SELECT MaBan FROM DONHANG WHERE MaHD
-    API->>DB: SELECT DONHANG WHERE MaBan AND MaHD IS NULL
+    FE->>API: processPayment(invoiceId, amount, method)
+    API->>DB: createPaymentRecord(invoiceId, method)
+    API->>DB: getTableByInvoice(invoiceId)
+    API->>DB: checkUnpaidOrders(tableId)
     alt Khong con don chua thanh toan
-        API->>DB: UPDATE BAN SET TrangThai = Trong
+        API->>DB: updateTableStatus(tableId, "Trong")
     end
-    API-->>FE: Xac nhan thanh cong
-    FE-->>TN: Toast Thanh toan thanh cong
+    API-->>FE: paymentSuccess()
+    FE-->>TN: showSuccessMessage()
 ```
 
 ---
@@ -446,42 +446,42 @@ sequenceDiagram
     participant DB as Database
 
     Note over QL,DB: BUOC 1 - XAC THUC QUYEN QUAN LY
-    QL->>FE: Dang nhap tai khoan admin
-    FE->>API: POST /api/auth/login
-    API->>DB: SELECT TAIKHOAN JOIN NHANVIEN
-    API->>API: JWT.sign (role = admin)
-    API-->>FE: Token va user info
-    FE-->>QL: Redirect toi /manager/menu
-    QL->>FE: Click Nhan vien tren sidebar
+    QL->>FE: login(username, password)
+    FE->>API: authenticateUser(username, password)
+    API->>DB: getAccountInfo(username)
+    API->>API: generateToken(role)
+    API-->>FE: authSuccess(token, userInfo)
+    FE-->>QL: redirect(/manager/menu)
+    QL->>FE: navigateToStaffManagement()
 
     Note over QL,DB: BUOC 2 - TAI DANH SACH NHAN VIEN
-    FE->>MW: GET /api/staff (Authorization Bearer JWT)
-    MW->>MW: Verify JWT va kiem tra role = admin
-    MW->>API: Cho phep truy cap
-    API->>DB: SELECT NHANVIEN JOIN TAIKHOAN
-    DB-->>API: Danh sach nhan vien
-    API-->>FE: JSON nhan vien
-    FE-->>QL: Hien thi bang nhan vien DataTable
+    FE->>MW: getStaffList(token)
+    MW->>MW: verifyTokenAndRole()
+    MW->>API: authorize()
+    API->>DB: fetchAllStaff()
+    DB-->>API: staffList
+    API-->>FE: staffData
+    FE-->>QL: displayStaffTable()
 
     Note over QL,DB: BUOC 3 - NHAP THONG TIN MOI
-    QL->>FE: Bam nut Them NV
-    FE->>FE: Mo Modal form - Tu sinh ma NV
-    QL->>FE: Dien HoTen SoDienThoai ViTri TenDangNhap MatKhau QuyenHan
-    QL->>FE: Bam Them moi
+    QL->>FE: clickAddStaff()
+    FE->>FE: openAddStaffModal()
+    QL->>FE: inputStaffDetails(data)
+    QL->>FE: submitNewStaff()
 
     Note over QL,DB: BUOC 4 - LUU VAO DATABASE
-    FE->>MW: POST /api/staff (Authorization Bearer JWT)
-    MW->>MW: Verify JWT role = admin OK
-    MW->>API: Chuyen tiep request
-    API->>DB: INSERT INTO NHANVIEN (MaNV HoTen SoDienThoai ViTri)
-    DB-->>API: OK Nhan vien da tao
+    FE->>MW: addStaff(data, token)
+    MW->>MW: verifyTokenAndRole()
+    MW->>API: authorize()
+    API->>DB: createStaffRecord(data)
+    DB-->>API: success
     alt Co ten dang nhap
-        API->>DB: INSERT INTO TAIKHOAN (TenDangNhap MatKhau QuyenHan MaNV)
-        DB-->>API: OK Tai khoan da tao
+        API->>DB: createAccountRecord(accountData)
+        DB-->>API: success
     end
-    API-->>FE: MaNV va message Da them
-    FE-->>QL: Toast Da them nhan vien
-    FE->>FE: Dong Modal va refresh danh sach
+    API-->>FE: addStaffSuccess(staffId)
+    FE-->>QL: showSuccessMessage()
+    FE->>FE: closeModalAndRefresh()
 ```
 
 ---
