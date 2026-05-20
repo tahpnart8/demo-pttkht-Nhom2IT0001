@@ -214,6 +214,60 @@ graph TB
     P34 -->|"BAN.TrangThai = Trong"| D6
 ```
 
+### 3.4. Phân rã tiến trình 4.0 — Quản trị Hệ thống
+
+```mermaid
+graph TB
+    QL["fa:fa-user-tie Quản lý"]
+
+    D1[("D1 MENU / MON")]
+    D5[("D5 NHANVIEN / TAIKHOAN")]
+    D6[("D6 BAN")]
+
+    P41(("4.1\nQuản lý\nMenu & Món"))
+    P42(("4.2\nQuản lý\nBàn"))
+    P43(("4.3\nQuản lý\nNhân viên"))
+
+    QL -->|"Thêm/sửa/xóa món, đổi trạng thái"| P41
+    P41 -->|"DS menu và món"| QL
+    P41 <-->|"INSERT/UPDATE/DELETE MON"| D1
+
+    QL -->|"Thêm/sửa/xóa bàn"| P42
+    P42 -->|"DS bàn và trạng thái"| QL
+    P42 <-->|"INSERT/UPDATE/DELETE BAN"| D6
+
+    QL -->|"Thêm/sửa/xóa NV + tài khoản"| P43
+    P43 -->|"DS nhân viên"| QL
+    P43 <-->|"INSERT/UPDATE/DELETE NHANVIEN"| D5
+    P43 <-->|"INSERT/UPDATE/DELETE TAIKHOAN"| D5
+```
+
+### 3.5. Phân rã tiến trình 5.0 — Xác thực & Phân quyền
+
+```mermaid
+graph TB
+    NV["fa:fa-users Nhân viên / Quản lý"]
+
+    D5[("D5 NHANVIEN / TAIKHOAN")]
+
+    P51(("5.1\nĐăng nhập"))
+    P52(("5.2\nTạo\nJWT Token"))
+    P53(("5.3\nXác thực\nToken"))
+    P54(("5.4\nKiểm tra\nPhân quyền"))
+
+    NV -->|"TenDangNhap + MatKhau"| P51
+    P51 <-->|"SELECT TAIKHOAN WHERE TenDangNhap"| D5
+    P51 -->|"Xác thực thành công"| P52
+    P52 -->|"JWT.sign (username, role, maNV)"| P52
+    P52 -->|"Token JWT hết hạn 24h"| NV
+
+    NV -->|"Request kèm Bearer Token"| P53
+    P53 -->|"JWT.verify(token) OK"| P54
+    P53 -->|"Token không hợp lệ: 401"| NV
+    P54 -->|"Kiểm tra role vs route"| P54
+    P54 -->|"Cho phép truy cập"| NV
+```
+
 ## 4. Sequence Diagram — Luồng Gọi Món
 
 > **Kịch bản:** Khách hàng quét mã QR trên bàn, xem menu, thêm món vào giỏ hàng và gửi đơn hàng.

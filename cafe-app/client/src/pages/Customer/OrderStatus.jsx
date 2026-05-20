@@ -31,7 +31,7 @@ export default function OrderStatus() {
 
   useEffect(() => {
     fetchOrder();
-    const interval = setInterval(fetchOrder, 5000);
+    const interval = setInterval(fetchOrder, 2000);
     return () => clearInterval(interval);
   }, [orderId]);
 
@@ -107,7 +107,7 @@ export default function OrderStatus() {
       </div>
 
       <p className="auto-refresh-note">
-        <RefreshCw size={14} /> Tự động cập nhật mỗi 5 giây
+        <RefreshCw size={14} /> Tự động cập nhật mỗi 2 giây
       </p>
     </div>
   );
