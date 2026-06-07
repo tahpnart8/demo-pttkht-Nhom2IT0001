@@ -208,8 +208,8 @@ export default function Reports() {
                 {/* Chart */}
                 <div style={{ flex: 2, background: 'var(--surface)', padding: 20, borderRadius: 12, boxShadow: 'var(--shadow-sm)' }}>
                   <h3 style={{ marginBottom: 20 }}>Biểu đồ Doanh Thu & Chi Phí</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <BarChart width={700} height={320} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="label" axisLine={false} tickLine={false} />
                       <YAxis tickFormatter={(val) => new Intl.NumberFormat('vi-VN', { notation: "compact" }).format(val)} axisLine={false} tickLine={false} />
@@ -218,7 +218,7 @@ export default function Reports() {
                       <Bar dataKey="DoanhThu" name="Doanh Thu" fill="var(--success)" radius={[4, 4, 0, 0]} />
                       <Bar dataKey="ChiPhi" name="Chi Phí" fill="var(--danger)" radius={[4, 4, 0, 0]} />
                     </BarChart>
-                  </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
             </>
