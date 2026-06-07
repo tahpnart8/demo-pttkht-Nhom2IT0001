@@ -69,7 +69,7 @@ export default function InventoryMgmt() {
           ChiTiet: selectedItems
         });
         showToast('success', 'Nhập kho thành công');
-      } else {
+      } else if (showModal === 'xuat') {
         if (!form.MaPX) return showToast('error', 'Điền thiếu mã phiếu xuất');
         // Validate stock
         for (let item of selectedItems) {
