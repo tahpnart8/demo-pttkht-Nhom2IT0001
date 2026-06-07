@@ -2,7 +2,10 @@ import { useState, useEffect, useMemo } from 'react';
 import DesktopLayout from '../../components/Layout/DesktopLayout';
 import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageOpen, AlertTriangle, Calendar } from 'lucide-react';
 import { api } from '../../services/api';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 import './Reports.css';
 
 export default function Reports() {
@@ -98,6 +101,24 @@ export default function Reports() {
 
     return months;
   }, [revenueData, activeTab]);
+
+  const chartJSData = useMemo(() => {
+    return {
+      labels: chartData.map(d => d.label),
+      datasets: [
+        {
+          label: 'Doanh Thu',
+          data: chartData.map(d => d.DoanhThu),
+          backgroundColor: '#10b981', // var(--success)
+        },
+        {
+          label: 'Chi Phí',
+          data: chartData.map(d => d.ChiPhi),
+          backgroundColor: '#ef4444', // var(--danger)
+        }
+      ]
+    };
+  }, [chartData]);
 
   // Chế biến báo cáo Xuất nhập tồn
   const xuatNhapSummary = useMemo(() => {
@@ -208,16 +229,29 @@ export default function Reports() {
                 {/* Chart */}
                 <div style={{ flex: 2, background: 'var(--surface)', padding: 20, borderRadius: 12, boxShadow: 'var(--shadow-sm)' }}>
                   <h3 style={{ marginBottom: 20 }}>Biểu đồ Doanh Thu & Chi Phí</h3>
-                  <div style={{ width: '100%', overflowX: 'auto' }}>
-                    <BarChart width={700} height={320} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis dataKey="label" axisLine={false} tickLine={false} />
-                      <YAxis tickFormatter={(val) => new Intl.NumberFormat('vi-VN', { notation: "compact" }).format(val)} axisLine={false} tickLine={false} />
-                      <Tooltip formatter={(val) => formatPrice(val)} cursor={{fill: 'var(--surface-50)'}} />
-                      <Legend iconType="circle" />
-                      <Bar dataKey="DoanhThu" name="Doanh Thu" fill="var(--success)" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="ChiPhi" name="Chi Phí" fill="var(--danger)" radius={[4, 4, 0, 0]} />
-                    </BarChart>
+                  <div style={{ height: 320, width: '100%' }}>
+                    <Bar 
+                      data={chartJSData} 
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                          y: {
+                            beginAtZero: true,
+                            ticks: {
+                              callback: (value) => new Intl.NumberFormat('vi-VN', { notation: "compact" }).format(value)
+                            }
+                          }
+                        },
+                        plugins: {
+                          tooltip: {
+                            callbacks: {
+                              label: (context) => formatPrice(context.raw)
+                            }
+                          }
+                        }
+                      }} 
+                    />
                   </div>
                 </div>
               </div>
