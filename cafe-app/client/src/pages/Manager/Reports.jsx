@@ -208,7 +208,7 @@ export default function Reports() {
                 {/* Chart */}
                 <div style={{ flex: 2, background: 'var(--surface)', padding: 20, borderRadius: 12, boxShadow: 'var(--shadow-sm)' }}>
                   <h3 style={{ marginBottom: 20 }}>Biểu đồ Doanh Thu & Chi Phí</h3>
-                  <ResponsiveContainer width="100%" height="90%">
+                  <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="label" axisLine={false} tickLine={false} />
