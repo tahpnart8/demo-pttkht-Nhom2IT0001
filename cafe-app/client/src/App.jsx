@@ -11,6 +11,9 @@ import InvoiceList from './pages/Cashier/InvoiceList';
 import MenuMgmt from './pages/Manager/MenuMgmt';
 import TableMgmt from './pages/Manager/TableMgmt';
 import StaffMgmt from './pages/Manager/StaffMgmt';
+import InventoryMgmt from './pages/Manager/InventoryMgmt';
+import RecipeMgmt from './pages/Manager/RecipeMgmt';
+import Reports from './pages/Manager/Reports';
 import './App.css';
 
 function PageWrapper({ title, children }) {
@@ -73,6 +76,21 @@ function AppRoutes() {
       <Route path="/manager/staff" element={
         <ProtectedRoute roles={['admin']}>
           <PageWrapper title="Nhân viên"><StaffMgmt /></PageWrapper>
+        </ProtectedRoute>
+      } />
+      <Route path="/manager/inventory" element={
+        <ProtectedRoute roles={['admin', 'quản lý']}>
+          <PageWrapper title="Kho & Nguyên liệu"><InventoryMgmt /></PageWrapper>
+        </ProtectedRoute>
+      } />
+      <Route path="/manager/recipe" element={
+        <ProtectedRoute roles={['admin']}>
+          <PageWrapper title="Công thức"><RecipeMgmt /></PageWrapper>
+        </ProtectedRoute>
+      } />
+      <Route path="/manager/reports" element={
+        <ProtectedRoute roles={['admin']}>
+          <PageWrapper title="Báo cáo"><Reports /></PageWrapper>
         </ProtectedRoute>
       } />
 

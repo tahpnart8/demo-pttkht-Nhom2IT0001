@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Coffee, CreditCard, FileText, UtensilsCrossed, LayoutGrid, Users, LogOut, ChevronLeft, Menu } from 'lucide-react';
+import { Coffee, CreditCard, FileText, UtensilsCrossed, LayoutGrid, Users, LogOut, ChevronLeft, Menu, PackageOpen, ChefHat, LineChart } from 'lucide-react';
 import { useState } from 'react';
 import './DesktopLayout.css';
 
@@ -12,6 +12,9 @@ const NAV_ITEMS = {
   ],
   admin: [
     { to: '/manager/menu', icon: UtensilsCrossed, label: 'Quản lý Menu' },
+    { to: '/manager/recipe', icon: ChefHat, label: 'Quản lý Công thức' },
+    { to: '/manager/inventory', icon: PackageOpen, label: 'Quản lý Kho' },
+    { to: '/manager/reports', icon: LineChart, label: 'Báo cáo & Thống kê' },
     { to: '/manager/tables', icon: LayoutGrid, label: 'Quản lý Bàn' },
     { to: '/manager/staff', icon: Users, label: 'Nhân viên' },
     { to: '/cashier/payment', icon: CreditCard, label: 'Thanh toán' },

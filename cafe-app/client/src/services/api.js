@@ -65,4 +65,19 @@ export const api = {
   addStaff: (staff) => request('/staff', { method: 'POST', body: JSON.stringify(staff) }),
   updateStaff: (id, staff) => request(`/staff/${id}`, { method: 'PUT', body: JSON.stringify(staff) }),
   deleteStaff: (id) => request(`/staff/${id}`, { method: 'DELETE' }),
+
+  // Inventory
+  getInventory: () => request('/inventory'),
+  getSuppliers: () => request('/inventory/ncc'),
+  importInventory: (data) => request('/inventory/nhap', { method: 'POST', body: JSON.stringify(data) }),
+  exportInventory: (data) => request('/inventory/xuat', { method: 'POST', body: JSON.stringify(data) }),
+
+  // Recipe
+  getRecipe: (maMon) => request(`/recipe/${maMon}`),
+  updateRecipe: (data) => request('/recipe', { method: 'POST', body: JSON.stringify(data) }),
+
+  // Reports
+  getRevenueReport: () => request('/reports/doanhthu'),
+  getBestSellers: () => request('/reports/bestseller'),
+  getInventoryHistory: () => request('/reports/lichsukho'),
 };
