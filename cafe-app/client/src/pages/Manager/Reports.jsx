@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import DesktopLayout from '../../components/Layout/DesktopLayout';
-import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageOpen, AlertTriangle, Calendar } from 'lucide-react';
+import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageOpen, AlertTriangle, Calendar, Download } from 'lucide-react';
 import { api } from '../../services/api';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -142,20 +142,66 @@ export default function Reports() {
     return Object.values(summary);
   }, [xuatnhapData, activeTab]);
 
+  const handleExport = () => {
+    let csvStr = '\uFEFF'; // BOM for Excel UTF-8
+    
+    if (activeTab === 'doanhthu') {
+      csvStr += "BÁO CÁO DOANH THU\n\n";
+      csvStr += `Tổng Doanh Thu,${revenueData.doanhThu}\n`;
+      csvStr += `Tổng Chi Phí Nhập Kho,${revenueData.chiPhiNhap}\n`;
+      csvStr += `Lợi Nhuận Gộp,${revenueData.loiNhuan}\n\n`;
+      
+      csvStr += "TOP MÓN BÁN CHẠY\n";
+      csvStr += "Hạng,Tên Món,Đã Bán\n";
+      bestSellers.forEach((item, index) => {
+        csvStr += `${index + 1},"${item.TenMon}",${item.SoLuong}\n`;
+      });
+    } else if (activeTab === 'haohut') {
+      csvStr += "BÁO CÁO HAO HỤT KHO\n\n";
+      csvStr += "Phiếu Kiểm,Ngày,Nguyên Liệu,Lý Thuyết,Thực Tế,Độ Lệch,Ghi Chú\n";
+      haohutData.chitiet.forEach(ct => {
+        const pkk = haohutData.phieukiem.find(p => p.MaPKK === ct.MaPKK);
+        const date = pkk ? new Date(pkk.NgayKiem).toLocaleDateString('vi-VN') : '';
+        csvStr += `"${ct.MaPKK}","${date}","${ct.NGUYENLIEU?.TenNL}",${ct.SLLyThuyet},${ct.SLThucTe},${ct.ChenhLech},"${ct.GhiChu || ''}"\n`;
+      });
+    } else if (activeTab === 'xuatnhap') {
+      csvStr += "BÁO CÁO XUẤT NHẬP TỒN\n\n";
+      csvStr += "Nguyên Liệu,Tổng Nhập,Tiền Nhập,Tổng Xuất,Lý Do Xuất\n";
+      xuatNhapSummary.forEach(item => {
+        csvStr += `"${item.TenNL}",${item.TongNhap},${item.TienNhap},${item.TongXuat},"${item.LyDo.join('; ')}"\n`;
+      });
+    }
+
+    const blob = new Blob([csvStr], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Bao_Cao_${activeTab}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <DesktopLayout>
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1><LineChart size={28} /> Báo cáo & Thống kê</h1>
         
-        {/* Lọc thời gian */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)' }}>
-          <Calendar size={18} color="var(--text-light)" />
-          <select value={dateRange} onChange={e => setDateRange(e.target.value)} style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 14 }}>
-            <option value="thisMonth">Tháng này</option>
-            <option value="6months">6 tháng gần nhất</option>
-            <option value="all">Tất cả thời gian</option>
-          </select>
+        <div style={{ display: 'flex', gap: 10 }}>
+          {/* Lọc thời gian */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)' }}>
+            <Calendar size={18} color="var(--text-light)" />
+            <select value={dateRange} onChange={e => setDateRange(e.target.value)} style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 14 }}>
+              <option value="thisMonth">Tháng này</option>
+              <option value="6months">6 tháng gần nhất</option>
+              <option value="all">Tất cả thời gian</option>
+            </select>
+          </div>
+          
+          {/* Export Button */}
+          <button className="btn btn-primary" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Download size={18} /> Xuất file CSV
+          </button>
         </div>
       </div>
 
