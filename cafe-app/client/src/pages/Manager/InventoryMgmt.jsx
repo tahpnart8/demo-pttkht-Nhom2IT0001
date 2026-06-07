@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import DesktopLayout from '../../components/Layout/DesktopLayout';
-import { PackageOpen, ArrowDownToLine, ArrowUpFromLine, X, Trash2 } from 'lucide-react';
+import { PackageOpen, ArrowDownToLine, ArrowUpFromLine, X, Trash2, ClipboardCheck } from 'lucide-react';
 import { api } from '../../services/api';
 
 export default function InventoryMgmt() {
@@ -12,7 +12,7 @@ export default function InventoryMgmt() {
 
   // Form states
   const [selectedItems, setSelectedItems] = useState([]);
-  const [form, setForm] = useState({ MaPN: '', MaPX: '', MaNCC: '', LyDo: 'Xuất quầy', TongTienNhap: 0 });
+  const [form, setForm] = useState({ MaPN: '', MaPX: '', MaPKK: '', MaNCC: '', LyDo: 'Xuất quầy', TongTienNhap: 0 });
 
   const fetchData = async () => {
     try {
@@ -32,15 +32,18 @@ export default function InventoryMgmt() {
 
   const addItemToForm = (nl) => {
     if (!selectedItems.find(i => i.MaNL === nl.MaNL)) {
-      setSelectedItems([...selectedItems, { ...nl, SoLuong: 1, DonGiaNhap: 0 }]);
+      if (showModal === 'kiemkho') {
+        setSelectedItems([...selectedItems, { ...nl, SLThucTe: nl.SoLuongTon, SLLyThuyet: nl.SoLuongTon, GhiChu: '' }]);
+      } else {
+        setSelectedItems([...selectedItems, { ...nl, SoLuong: 1, DonGiaNhap: 0 }]);
+      }
     }
   };
 
   const updateItemQty = (MaNL, field, value) => {
     setSelectedItems(prev => prev.map(i => {
       if (i.MaNL === MaNL) {
-        const updated = { ...i, [field]: Number(value) };
-        return updated;
+        return { ...i, [field]: field === 'GhiChu' ? value : Number(value) };
       }
       return i;
     }));
@@ -79,6 +82,13 @@ export default function InventoryMgmt() {
           ChiTiet: selectedItems
         });
         showToast('success', 'Xuất kho thành công');
+      } else if (showModal === 'kiemkho') {
+        if (!form.MaPKK) return showToast('error', 'Điền thiếu mã phiếu kiểm kho');
+        await api.checkInventory({
+          MaPKK: form.MaPKK,
+          ChiTiet: selectedItems
+        });
+        showToast('success', 'Kiểm kho thành công');
       }
       setShowModal(null);
       setSelectedItems([]);
@@ -91,7 +101,7 @@ export default function InventoryMgmt() {
   const openModal = (type) => {
     setShowModal(type);
     setSelectedItems([]);
-    setForm({ MaPN: `PN${Date.now()}`, MaPX: `PX${Date.now()}`, MaNCC: suppliers[0]?.MaNCC || '', LyDo: 'Xuất quầy', TongTienNhap: 0 });
+    setForm({ MaPN: `PN${Date.now()}`, MaPX: `PX${Date.now()}`, MaPKK: `PKK${Date.now()}`, MaNCC: suppliers[0]?.MaNCC || '', LyDo: 'Xuất quầy', TongTienNhap: 0 });
   };
 
   return (
@@ -102,6 +112,7 @@ export default function InventoryMgmt() {
         <div style={{ display: 'flex', gap: 10 }}>
           <button className="btn btn-primary" onClick={() => openModal('nhap')}><ArrowDownToLine size={18} /> Nhập Kho</button>
           <button className="btn btn-outline" onClick={() => openModal('xuat')}><ArrowUpFromLine size={18} /> Xuất Kho</button>
+          <button className="btn" style={{ background: 'var(--warning)', color: 'white', borderColor: 'var(--warning)' }} onClick={() => openModal('kiemkho')}><ClipboardCheck size={18} /> Kiểm Kho</button>
         </div>
       </div>
 
@@ -133,7 +144,7 @@ export default function InventoryMgmt() {
         <div className="modal-overlay" onClick={() => setShowModal(null)}>
           <div className="modal-content" style={{ maxWidth: 800 }} onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>{showModal === 'nhap' ? 'Lập Phiếu Nhập Kho' : 'Lập Phiếu Xuất Kho'}</h3>
+              <h3>{showModal === 'nhap' ? 'Lập Phiếu Nhập Kho' : showModal === 'xuat' ? 'Lập Phiếu Xuất Kho' : 'Lập Phiếu Kiểm Kho'}</h3>
               <button className="btn btn-icon btn-ghost" onClick={() => setShowModal(null)}><X size={18} /></button>
             </div>
             <div className="modal-body" style={{ display: 'flex', gap: 20 }}>
@@ -150,7 +161,7 @@ export default function InventoryMgmt() {
                     </div>
                     <div className="input-group"><label>Tổng Tiền (VNĐ)</label><input className="input-field" value={form.TongTienNhap} disabled /></div>
                   </>
-                ) : (
+                ) : showModal === 'xuat' ? (
                   <>
                     <div className="input-group"><label>Mã Phiếu Xuất</label><input className="input-field" value={form.MaPX} onChange={e => setForm({...form, MaPX: e.target.value})} /></div>
                     <div className="input-group"><label>Lý do xuất</label>
@@ -159,6 +170,13 @@ export default function InventoryMgmt() {
                         <option value="Xuất hủy">Xuất hủy (Hư hỏng/Hết hạn)</option>
                       </select>
                     </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="input-group"><label>Mã Phiếu Kiểm Kho</label><input className="input-field" value={form.MaPKK} onChange={e => setForm({...form, MaPKK: e.target.value})} /></div>
+                    <p style={{ fontSize: 13, color: 'var(--text-light)', marginTop: 10 }}>
+                      Chọn nguyên liệu cần kiểm đếm bên dưới. Nhập số lượng thực tế tại kho vào bảng chi tiết.
+                    </p>
                   </>
                 )}
                 
@@ -179,15 +197,44 @@ export default function InventoryMgmt() {
                 <h4>Chi tiết phiếu</h4>
                 {selectedItems.length === 0 ? <p style={{ color: 'var(--text-light)', marginTop: 20 }}>Chưa chọn nguyên liệu nào.</p> : (
                   <table className="data-table" style={{ marginTop: 10 }}>
-                    <thead><tr><th>Tên NL</th><th>Số lượng</th>{showModal==='nhap' && <th>Đơn giá</th>}<th>Xóa</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Tên NL</th>
+                        {showModal === 'kiemkho' ? (
+                          <>
+                            <th>SL Lý Thuyết</th>
+                            <th>SL Thực Tế</th>
+                            <th>Ghi chú</th>
+                          </>
+                        ) : (
+                          <>
+                            <th>Số lượng</th>
+                            {showModal==='nhap' && <th>Đơn giá</th>}
+                          </>
+                        )}
+                        <th>Xóa</th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {selectedItems.map(item => (
                         <tr key={item.MaNL}>
                           <td>{item.TenNL}</td>
-                          <td><input type="number" className="input-field" style={{ width: 70, padding: 4 }} value={item.SoLuong} onChange={e => updateItemQty(item.MaNL, 'SoLuong', e.target.value)} min="1" /></td>
-                          {showModal === 'nhap' && (
-                            <td><input type="number" className="input-field" style={{ width: 100, padding: 4 }} value={item.DonGiaNhap} onChange={e => updateItemQty(item.MaNL, 'DonGiaNhap', e.target.value)} min="0" /></td>
+                          
+                          {showModal === 'kiemkho' ? (
+                            <>
+                              <td>{item.SLLyThuyet}</td>
+                              <td><input type="number" className="input-field" style={{ width: 70, padding: 4 }} value={item.SLThucTe} onChange={e => updateItemQty(item.MaNL, 'SLThucTe', e.target.value)} min="0" /></td>
+                              <td><input type="text" className="input-field" style={{ width: 120, padding: 4 }} placeholder="Lý do lệch..." value={item.GhiChu} onChange={e => updateItemQty(item.MaNL, 'GhiChu', e.target.value)} /></td>
+                            </>
+                          ) : (
+                            <>
+                              <td><input type="number" className="input-field" style={{ width: 70, padding: 4 }} value={item.SoLuong} onChange={e => updateItemQty(item.MaNL, 'SoLuong', e.target.value)} min="1" /></td>
+                              {showModal === 'nhap' && (
+                                <td><input type="number" className="input-field" style={{ width: 100, padding: 4 }} value={item.DonGiaNhap} onChange={e => updateItemQty(item.MaNL, 'DonGiaNhap', e.target.value)} min="0" /></td>
+                              )}
+                            </>
                           )}
+                          
                           <td><button className="btn btn-icon btn-ghost" style={{ color: 'var(--danger)' }} onClick={() => setSelectedItems(prev => prev.filter(i => i.MaNL !== item.MaNL))}><Trash2 size={16}/></button></td>
                         </tr>
                       ))}
@@ -199,7 +246,7 @@ export default function InventoryMgmt() {
             </div>
             <div className="modal-footer" style={{ marginTop: 20 }}>
               <button className="btn btn-ghost" onClick={() => setShowModal(null)}>Hủy</button>
-              <button className="btn btn-primary" onClick={handleSubmit}>Xác nhận {showModal === 'nhap' ? 'Nhập Kho' : 'Xuất Kho'}</button>
+              <button className="btn btn-primary" onClick={handleSubmit}>Xác nhận {showModal === 'nhap' ? 'Nhập Kho' : showModal === 'xuat' ? 'Xuất Kho' : 'Kiểm Kho'}</button>
             </div>
           </div>
         </div>

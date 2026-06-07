@@ -81,4 +81,39 @@ router.get('/ncc', async (req, res) => {
     }
 });
 
+// POST /api/inventory/kiemkho - Kiểm kho
+router.post('/kiemkho', authMiddleware(['admin', 'quản lý']), async (req, res) => {
+    const { MaPKK, ChiTiet } = req.body;
+    try {
+        const MaNV = req.user.MaNV;
+        let TrangThai = 'Khop';
+        for (const item of ChiTiet) {
+            if (item.SLThucTe !== item.SLLyThuyet) TrangThai = 'Lech';
+        }
+
+        const { data: pkkData, error: pkkErr } = await supabase
+            .from('PHIEUKIEMKHO')
+            .insert([{ MaPKK, MaNV, TrangThai }])
+            .select();
+        if (pkkErr) throw pkkErr;
+
+        for (const item of ChiTiet) {
+            const ChenhLech = item.SLThucTe - item.SLLyThuyet;
+            await supabase.from('CHITIETKIEMKHO').insert([{ 
+                MaPKK, 
+                MaNL: item.MaNL, 
+                SLThucTe: item.SLThucTe, 
+                SLLyThuyet: item.SLLyThuyet, 
+                ChenhLech, 
+                GhiChu: item.GhiChu || '' 
+            }]);
+            
+            await supabase.from('NGUYENLIEU').update({ SoLuongTon: item.SLThucTe }).eq('MaNL', item.MaNL);
+        }
+        res.status(201).json(pkkData[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

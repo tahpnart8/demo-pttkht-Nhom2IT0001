@@ -71,13 +71,27 @@ export const api = {
   getSuppliers: () => request('/inventory/ncc'),
   importInventory: (data) => request('/inventory/nhap', { method: 'POST', body: JSON.stringify(data) }),
   exportInventory: (data) => request('/inventory/xuat', { method: 'POST', body: JSON.stringify(data) }),
+  checkInventory: (data) => request('/inventory/kiemkho', { method: 'POST', body: JSON.stringify(data) }),
 
   // Recipe
   getRecipe: (maMon) => request(`/recipe/${maMon}`),
   updateRecipe: (data) => request('/recipe', { method: 'POST', body: JSON.stringify(data) }),
 
   // Reports
-  getRevenueReport: () => request('/reports/doanhthu'),
-  getBestSellers: () => request('/reports/bestseller'),
-  getInventoryHistory: () => request('/reports/lichsukho'),
+  getRevenueReport: (params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    return request(`/reports/doanhthu${q ? '?'+q : ''}`);
+  },
+  getBestSellers: (params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    return request(`/reports/bestseller${q ? '?'+q : ''}`);
+  },
+  getDiscrepancyReport: (params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    return request(`/reports/haohut${q ? '?'+q : ''}`);
+  },
+  getInOutReport: (params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    return request(`/reports/xuatnhap${q ? '?'+q : ''}`);
+  },
 };
