@@ -8,6 +8,8 @@ router.get('/', authMiddleware(['thungan', 'admin']), async (req, res) => {
         const query = supabase.from('HOADON').select('*, NHANVIEN(HoTen), DONHANG(MaDH, MaBan, BAN(TenBan))').order('ThoiGianXuat', { ascending: false });
         if (req.query.date) query.gte('ThoiGianXuat', req.query.date + 'T00:00:00').lte('ThoiGianXuat', req.query.date + 'T23:59:59');
         if (req.query.id) query.eq('MaHD', req.query.id);
+        else query.limit(200); // Chỉ limit nếu không tìm đích danh ID
+        
         const { data, error } = await query;
         if (error) return res.status(500).json({ error: error.message });
         res.json(data);
