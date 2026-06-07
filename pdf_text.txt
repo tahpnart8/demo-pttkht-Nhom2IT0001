@@ -1,0 +1,2156 @@
+
+--- Page 1 ---
+BỘ GIÁO DỤC VÀ ĐÀO TẠO 
+ĐẠI HỌC KINH TẾ TP HỒ CHÍ MINH (UEH) 
+TRƯỜNG CÔNG NGHỆ VÀ THIẾT KẾ 
+ 
+ 
+ 
+ 
+ 
+ĐỒ ÁN MÔN HỌC 
+ 
+ĐỀ TÀI 
+PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG THÔNG TIN QUẢN LÝ BÁN HÀNG 
+(POS) VÀ ĐIỀU HÀNH NỘI BỘ CHO QUÁN CÀ PHÊ NHÀ BA TERIA 
+ 
+Học Phần: Phân tích thiết kế hệ thống 
+Danh Sách Nhóm:  
+1. NGUYỄN LÊ HẢI LONG 31241020465 
+2. NGUYỄN THÚY NGÂN 31241024669 
+3. TRẦN ĐỨC PHÁT  31241026599 
+4. TRỊNH MINH ĐẠT  31241022341 
+5. NGÔ GIA TOÀN   31241021793 
+6. LAM CHÍ HIỂN   31241024729 
+7. TRẦN ANH TÚ   31241028197 
+8. NGUYỄN HOÀNG PHÚC 31241022162 
+ 
+Chuyên Ngành: CÔNG NGHỆ THÔNG TIN 
+Khóa:   K50 
+Giảng Viên:  TS. Đào Thiện Quốc 
+ 
+ 
+ 
+ 
+Tp. Hồ Chí Minh, Ngày 17 tháng 5 năm 2026. 
+ 
+
+--- Page 2 ---
+2 
+ 
+MỤC LỤC 
+ 
+LỜI CẢM ƠN ........................................................................................................... 4 
+LỜI MỞ ĐẦU ........................................................................................................... 5 
+DANH MỤC TỪ VIẾT TẮT .................................................................................. 6 
+CHƯƠNG 1: TỔNG QUAN ĐỀ TÀI ...................................................................11 
+1.1. Lý do chọn đề tài ............................................................................................11 
+1.2. Mục tiêu của hệ thống ....................................................................................11 
+1.3. Phạm vi nghiên cứu ........................................................................................11 
+1.4. Đối tượng sử dụng hệ thống...........................................................................12 
+CHƯƠNG 2: KHẢO SÁT VÀ XÁC ĐỊNH YÊU CẦU ......................................13 
+2.1. Khảo sát thực tế quy trình nghiệp vụ .............................................................13 
+2.1.1. Phương pháp khảo sát ...................................................................................... 13 
+2.1.2. Kết quả khảo sát ................................................................................................ 13 
+2.2. Phân tích các vấn đề tồn đọng và nhu cầu cải tiến .......................................18 
+2.3. Xác định yêu cầu chức năng ..........................................................................18 
+2.3.1. Nhóm chức năng bán hàng (Order, thanh toán) .............................................. 18 
+2.3.2. Nhóm chức năng quản trị ................................................................................. 19 
+2.4. Xác định yêu cầu phi chức năng ....................................................................19 
+2.4.1. Yêu cầu về Hiệu năng ....................................................................................... 19 
+2.4.2. Yêu cầu về Bảo mật ........................................................................................... 19 
+2.4.3. Yêu cầu về Tính khả dụng & Giao diện (Usability) .......................................... 20 
+2.4.4. Yêu cầu về Môi trường hoạt động ..................................................................... 20 
+2.4.5. Yêu cầu về Độ tin cậy ........................................................................................ 20 
+2.5. Đặc tả yêu cầu chức năng ..............................................................................20 
+2.6. Sơ đồ phân rã chức năng ...............................................................................23 
+CHƯƠNG 3: MÔ HÌNH HÓA YÊU CẦU HỆ THỐNG ...................................25 
+3.1 Mô hình hóa chức năng (Functional Model) ..................................................25 
+3.1.1. Sơ đồ Use Case tổng quát ................................................................................. 25 
+3.1.2. Sơ đồ Use Case phân rã các phân hệ ............................................................... 27 
+--- Page 3 ---
+3 
+ 
+3.1.3. Sơ đồ Data Flow ............................................................................................... 37 
+3.2. Mô hình hóa cấu trúc (Structural Model) ......................................................42 
+3.3. Mô hình hóa hành vi (Behavior Model) ........................................................44 
+3.3.1. Sơ đồ luồng tương tác Sequence diagram ........................................................ 44 
+3.3.2. Sơ đồ luồng xử lý Activity Diagram .................................................................. 62 
+CHƯƠNG 4: THIẾT KẾ HỆ THỐNG VÀ GIAO DIỆN ..................................71 
+4.1. Thiết kế Cơ sở dữ liệu ....................................................................................71 
+4.1.2. Sơ đồ thực thể mối quan hệ (ERD) ................................................................... 71 
+4.1.2. Ràng buộc Toàn vẹn (Integrity Constraints) .................................................... 72 
+4.2. Thiết kế kiến trúc hệ thống .............................................................................73 
+4.2.1. Kiến trúc tổng quan (Client - Server Architecture) .......................................... 73 
+4.2.2. Công nghệ sử dụng ........................................................................................... 74 
+4.2.3. Cơ chế xác thực và phân quyền ........................................................................ 76 
+4.2.4. Cấu trúc thư mục dự án .................................................................................... 77 
+4.3. Thiết kế giao diện ...........................................................................................79 
+4.3.1. Nguyên tắt thiết kế giao diện Giao diện hệ thống Nhà Ba Teria được thiết kế 
+tuân theo các nguyên tắc sau: .................................................................................... 79 
+4.3.2. Nhóm giao diện Khách hàng (Customer - Mobile) .......................................... 80 
+4.3.3. Giao diện Đăng nhập (Login) ........................................................................... 85 
+4.3.4. Nhóm giao diện Nhân viên (Staff - Mobile) ...................................................... 87 
+4.3.5. Nhóm giao diện Thu ngân (Cashier - Desktop) ................................................ 89 
+4.3.6. Nhóm giao diện Quản lý (Manager - Desktop) ................................................ 91 
+4.3.7. Bảng tổng hợp danh sách màn hình ................................................................. 96 
+CHƯƠNG 5: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN ....................................98 
+5.1. Kết quả đạt được của nghiên cứu ..................................................................98 
+5.2. Ưu điểm và hạn chế của hệ thống thiết kế .....................................................98 
+5.3. Hướng phát triển trong tương lai ..................................................................99 
+TÀI LIỆU THAM KHẢO ...................................................................................100 
+PHỤ LỤC ..............................................................................................................101 
+BẢNG PHÂN CÔNG VÀ ĐÁNH GIÁ .................................................................101 
+ 
+  
+--- Page 4 ---
+4 
+ 
+LỜI CẢM ƠN 
+Trong quá trình thực hiện đồ án giữa kỳ môn Phân tích và Thiết kế Hệ thống Thông 
+tin, nhóm chúng em đã nh ận được nhiều sự hỗ trợ và hướng dẫn quý báu t ừ giảng viên 
+cũng như những người xung quanh. 
+Trước hết, nhóm xin g ửi lời cảm ơn chân thành đ ến thầy Đào Thi ện Quốc đã t ận 
+tình hướng dẫn, góp ý và truy ền đạt cho nhóm nh ững kiến thức cần thiết liên quan đ ến 
+phân tích, thiết kế và mô hình hóa hệ thống thông tin. Những kiến thức và góp ý của thầy 
+đã giúp nhóm định hướng rõ hơn trong quá trình thực hiện đề tài. 
+Nhóm cũng xin cảm ơn quán cà phê Nhà Ba Teria đã t ạo điều kiện để nhóm có cơ 
+hội khảo sát thực tế hoạt động của quán, tìm hiểu quy trình làm việc và thu thập các thông 
+tin cần thiết phục vụ cho đề tài. 
+Do kiến thức và kinh nghiệm thực tế còn hạn chế nên bài làm khó tránh khỏi những 
+thiếu sót. Nhóm rất mong nhận được sự góp ý từ thầy để có thể hoàn thiện đề tài tốt hơn. 
+Nhóm chúng em xin chân thành cảm ơn! 
+  
+--- Page 5 ---
+5 
+ 
+LỜI MỞ ĐẦU 
+Hiện nay, cùng với sự phát triển của công nghệ thông tin, nhiều quán cà phê và cửa 
+hàng kinh doanh đồ uống đã bắt đầu áp dụng các hệ thống quản lý để hỗ trợ hoạt động bán 
+hàng và vận hành hiệu quả hơn. Thay vì quản lý bằng sổ sách hoặc ghi chép thủ công như 
+trước đây, việc ứng dụng hệ thống thông tin giúp các quán dễ dàng kiểm soát order, doanh 
+thu, nguyên liệu và thông tin khách hàng một cách nhanh chóng và chính xác hơn. 
+Qua quá trình quan sát và kh ảo sát th ực tế tại quán cà phê Nhà Ba Teria, đ ịa chỉ 
+72/17 Trần Quốc Toản, Quận 3, nhóm nhận thấy quá trình quản lý tại quán vẫn còn một số 
+khó khăn như d ễ nhầm lẫn khi ghi nh ận order, khó theo dõi s ố lượng nguyên li ệu trong 
+kho, việc thống kê doanh thu còn mất nhiều thời gian và phụ thuộc nhiều vào thao tác thủ 
+công. Từ những vấn đề đó, nhóm quyết định lựa chọn đề tài “Khảo sát và thiết kế hệ thống 
+thông tin phục vụ bán cà phê giải khát cho quán Nhà Ba Teria” để nghiên cứu và thực hiện. 
+Mục tiêu của đề tài là phân tích quy trình hoạt động hiện tại của quán, rồi từ đó xác 
+định các yêu cầu cần thiết của hệ thống và tiến hành mô hình hóa hệ thống bằng các công 
+cụ UML như Use Case Diagram, Class Diagram, Sequence Diagram và Activity Diagram. 
+Bên cạnh đó, đề tài cũng hướng đến việc thiết kế cơ sở dữ liệu và giao di ện phù hợp với 
+nhu cầu quản lý thực tế của quán. 
+Thông qua quá trình thực hiện đồ án, nhóm có cơ hội vận dụng các kiến thức đã học 
+vào thực tế, đồng thời hiểu rõ hơn v ề quy trình phân tích và thi ết kế hệ thống thông tin 
+trong môi trường doanh nghiệp. Ngoài ra, đ ề tài cũng giúp nhóm nâng cao k ỹ năng khảo 
+sát, làm việc nhóm và tư duy giải quyết vấn đề. 
+Mặc dù đã c ố gắng hoàn thành đ ề tài một cách t ốt nhất, nhưng do th ời gian th ực 
+hiện còn hạn chế và kinh nghiệm thực tế chưa nhiều nên đồ án khó tránh khỏi những thiếu 
+sót. Nhóm rất mong nhận được những ý kiến đóng góp từ thầy để đề tài được hoàn thiện 
+hơn. 
+  
+--- Page 6 ---
+6 
+ 
+DANH MỤC TỪ VIẾT TẮT 
+Từ viết tắt Tiếng Anh Tiếng Việt 
+UEH 
+University of Economics Ho Chi 
+Minh City 
+Đại học Kinh tế TP. Hồ Chí 
+Minh 
+UML Unified Modeling Language 
+Ngôn ngữ mô hình hóa thống 
+nhất 
+ERD Entity Relationship Diagram Sơ đồ thực thể mối quan hệ 
+DFD Data Flow Diagram Sơ đồ luồng dữ liệu 
+F&B Food and Beverage 
+Ngành dịch vụ ẩm thực và đồ 
+uống 
+POS Point of Sale 
+Hệ thống quản lý tại điểm bán 
+hàng 
+ERP Enterprise Resource Planning 
+Hệ thống hoạch định nguồn 
+lực doanh nghiệp 
+UI User Interface Giao diện người dùng 
+UX User Experience Trải nghiệm người dùng 
+API 
+Application Programming 
+Interface 
+Giao diện lập trình ứng dụng 
+JWT JSON Web Token 
+Mã thông báo định dạng 
+JSON (dùng để xác thực) 
+CRUD Create, Read, Update, Delete 
+Các thao tác: Tạo, Đọc, Cập 
+nhật, Xóa 
+PK Primary Key Khóa chính 
+FK Foreign Key Khóa ngoại 
+SPA Single Page Application Ứng dụng web đơn trang 
+SDK Software Development Kit 
+Bộ công cụ phát triển phần 
+mềm 
+CORS Cross-Origin Resource Sharing 
+Chia sẻ tài nguyên giữa các 
+nguồn khác nhau 
+--- Page 7 ---
+7 
+ 
+DOM Document Object Model Mô hình đối tượng tài liệu 
+SVG Scalable Vector Graphics Đồ họa vectơ có thể mở rộng 
+CSS Cascading Style Sheets 
+Ngôn ngữ định kiểu theo tầng 
+(dùng cho giao diện) 
+DB / CSDL Database Cơ sở dữ liệu 
+CRM 
+Customer Relationship 
+Management 
+Quản lý quan hệ khách hàng 
+JWT JSON Web Token 
+Một tiêu chuẩn mã hóa dùng 
+để xác thực người dùng 
+Vite  
+Công cụ hỗ trợ đóng gói và 
+biên dịch mã nguồn 
+  
+--- Page 8 ---
+8 
+ 
+DANH MỤC HÌNH ẢNH 
+Hình 2.1. Không gian bên ngoài quán Nhà Ba Teria ........................................................ 14 
+Hình 2.2. Một số hình ảnh không gian bên trong quán ..................................................... 15 
+Hình 2.3. Thực đơn quán cafe Nhà Ba Teria ..................................................................... 16 
+Hình 2.4. Hóa đơn quán cafe Nhà Ba Teria ...................................................................... 17 
+Hình 2.5. Hình scan mẫu phiếu nhập kho quán cafe Nhà Ba Teria .................................. 17 
+Hình 2.6. Sơ đồ phân rã chức năng quản lý. ..................................................................... 23 
+Hình 2.7. Sơ đồ phân rã chức năng quản lý. ..................................................................... 23 
+Hình 2.8. Sơ đồ phân rã chức năng khách hàng ................................................................ 24 
+Hình 3.1. Sơ đồ Use Case tổng quát .................................................................................. 25 
+Hình 3.2. Sơ đồ Use Case đăng nhập ................................................................................ 27 
+Hình 3.3. Sơ đồ Use Case Quản lý gọi món. ..................................................................... 28 
+Hình 3.4. Sơ đồ Use Case Quản lý giỏ hàng. .................................................................... 29 
+Hình 3.5. Sơ đồ Use Case Quản lý đơn hàng. ................................................................... 30 
+Hình 3.6. Sơ đồ Use Case Quản lý thanh toán. ................................................................. 31 
+Hình 3.7. Sơ đồ Use Case Quản lý hóa đơn. ..................................................................... 33 
+Hình 3.8. Sơ đồ Use Case Quản lý thông tin nhân viên. ................................................... 34 
+Hình 3.9. Sơ đồ Use Case Quản lý bàn. ............................................................................ 35 
+Hình 3.10. Sơ đồ Use Case Quản lý thực đơn. .................................................................. 36 
+Hình 3.11. Sơ đồ Data Flow mức 0. .................................................................................. 37 
+Hình 3.12. Sơ đồ Data Flow mức 1 ................................................................................... 38 
+Hình 3.13. Sơ đồ Data Flow mức 2 - Tiến trình 1.0 - Quản lí đặt món. ........................... 39 
+Hình 3.14. Sơ đồ Data Flow mức 2 - Tiến trình 2.0 - Xử lí đơn hàng. ............................. 39 
+Hình 3.15. Sơ đồ Data Flow mức 2 - Tiến trình 3.0 - Thanh toán & Hóa đơn. ................ 40 
+Hình 3.16. Sơ đồ Data Flow mức 2 - Tiến trình 4.0 - Quản trị hệ thống. ......................... 40 
+Hình 3.17. Sơ đồ Data Flow mức 2 - Tiến trình 5.0 - Xác thực & Phân quyền. ............... 41 
+Hình 3.18. Sơ đồ các lớp (Class) ....................................................................................... 42 
+Hình 3.19. Sơ đồ luồng gọi món ....................................................................................... 46 
+Hình 3.20. Luồng quét QR & xem menu .......................................................................... 46 
+Hình 3.21. Luồng thêm món vào giỏ ................................................................................. 46 
+--- Page 9 ---
+9 
+ 
+Hình 3.22. Luồng gửi đơn hàng......................................................................................... 47 
+Hình 3.23. Sơ đồ luồng đăng nhập .................................................................................... 48 
+Hình 3.24. Luồng gửi yêu cầu ........................................................................................... 48 
+Hình 3.25. Luồng kiểm tra DB .......................................................................................... 49 
+Hình 3.26. Luồng thất bại .................................................................................................. 49 
+Hình 3.27. Luồng thành công & Điều hướng .................................................................... 50 
+Hình 3.28. Sơ đồ luồng xử lý đơn hàng ............................................................................ 52 
+Hình 3.29. Luồng tải đơn hàng .......................................................................................... 52 
+Hình 3.30. Luồng bắt đầu pha chế ..................................................................................... 52 
+Hình 3.31. Luồng hoàn thành pha chế ............................................................................... 53 
+Hình 3.32. Luồng nhận & giao món .................................................................................. 53 
+Hình 3.33. Luồng cập nhật cho khách ............................................................................... 54 
+Hình 3.34. Sơ đồ luồng xử lý đơn hàng ............................................................................ 56 
+Hình 3.35. Luồng tải thông tin .......................................................................................... 56 
+Hình 3.36. Sơ đồ Luồng chọn phương thức ...................................................................... 56 
+Hình 3.37. Sơ đồ Luồng thanh toán tiền mặt..................................................................... 57 
+Hình 3.38. Sơ đồ Luồng thanh toán chuyển khoản/QR .................................................... 57 
+Hình 3.39. Sơ đồ Luồng hoàn tất & In hóa đơn ................................................................ 58 
+Hình 3.40. Sơ đồ luồng thêm nhân viên ............................................................................ 59 
+Hình 3.41. Sơ đồ Luồng tải danh sách .............................................................................. 60 
+Hình 3.42. Sơ đồ Luồng nhập thông tin ............................................................................ 60 
+Hình 3.43. Sơ đồ Luồng kiểm tra dữ liệu .......................................................................... 61 
+Hình 3.44. Sơ đồ Luồng lỗi / Không hợp lệ ...................................................................... 61 
+Hình 3.45. Sơ đồ Luồng hợp lệ & lưu ............................................................................... 62 
+Hình 3.46. Sơ đồ luồng xử lý quản lý thực đơn ................................................................ 63 
+Hình 3.47. Sơ đồ luồng xử lý quản lý thanh toán .............................................................. 64 
+Hình 3.48. Sơ đồ luồng sử lý thêm, sửa, xóa giỏ hàng ...................................................... 65 
+Hình 3.49. Sơ đồ luồng xử lý xem giỏ hàng ...................................................................... 66 
+Hình 3.50. Sơ đồ luồng xử lý quản lí hóa đơn .................................................................. 67 
+Hình 3.51. Sơ đồ luồng xử lý quản lý nhân viên ............................................................... 68 
+--- Page 10 ---
+10 
+ 
+Hình 3.52. Sơ đồ luồng xử lý quản lý bàn ......................................................................... 69 
+Hình 3.53. Sơ đồ luồng xử lý quản lý bàn ......................................................................... 70 
+Hình 4.1. Sơ đồ thực thể mối quan hệ ............................................................................... 71 
+Hình 4.2. Sơ đồ kiến trúc tổng quan hệ thống. .................................................................. 74 
+Hình 4.3. . Sơ đồ luồng xác thực JWT. ............................................................................. 76 
+Hình 4.4. Giao diện trang đặt món. ................................................................................... 81 
+Hình 4.5. Giao diện trang đặt món phân loại cụ thể .......................................................... 82 
+Hình 4.6. Giao diện trang giỏ hàng. .................................................................................. 83 
+Hình 4.7. Giao diện trang theo dõi đơn hàng. ................................................................... 84 
+Hình 4.8. Trang giỏ hàng trống. ........................................................................................ 85 
+Hình 4.9. Trang đăng nhập. ............................................................................................... 86 
+Hình 4.10. Giao diện trang “Chờ” tại bảng đơn hàng ....................................................... 87 
+Hình 4.11. Giao diện Trang “Đang làm” tại bảng đơn hàng ............................................. 88 
+Hình 4.12. Giao diện Trang “Hoàn thành” tại bảng đơn hàng .......................................... 89 
+Hình 4.13. Giao diện trang thanh toán .............................................................................. 90 
+Hình 4.14. Giao diện trang dánh sách hóa đơn ................................................................. 91 
+Hình 4.15. Giao diện trang quản lý Menu ......................................................................... 92 
+Hình 4.16. Giao diện Trang Quản lý Menu - Thêm/Sửa món ........................................... 92 
+Hình 4.17. Giao diện Trang Quản lý Bàn .......................................................................... 93 
+Hình 4.18. Giao diện Trang Quản lý Bàn - Thêm/Sửa bàn. .............................................. 94 
+Hình 4.19. Giao diện trang quản lý nhân viên ................................................................... 94 
+Hình 4.20. Giao diện trang Trang Quản lý Nhân viên - Thêm/Sửa nhân viên. ................. 95 
+Hình 4.21. Giao diện thanh Sidebar điều hướng. .............................................................. 95 
+ 
+  
+--- Page 11 ---
+11 
+ 
+CHƯƠNG 1: TỔNG QUAN ĐỀ TÀI 
+1.1. Lý do chọn đề tài 
+Việt Nam hiện là một trong những thị trường cà phê sôi đ ộng nhất khu vực Đông 
+Nam Á. Theo số liệu thống kê, doanh thu th ị trường cà phê tại Việt Nam đang duy trì đà 
+tăng trưởng mạnh mẽ, phản ánh xu hư ớng tiêu dùng hi ện đại và s ự bùng nổ của các mô 
+hình kinh doanh t ừ bình dân đến cao cấp (Statista, 2024). Trong b ối cảnh đó, ngành d ịch 
+vụ ăn uống (F&B) đang chứng kiến một làn sóng chuyển đổi số toàn diện. Các chuỗi cửa 
+hàng quy mô l ớn như Highlands Coffee hay The Coffee House đã ứng dụng thành công 
+các hệ thống thông tin quản lý tích hợp để tối ưu hóa toàn bộ quy trình vận hành, từ khâu 
+gọi món tại quầy cho đến việc kiểm soát định mức nguyên vật liệu (iPOS, 2024). 
+Đối với các mô hình kinh doanh d ịch vụ cà phê quy mô t ầm trung, vi ệc duy trì 
+phương thức vận hành truyền thống dựa trên các công cụ thủ công hoặc các phần mềm đơn 
+lẻ bắt đầu bộc lộ nhiều điểm chưa tương thích khi lư ợng khách hàng gia tăng. Đ ể duy trì 
+năng lực cạnh tranh và đ ảm bảo chất lượng dịch vụ đồng đều, nhu cầu ứng dụng một hệ 
+thống thông tin quản lý đồng bộ là vô cùng cần thiết. Hệ thống này không chỉ đóng vai trò 
+số hóa quy trình bán hàng mà còn giúp chuẩn hóa dữ liệu nội bộ, làm cơ sở cho việc tối ưu 
+hóa chi phí ho ạt động và nâng cao hi ệu quả quản trị dòng luân chuy ển hàng hóa trong 
+doanh nghiệp. 
+1.2. Mục tiêu của hệ thống 
+Hệ thống thông tin quản lý cửa hàng cà phê được thiết kế nhằm đạt được các mục tiêu 
+cụ thể sau: 
+• Số hóa quy trình bán hàng:  Xây dựng luồng gọi món trực tuyến qua mã QR 
+và quản lý đơn hàng tập trung, giúp giảm thiểu các thao tác thủ công. 
+• Hệ thống hóa công tác qu ản trị: Cung cấp công cụ quản lý nhân sự, lịch làm 
+việc và báo cáo doanh thu trực quan, hỗ trợ chủ quán đưa ra các quyết định điều 
+hành nhanh chóng. 
+1.3. Phạm vi nghiên cứu 
+Đề tài tập trung nghiên c ứu và thiết kế hệ thống thông tin áp d ụng cụ thể cho mô 
+hình quán cafe tầm trung đại diện là quán cà phê Nhà Ba Teria, bao gồm các phân hệ chính: 
+--- Page 12 ---
+12 
+ 
+• Phân hệ Bán hàng: Tiếp nhận yêu cầu từ khách (QR Order) và xử lý đơn hàng 
+tại quầy (POS). 
+• Phân hệ Quản trị: Quản lý thông tin nhân viên, lịch làm việc và báo cáo thống 
+kê. 
+• Giới hạn nghiên cứu: Hệ thống tập trung vào vi ệc phân tích và thi ết kế logic 
+luồng dữ liệu, cấu trúc cơ s ở dữ liệu và giao di ện người dùng, chưa đi sâu vào 
+việc tích hợp các cổng thanh toán ngân hàng trực tuyến. 
+1.4. Đối tượng sử dụng hệ thống 
+Hệ thống được thiết kế hướng đến 5 nhóm ngư ời dùng v ới các đ ặc thù công vi ệc 
+khác nhau: 
+1. Khách hàng: Đối tượng trực tiếp sử dụng hệ thống để xem menu, thực hiện gọi món 
+qua mã QR tại bàn và gửi yêu cầu thanh toán một cách chủ động. 
+2. Nhân viên ph ục vụ: Thực hiện kiểm tra bàn tr ống, hỗ trợ khách hàng đ ặt món và 
+bàn giao sản phẩm từ quầy pha chế đến khách. 
+3. Nhân viên pha chế: Tiếp nhận danh sách món cần chế biến từ hệ thống và cập nhật 
+trạng thái hoàn thành để điều phối nhân viên phục vụ. 
+4. Thu ngân: Kiểm soát hóa đơn, thực hiện các thao tác in bill và xác nhận thanh toán 
+cuối cùng của khách hàng. 
+5. Quản lý: Có toàn quyền điều hành hệ thống, từ thiết lập thực đơn đến việc giám sát 
+hiệu quả kinh doanh qua các báo cáo tổng hợp. 
+  
+--- Page 13 ---
+13 
+ 
+CHƯƠNG 2: KHẢO SÁT VÀ XÁC ĐỊNH YÊU CẦU 
+2.1. Khảo sát thực tế quy trình nghiệp vụ 
+2.1.1. Phương pháp khảo sát 
+Để có cái nhìn chính xác và toàn diện nhất về quy trình hoạt động của quán, nhóm đã 
+áp dụng các phương pháp khảo sát sau: 
+• Phương pháp quan sát th ực tế: Nhóm trực tiếp quan sát mô hình ho ạt động của 
+quán trong các khung giờ khác nhau. Tập trung quan sát cách khách hàng g ọi món 
+và nhân viên tiếp nhận đơn hàng, quy trình pha chế của nhân viên pha chế (barista), 
+cũng như quá trình phục vụ và thanh toán để nhận diện những điểm chạm và điểm 
+nghẽn cần được cải thiện trong vận hành. 
+• Phương pháp ph ỏng vấn: Nhóm tiến hành ph ỏng vấn trực tiếp chủ quán và các 
+nhân viên trực ca nh ằm tìm hiểu sâu hơn v ề quy trình làm vi ệc và nh ững bất cập 
+hiện tại. Các câu hỏi phỏng vấn tập trung vào các vấn đề trọng tâm như: 
+o Các quy trình nghiệp vụ chính: quy trình bán hàng, thanh toán, quy trình quản 
+lý nhân sự, quy trình sắp xếp lịch làm việc và chấm công, quy trình quản lý 
+kho, quy trình quản lý doanh thu, báo cáo... 
+o Danh mục sản phẩm và các tài liệu nghiệp vụ liên quan  
+o Không gian và cơ sở vật chất, hạ tầng của quán 
+o Các công nghệ và công cụ quán đang sử dụng để vận hành và quản lý 
+2.1.2. Kết quả khảo sát 
+a. Giới thiệu chung 
+Cafe Nhà Ba Teria là một mô hình kinh doanh dịch vụ đồ uống (F&B) đang trên đà 
+phát triển, phục vụ lưu lượng khách hàng l ớn mỗi ngày, đ ặc biệt là phân khúc h ọc sinh, 
+sinh viên và ngư ời đi làm. Hi ện tại, hoạt động vận hành của quán bao g ồm nhiều nghiệp 
+vụ cốt lõi đan xen như: qu ản lý gọi món (order) t ại bàn, quản lý menu đi ện tử, điều phối 
+pha chế, kiểm soát kho nguyên vật liệu, chấm công nhân viên và xử lý hóa đơn thanh toán. 
+Với đặc thù mô hình năng đ ộng và t ần suất giao d ịch cao, vi ệc quản lý th ủ công 
+hoặc sử dụng các công cụ rời rạc dễ dẫn đến rủi ro sai sót dữ liệu và giảm hiệu suất phục 
+vụ. Do đó, Nhà Ba Teria được nhóm lựa chọn làm đối tượng nghiên cứu thực nghiệm nhằm 
+--- Page 14 ---
+14 
+ 
+mục tiêu khảo sát bài toán th ực tế, từ đó tiến hành phân tích lu ồng nghiệp vụ và thiết kế 
+một hệ thống quản lý toàn diện (POS & ERP thu nhỏ). 
+Địa chỉ: 72/17 Trần Quốc Toản, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh. 
+ 
+ 
+Hình 0.1. Không gian bên ngoài quán Nhà Ba Teria 
+
+--- Page 15 ---
+15 
+ 
+ 
+Hình 0.2. Một số hình ảnh không gian bên trong quán 
+b. Quy mô và Nhân sự 
+• Quy mô phục vụ: Quán có tổng cộng khoảng 14 - 15 bàn, công suất phục vụ tối đa 
+cùng một lúc có thể lên tới 40 - 50 khách hàng. 
+• Nguồn nhân lực: Tổng số lượng nhân viên c ủa quán là 11 - 12 người. Nhân viên 
+được chia theo các ca làm việc, mỗi ca sẽ có khoảng 3 - 4 người đảm nhiệm các vai 
+trò khác nhau (phục vụ, pha chế, thu ngân). 
+c. Cách thức vận hành 
+
+--- Page 16 ---
+16 
+ 
+Hiện t ại, Cafe Nhà Ba Teria đang v ận hành theo mô hình bán th ủ công (Semi -
+manual). Dù đã có công c ụ hỗ trợ cơ bản, các luồng nghiệp vụ cốt lõi vẫn phụ thuộc lớn 
+vào thao tác thủ công và các công cụ rời rạc, cụ thể: 
+Phương thức vận hành và phục vụ: 
+• Quán có hệ thống ghi nhận order riêng để khách gửi yêu cầu cho nhân viên. Tuy 
+nhiên, sau bước này, nhân viên ph ải in phiếu giấy ra để tự xem, tự chuyển cho 
+quầy bar và theo dõi thủ công cho đến khi giao món cho khách. 
+• Quy trình pha ch ế phụ thuộc hoàn toàn vào k ỹ năng bằng tay c ủa Barista d ựa 
+trên phiếu in, chưa có sự điều phối tự động. 
+Phương thức quản lý và điều hành:  
+• Quản lý quán hiện đang sử dụng các công cụ văn phòng truyền thống (chủ yếu 
+là Microsoft Excel) để xử lý các nghiệp vụ nội bộ như: quản lý nhân sự, sắp xếp 
+lịch làm việc, chấm công và kiểm soát xuất nhập tồn kho. 
+d. Một số tài liệu nghiệp vụ liên quan 
+Mẫu Menu 
+ 
+Hình 0.3. Thực đơn quán cafe Nhà Ba Teria 
+
+--- Page 17 ---
+17 
+ 
+Mẫu hóa đơn 
+ 
+Hình 0.4. Hóa đơn quán cafe Nhà Ba Teria 
+Mẫu phiếu nhập kho 
+ 
+Hình 0.5. Hình scan mẫu phiếu nhập kho quán cafe Nhà Ba Teria 
+
+--- Page 18 ---
+18 
+ 
+2.2. Phân tích các vấn đề tồn đọng và nhu cầu cải tiến 
+Sau quá trình khảo sát và trải nghiệm thực tế tại quán, nhóm nhận thấy quán hiện đã có 
+quy trình vận hành tương đ ối ổn định trong các ho ạt động như order món, thanh toán và 
+quản lý nhân viên. Tuy nhiên, trong các khung giờ đông khách, quy trình xử lý vẫn còn tồn 
+tại một số hạn chế: 
+• Thiếu đồng bộ trong phối hợp nội bộ: Nhân viên phục vụ không thể theo dõi 
+chính xác trạng thái đơn hàng (đang pha ch ế hay đã hoàn thành) trên h ệ thống, 
+dẫn đến việc cập nhật thông tin và giao món cho khách bị chậm trễ. 
+• Tải dữ liệu và x ử lý hóa đơn ch ậm: Việc tra c ứu lại hóa đơn cũ ho ặc xử lý, 
+gộp/tách nhiều order của cùng một bàn mất nhiều thời gian do dữ liệu chưa được 
+quản lý tập trung hoàn toàn. 
+• Rủi ro sai sót và ùn tắc vận hành: Việc phụ thuộc vào phiếu order in gi ấy dễ 
+gây thất lạc thông tin, dẫn đến tình trạng quên món, làm sai thứ tự đơn hàng, tính 
+nhầm tiền hoặc gây tắc nghẽn tại quầy bar khi quán đông khách. 
+Từ kết quả khảo sát, nhóm nhận thấy quán có nhu cầu cải tiến hệ thống theo hướng 
+đồng bộ và tự động hóa nhi ều hơn trong quy trình qu ản lý order, hóa đơn và tr ạng thái 
+món. Hệ thống mới sẽ hỗ trợ cập nhật trạng thái order theo thời gian thực, quản lý hóa đơn 
+tập trung, đồng thời hỗ trợ quản lý thực đơn, quản lý bàn, quản lý nhân sự  hiệu quả hơn 
+nhằm nâng cao chất lượng phục vụ khách hàng. 
+2.3. Xác định yêu cầu chức năng 
+2.3.1. Nhóm chức năng bán hàng (Order, thanh toán) 
+• Hệ thống cho phép khách hàng quét mã QR t ại bàn để truy cập giao diện gọi món 
+trực tuyến. Khách hàng có thể xem menu, chọn món, thêm hoặc xóa món khỏi giỏ 
+hàng trước khi xác nhận order. 
+• Sau khi order đư ợc gửi, hệ thống sẽ đồng bộ thông tin đ ến nhân viên ph ục vụ và 
+barista để xử lý. Nhân viên có th ể xem danh sách order và c ập nhật trạng thái đơn 
+hàng theo từng giai đoạn như đang chờ, đang làm, hoàn thành hoặc đã giao. 
+• Đối với chức năng thanh toán, thu ngân có th ể xem danh sách đơn hàng c ần thanh 
+toán, chỉnh sửa order khi c ần thiết và xác nh ận hóa đơn. H ệ thống hỗ trợ nhiều 
+phương thức thanh toán như tiền mặt, chuyển khoản và Visa. Ngoài ra, hệ thống còn 
+--- Page 19 ---
+19 
+ 
+hỗ trợ xuất hóa đơn, in hóa đơn, lưu l ịch sử hóa đơn và g ộp nhiều hóa đơn trong 
+trường hợp một bàn có nhiều order chưa thanh toán. 
+2.3.2. Nhóm chức năng quản trị  
+Hệ thống cho phép quản lý thực hiện các chức năng quản trị như quản lý menu, quản 
+lý bàn, quản lý hóa đơn và quản lý thông tin nhân viên. 
+• Quản lý có thể thêm, sửa, xóa món trong menu và c ập nhật trạng thái còn món 
+hoặc hết món. Đối với bàn, hệ thống hỗ trợ cập nhật trạng thái bàn như “Trống” 
+hoặc “Đang có khách”. 
+• Trong phân h ệ quản lý nhân viên, qu ản lý có th ể tra cứu thông tin nhân viên, 
+thêm mới, chỉnh sửa hoặc xóa thông tin nhân viên, đ ồng thời quản lý tài khoản 
+đăng nhập và phân quyền cho từng vai trò trong hệ thống. 
+• Ngoài ra, quản lý và thu ngân có th ể xem danh sách hóa đơn, tra c ứu hóa đơn 
+theo ngày hoặc mã hóa đơn và xem chi tiết hóa đơn khi cần thiết. 
+2.4. Xác định yêu cầu phi chức năng  
+Yêu cầu phi chức năng (Non-Functional Requirements) là các ràng buộc để hệ thống 
+có thể vận hành trong thực tế như thời gian, môi trường sử dụng. Đối với hệ thống quản lý 
+quán cafe, các yêu cầu này được xác định cụ thể như sau: 
+2.4.1. Yêu cầu về Hiệu năng 
+• Thời gian phản hồi: Các thao tác cốt lõi trên phần mềm (như thêm món, chuyển 
+bàn, xác nhận thanh toán) phải được xử lý và trả về kết quả trong thời gian dưới 
+5 giây để đảm bảo luồng phục vụ không bị gián đoạn. 
+• Khả năng xử lý đồng thời: Hệ thống phải duy trì trạng thái hoạt động ổn định, 
+không giật lag khi có nhiều người dùng (quản lý, thu ngân, 3-4 nhân viên phục 
+vụ/pha chế) truy cập và thao tác cùng lúc trong khung giờ cao điểm. 
+2.4.2. Yêu cầu về Bảo mật  
+Cơ chế phân quyền: Hệ thống bắt buộc phải có cơ chế phân quyền truy cập theo vai trò 
+(Role-based access control): 
+• Nhân viên phục vụ/pha chế chỉ được xem danh sách order;  
+• Thu ngân được thao tác in hóa đơn và thanh toán;  
+--- Page 20 ---
+20 
+ 
+• Chỉ cấp Quản lý/Chủ quán mới có quyền xem báo cáo doanh thu, chỉnh sửa hóa 
+đơn đã chốt hoặc thay đổi thông tin kho. 
+Kiểm soát truy cập: Mỗi nhân viên sử dụng một tài khoản (có mật khẩu hoặc mã PIN 
+riêng). Hệ thống phải tự động lưu lại lịch sử thao tác (Log) để truy vết trách nhiệm khi 
+xảy ra sai lệch về tiền hoặc nguyên liệu. 
+2.4.3. Yêu cầu về Tính khả dụng & Giao diện (Usability) 
+• Tính tương thích giao diện: Giao diện order dành cho nhân viên phục vụ phải 
+được tối ưu hóa cho thao tác cảm ứng, hiển thị tốt trên máy tính bảng hoặc điện 
+thoại. Giao diện của thu ngân và quản lý cần tối ưu cho màn hình PC/Laptop. 
+• Trải nghiệm người dùng (UX): Danh mục thực đơn cần được phân loại rõ ràng 
+(Cafe, Trà, Bánh...) kèm màu sắc hoặc hình ảnh minh họa để nhân viên dễ dàng 
+tìm kiếm và bấm chọn món với số thao tác tối thiểu. 
+2.4.4. Yêu cầu về Môi trường hoạt động 
+• Kết nối ngoại vi: Hệ thống phải có kh ả năng tương thích và xu ất lệnh in trực 
+tiếp đến các thiết bị phần cứng hiện có tại quán, bao gồm máy in bill nhiệt (qua 
+cổng USB hoặc LAN), ngăn kéo đựng tiền tự động và máy quét mã vạch. 
+• Nền tảng triển khai: Hệ thống cần được thiết kế dưới dạng ứng dụng nền web 
+(Web-based) nhằm loại bỏ sự phụ thuộc vào việc cài đặt phần mềm cục bộ, đảm 
+bảo chạy ổn định trên nhiều hệ điều hành (Windows, iOS, Android). 
+2.4.5. Yêu cầu về Độ tin cậy 
+• Khả năng hoạt động ngoại tuyến: Trong trường hợp mất kết nối Internet, phân 
+hệ máy POS tại quầy thu ngân v ẫn phải cho phép thao tác order và  in bill qua 
+mạng nội bộ (LAN). Dữ liệu sẽ tự động đồng bộ lên máy chủ đám mây ngay khi 
+kết nối được khôi phục. 
+• Sao lưu dữ liệu: Hệ thống phải có cơ chế tự động sao lưu (backup) dữ liệu định 
+kỳ hàng ngày, đ ảm bảo an toàn tuy ệt đối cho thông tin doanh thu, hóa đơn và 
+tồn kho trước các rủi ro hỏng hóc thiết bị. 
+2.5. Đặc tả yêu cầu chức năng 
+Phân hệ Đăng nhập 
+--- Page 21 ---
+21 
+ 
+• Quản lý, thu ngân, nhân viên phục vụ và barista có thể đăng nhập hệ thống bằng 
+tài khoản và mật khẩu riêng. 
+• Người dùng có thể đăng xuất khỏi hệ thống sau khi sử dụng. 
+• Hệ thống phân quyền truy cập theo vai trò người dùng. 
+• Quản lý có toàn quyền truy cập các chức năng quản trị hệ thống. 
+• Thu ngân được phép sử dụng chức năng thanh toán và quản lý hóa đơn. 
+• Nhân viên phục vụ và barista được phép cập nhật trạng thái đơn hàng. 
+Phân hệ Xử lý đơn hàng 
+• Khách hàng có thể quét mã QR tại bàn để truy cập hệ thống gọi món. 
+• Khách hàng có thể xem menu món ăn và thức uống. 
+• Khách hàng có thể chọn món, thêm món vào hoặc xóa món khỏi giỏ hàng. 
+• Khách hàng có thể xác nhận và gửi order. 
+• Khách hàng có thể xem order đã gửi. 
+• Nhân viên phục vụ và barista có thể nhận order từ khách hàng. 
+• Nhân viên có thể xem danh sách các order hiện tại. 
+• Nhân viên có thể cập nhật trạng thái order. 
+• Hệ thống hỗ trợ các trạng thái đơn hàng gồm: Đang chờ, Đang làm, Hoàn thành, 
+Đã giao. 
+• Hệ thống đồng bộ trạng thái order theo thời gian thực. 
+• Hệ thống liên kết order với từng bàn tương ứng. 
+Phân hệ Quản lý giỏ hàng 
+• Khách hàng có thể xem danh sách món trong giỏ hàng. 
+• Khách hàng có thể thêm món vào giỏ hàng. 
+• Khách hàng có thể chỉnh sửa số lượng món trong giỏ hàng. 
+• Khách hàng có thể xóa món khỏi giỏ hàng. 
+Phân hệ Thanh toán 
+• Thu ngân có thể xem các đơn hàng cần thanh toán. 
+• Thu ngân có thể chỉnh sửa đơn hàng trước khi thanh toán. 
+• Thu ngân có thể xác nhận hóa đơn thanh toán. 
+--- Page 22 ---
+22 
+ 
+• Hệ thống hỗ trợ các phương th ức thanh toán g ồm tiền mặt, chuyển khoản và 
+Visa. 
+• Thu ngân có thể xuất hóa đơn. 
+• Thu ngân có thể in hóa đơn cho khách hàng. 
+• Hệ thống lưu trữ lịch sử hóa đơn. 
+• Thu ngân có thể gộp nhiều hóa đơn thành một hóa đơn thanh toán. 
+Phân hệ Quản lý hóa đơn 
+• Quản lý và thu ngân có thể xem danh sách hóa đơn. 
+• Quản lý và thu ngân có thể tra cứu hóa đơn theo ngày tạo hoặc mã hóa đơn. 
+• Quản lý và thu ngân có thể xem chi tiết hóa đơn. 
+• Quản lý có thể xóa hóa đơn khi cần thiết. 
+Phân hệ Quản lý menu 
+• Quản lý có thể tra cứu danh sách món trong menu. 
+• Quản lý có thể xem thông tin chi tiết món. 
+• Quản lý có thể thêm món mới vào menu. 
+• Quản lý có thể chỉnh sửa thông tin món. 
+• Quản lý có thể xóa món khỏi menu. 
+• Quản lý có thể cập nhật trạng thái còn món hoặc hết món. 
+Phân hệ Quản lý bàn 
+• Nhân viên và quản lý có thể xem danh sách bàn. 
+• Quản lý có thể thêm bàn mới. 
+• Quản lý có thể chỉnh sửa thông tin bàn. 
+• Quản lý có thể xóa bàn. 
+• Hệ thống hỗ trợ trạng thái bàn gồm: Trống và Đang có khách. 
+• Nhân viên và quản lý có thể cập nhật trạng thái bàn. 
+Phân hệ Quản lý thông tin nhân viên 
+• Quản lý có thể tra cứu thông tin nhân viên. 
+• Quản lý có thể xem thông tin chi tiết nhân viên. 
+• Quản lý có thể thêm nhân viên mới. 
+--- Page 23 ---
+23 
+ 
+• Quản lý có thể chỉnh sửa thông tin nhân viên. 
+• Quản lý có thể xóa nhân viên khỏi hệ thống. 
+• Quản lý có thể quản lý tài khoản đăng nhập của nhân viên. 
+2.6. Sơ đồ phân rã chức năng 
+ 
+Hình 0.6. Sơ đồ phân rã chức năng quản lý. 
+ 
+Hình 0.7. Sơ đồ phân rã chức năng quản lý. 
+Hình 2.6.2: Sơ đồ phân rã chức năng nhân viên. 
+
+--- Page 24 ---
+24 
+ 
+ 
+Hình 0.8. Sơ đồ phân rã chức năng khách hàng 
+
+--- Page 25 ---
+25 
+ 
+CHƯƠNG 3: MÔ HÌNH HÓA YÊU CẦU HỆ THỐNG 
+3.1 Mô hình hóa chức năng (Functional Model) 
+3.1.1. Sơ đồ Use Case tổng quát 
+ 
+Hình 0.1. Sơ đồ Use Case tổng quát 
+Trong giai đoạn phân tích yêu c ầu chức năng của hệ thống thông tin qu ản lý quán 
+cafe "Nhà Ba Teria", sơ đ ồ Use Case t ổng quát đóng vai trò thi ết lập một góc nhìn toàn 
+diện về mặt phạm vi hệ thống (System Boundary) cũng như mối tương quan giữa các thực 
+thể bên ngoài và các quy trình xử lý nội bộ. Sơ đồ này không chỉ định vị rõ ràng ranh giới 
+vận hành của phần mềm mà còn là cơ sở để cụ thể hóa các luồng nghiệp vụ chi tiết thông 
+qua các bảng đặc tả cấu trúc. 
+Về kiến trúc tác nhân (Actors): 
+• Phân tách người dùng thành ba nhóm đ ối tượng chính: Hệ thống định rõ ba vai 
+trò tương tác trực tiếp đối với hoạt động của quán bao gồm: Khách hàng, Nhân 
+viên và Quản lý. 
+
+--- Page 26 ---
+26 
+ 
+• Cơ chế phân quyền mang tính kế thừa (Generalization): Mối quan hệ tổng quát 
+hóa này được thiết lập giữa Nhân viên và Quản lý. Trong đó, tác nhân Qu ản lý 
+đóng vai trò là m ột lớp chuyên biệt hóa cao hơn, nghi ễm nhiên sở hữu toàn bộ 
+quyền hạn nghiệp vụ cơ bản của Nhân viên (như tiếp nhận đơn hàng, xử lý thanh 
+toán), đồng thời được mở rộng thêm các đặc quyền quản trị hệ thống cấp cao. 
+• Tác nhân Khách hàng: Đây là đối tượng tương tác vòng ngoài, không thuộc biên 
+chế vận hành nội bộ của quán nhưng đóng vai trò quyết định trong việc kích hoạt 
+luồng dữ liệu đầu vào cho toàn hệ thống. 
+Về phân hệ chức năng (Use Cases): 
+• Nhóm chức năng dành cho Khách hàng: Khách hàng tương tác với hệ thống duy 
+nhất qua Use Case Gọi món mang tính đ ộc lập và đại chúng nhằm tối giản hóa 
+trải nghiệm người dùng cuối. 
+• Nhóm chức năng v ận hành t ại quầy (Nhân viên và Qu ản lý đ ồng thực hiện): 
+Phân hệ này tập trung vào các nghiệp vụ xử lý trực tiếp bao gồm Use Case Quản 
+lý đơn hàng (theo dõi, đi ều phối trạng thái món ăn) và X ử lý thanh toán (tính 
+toán chi phí, áp dụng chính sách giá và xuất hóa đơn). 
+• Nhóm chức năng quản trị chuyên sâu (Dành riêng cho Quản lý): Tác nhân Quản 
+lý nắm quyền kiểm soát tuyệt đối ở tầng hệ thống thông qua bốn Use Case cốt 
+lõi nhằm tối ưu hóa hiệu suất và kiểm soát chặt chẽ quy trình kinh doanh: 
+• Quản lý thông tin nhân viên: Th ực hiện điều phối nhân sự, chấm công và phân 
+quyền tài khoản. 
+• Quản lý th ực đơn: Th ực hiện thiết lập danh m ục món ăn và đi ều chỉnh giá c ả 
+theo thời điểm. 
+• Quản lý bàn: Thực hiện tối ưu hóa không gian phục vụ và sơ đồ vị trí của quán. 
+• Quản lý hóa đơn: Thực hiện giám sát dòng tiền và tra cứu lịch sử giao dịch phục 
+vụ cho công tác kiểm toán. 
+Điểm mấu chốt trong tư duy thiết kế bảo mật của hệ thống "Nhà Ba Teria" được thể 
+hiện qua các quan h ệ bao hàm (<<include>>) hư ớng về Use Case Đăng nh ập. Ngoại trừ 
+chức năng gọi món công c ộng của Khách hàng, toàn b ộ sáu chức năng nghiệp vụ nội bộ 
+của cả Nhân viên và Quản lý đều bắt buộc phải thực hiện kèm theo hành động xác thực tài 
+--- Page 27 ---
+27 
+ 
+khoản. Ràng buộc kiến trúc này đảm bảo rằng không một cá nhân nào có thể can thiệp vào 
+dữ liệu đơn hàng, doanh thu hay nhân sự nếu chưa qua bộ lọc kiểm tra quyền truy cập của 
+hệ thống. Cơ chế này giúp thiết lập một môi trường vận hành an toàn, ngăn chặn rủi ro thất 
+thoát thông tin và t ạo nền tảng vững chắc cho việc lưu vết lịch sử thao tác của từng nhân 
+viên trong báo cáo quản trị sau này. 
+3.1.2. Sơ đồ Use Case phân rã các phân hệ 
+Use Case Đăng nhập 
+ 
+Hình 0.2. Sơ đồ Use Case đăng nhập 
+ 
+Thành phần Nội dung 
+Tên Use Case Đăng nhập 
+Actor Người dùng 
+Mô tả 
+Người dùng đăng nhập vào hệ thống bằng tài khoản và mật khẩu 
+để sử dụng các chức năng tương ứng với quyền hạn. 
+Điều kiện tiên quyết Người dùng đã được cấp tài khoản. 
+
+--- Page 28 ---
+28 
+ 
+Luồng chính  
+1. Người dùng nhập tài khoản và mật khẩu. 
+2. Hệ thống kiểm tra thông tin đăng nhập. 
+3. Hệ thống xác thực thành công và chuyển đến giao diện chính. 
+Luồng ngoại lệ Nếu thông tin đăng nhập sai, hệ thống hiển thị thông báo lỗi. 
+Hậu điều kiện 
+Người dùng truy cập được vào hệ thống theo vai trò được phân 
+quyền. 
+  
+Use Case Quản lý gọi món 
+ 
+Hình 0.3. Sơ đồ Use Case Quản lý gọi món. 
+ 
+Thành phần Nội dung 
+Tên Use Case Gọi món 
+Actor Khách hàng 
+
+--- Page 29 ---
+29 
+ 
+Mô tả 
+Khách hàng thực hiện xem menu, chọn món và gửi đơn hàng 
+đến hệ thống. 
+Điều kiện tiên quyết Khách hàng đã truy cập hệ thống thông qua mã QR tại bàn. 
+Luồng chính 
+ 1. Khách hàng xem thực đơn. 
+ 2. Khách hàng tra cứu món cần chọn. 
+ 3. Khách hàng thêm món vào giỏ hàng. 
+ 4. Khách hàng xác nhận giỏ hàng. 
+ 5. Hệ thống tạo đơn hàng. 
+ 6. Khách hàng gửi đơn hàng. 
+Luồng ngoại lệ Nếu món đã hết, hệ thống thông báo không thể đặt món. 
+Hậu điều kiện Đơn hàng được gửi đến hệ thống xử lý order. 
+  
+Use Case Quản lý giỏ hàng 
+ 
+Hình 0.4. Sơ đồ Use Case Quản lý giỏ hàng. 
+
+--- Page 30 ---
+30 
+ 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý giỏ hàng 
+Actor Khách hàng 
+Mô tả 
+Khách hàng quản lý các món đã chọn trong giỏ hàng trước khi gửi 
+order. 
+Điều kiện tiên 
+quyết 
+Khách hàng đã chọn ít nhất một món. 
+Luồng chính 
+ 1. Khách hàng xem giỏ hàng. 
+ 2. Khách hàng chỉnh sửa số lượng món. 
+ 3. Khách hàng thêm hoặc xóa món khỏi giỏ nếu cần. 
+ 4. Hệ thống cập nhật lại giỏ hàng. 
+Luồng ngoại lệ Nếu số lượng món không hợp lệ, hệ thống yêu cầu nhập lại. 
+Hậu điều kiện Giỏ hàng được cập nhật chính xác trước khi tạo đơn hàng. 
+  
+ Use Case Quản lý đơn hàng 
+ 
+Hình 0.5. Sơ đồ Use Case Quản lý đơn hàng. 
+ 
+
+--- Page 31 ---
+31 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý đơn hàng 
+Actor Barista, Nhân viên phục vụ, Quản lý, Khách hàng 
+Mô tả 
+Hệ thống hỗ trợ theo dõi và cập nhật trạng thái đơn hàng trong quá 
+trình phục vụ. 
+Điều kiện tiên 
+quyết 
+Đơn hàng đã được khách hàng gửi lên hệ thống. 
+Luồng chính 
+1. Nhân viên xem danh sách đơn hàng. 
+2. Barista cập nhật trạng thái đơn hàng. 
+3. Nhân viên phục vụ theo dõi trạng thái và giao món cho khách. 
+4. Hệ thống đồng bộ trạng thái đơn hàng theo thời gian thực. 
+Luồng ngoại lệ 
+Nếu đơn hàng bị lỗi hoặc hủy, hệ thống cập nhật trạng thái tương 
+ứng. 
+Hậu điều kiện Trạng thái đơn hàng được cập nhật chính xác trong hệ thống. 
+  
+Use Case Quản lý thanh toán 
+ 
+Hình 0.6. Sơ đồ Use Case Quản lý thanh toán. 
+
+--- Page 32 ---
+32 
+ 
+ 
+Thành phần Nội dung 
+Tên Use Case Thanh toán 
+Actor Thu ngân 
+Mô tả 
+Thu ngân thực hiện thanh toán cho đơn hàng và xuất hóa đơn 
+cho khách. 
+Điều kiện tiên quyết Đơn hàng đã hoàn thành và sẵn sàng thanh toán. 
+Luồng chính 
+ 1. Thu ngân xem đơn hàng cần thanh toán. 
+ 2. Thu ngân xác nhận hóa đơn. 
+ 3. Thu ngân chọn phương thức thanh toán. 
+ 4. Hệ thống xử lý thanh toán. 
+ 5. Hệ thống xuất hóa đơn. 
+ 6. Thu ngân in hóa đơn cho khách. 
+Luồng mở rộng Thu ngân có thể sửa đơn hàng trước khi xác nhận thanh toán. 
+Luồng ngoại lệ Nếu thanh toán thất bại, hệ thống yêu cầu thực hiện lại. 
+Hậu điều kiện Hóa đơn được lưu vào hệ thống. 
+  
+ Use Case Quản lý hóa đơn 
+--- Page 33 ---
+33 
+ 
+ 
+Hình 0.7. Sơ đồ Use Case Quản lý hóa đơn. 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý hóa đơn 
+Actor Thu ngân, Quản lý 
+Mô tả Hệ thống hỗ trợ quản lý và tra cứu hóa đơn đã thanh toán. 
+Điều kiện tiên quyết Hóa đơn đã được tạo trong hệ thống. 
+Luồng chính 
+ 1. Người dùng xem danh sách hóa đơn. 
+ 2. Người dùng tra cứu hóa đơn theo mã hoặc ngày tạo. 
+ 3. Người dùng xem chi tiết hóa đơn. 
+Luồng mở rộng Quản lý có thể xóa hóa đơn khi cần thiết. 
+Hậu điều kiện Thông tin hóa đơn được cập nhật chính xác. 
+  
+Use Case Quản lý thông tin nhân viên 
+
+--- Page 34 ---
+34 
+ 
+ 
+Hình 0.8. Sơ đồ Use Case Quản lý thông tin nhân viên. 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý thông tin nhân viên 
+Actor Quản lý 
+Mô tả 
+Quản lý thực hiện quản lý thông tin nhân viên và tài khoản đăng 
+nhập. 
+Điều kiện tiên quyết Quản lý đã đăng nhập hệ thống. 
+Luồng chính 
+ 1. Quản lý tra cứu thông tin nhân viên. 
+ 2. Quản lý xem thông tin chi tiết. 
+ 3. Quản lý thêm nhân viên mới. 
+ 4. Quản lý sửa hoặc xóa thông tin nhân viên. 
+Luồng ngoại lệ 
+Nếu thông tin nhập không hợp lệ, hệ thống hiển thị thông báo 
+lỗi. 
+Hậu điều kiện Dữ liệu nhân viên được cập nhật trong hệ thống. 
+  
+ 
+
+--- Page 35 ---
+35 
+ 
+Use Case Quản lý bàn 
+ 
+Hình 0.9. Sơ đồ Use Case Quản lý bàn. 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý bàn 
+Actor Nhân viên, Quản lý 
+Mô tả 
+Hệ thống hỗ trợ quản lý trạng thái và thông tin bàn trong quán 
+cafe. 
+Điều kiện tiên quyết Người dùng đã đăng nhập hệ thống. 
+Luồng chính 
+ 1. Người dùng xem danh sách bàn. 
+ 2. Người dùng tra cứu thông tin bàn. 
+ 3. Quản lý thêm, sửa hoặc xóa bàn. 
+ 4. Nhân viên cập nhật trạng thái bàn. 
+Hậu điều kiện Thông tin và trạng thái bàn được cập nhật chính xác. 
+
+--- Page 36 ---
+36 
+ 
+  
+ Use Case Quản lý thực đơn 
+ 
+Hình 0.10. Sơ đồ Use Case Quản lý thực đơn. 
+ 
+Thành phần Nội dung 
+Tên Use Case Quản lý thực đơn 
+Actor Quản lý, Nhân viên, Khách hàng 
+Mô tả 
+Hệ thống hỗ trợ quản lý và tra cứu thông tin món trong 
+menu. 
+Điều kiện tiên quyết Người dùng đã truy cập hệ thống. 
+Luồng chính 
+ 1. Người dùng tra cứu món trong menu. 
+ 2. Người dùng xem thông tin món. 
+ 3. Quản lý thêm món mới. 
+ 4. Quản lý sửa thông tin món. 
+
+--- Page 37 ---
+37 
+ 
+ 5. Quản lý cập nhật trạng thái món. 
+ 6. Quản lý xóa món khỏi menu. 
+Hậu điều kiện Thông tin menu được cập nhật trong hệ thống. 
+3.1.3. Sơ đồ Data Flow  
+ 
+Hình 0.11. Sơ đồ Data Flow mức 0. 
+ 
+Tác nhân Vai trò Phương thức truy cập 
+Khách 
+hàng 
+Quét QR, xem menu, đ ặt món, theo dõi 
+đơn 
+Mobile (không c ần đăng 
+nhập) 
+Barista Nhận đơn, pha chế, báo hoàn thành Mobile (đăng nhập barista) 
+Phục vụ Nhận món đã pha, giao cho khách Mobile (đăng nh ập 
+phucvu) 
+Thu ngân Thanh toán, xuất hóa đơn Desktop (đăng nh ập 
+thungan) 
+Quản lý CRUD nhân viên, menu, bàn; truy c ập 
+toàn bộ 
+Desktop (đăng nh ập 
+admin) 
+ 
+
+--- Page 38 ---
+38 
+ 
+ 
+Hình 0.12. Sơ đồ Data Flow mức 1 
+ 
+Mã Tiến trình Chức năng chính 
+1.0 Quản lý Đặt món Hiển thị menu, tìm kiếm, thêm/sửa/xóa giỏ hàng 
+2.0 Xử lý Đơn hàng Tạo đơn từ giỏ, chuyển trạng thái theo phân quyền 
+3.0 Thanh toán & Hóa đơn Tạo hóa đơn, xác nhận thanh toán, giải phóng bàn 
+4.0 Quản trị Hệ thống CRUD nhân viên, menu, bàn 
+5.0 Xác thực & Phân quyền Đăng nhập JWT, kiểm tra quyền hạn 
+ 
+
+--- Page 39 ---
+39 
+ 
+ 
+Hình 0.13. Sơ đồ Data Flow mức 2 - Tiến trình 1.0 - Quản lí đặt món. 
+ 
+Hình 0.14. Sơ đồ Data Flow mức 2 - Tiến trình 2.0 - Xử lí đơn hàng. 
+
+--- Page 40 ---
+40 
+ 
+ 
+Hình 0.15. Sơ đồ Data Flow mức 2 - Tiến trình 3.0 - Thanh toán & Hóa đơn. 
+ 
+ 
+Hình 0.16. Sơ đồ Data Flow mức 2 - Tiến trình 4.0 - Quản trị hệ thống. 
+
+--- Page 41 ---
+41 
+ 
+ 
+ 
+Hình 0.17. Sơ đồ Data Flow mức 2 - Tiến trình 5.0 - Xác thực & Phân quyền. 
+Kho dữ liệu (Data Store) 
+Mã Tên Bảng CSDL Mô tả 
+D1 
+Menu và 
+Món 
+MENU, MON 
+Danh mục thực đơn và 
+các món 
+D2 Giỏ hàng 
+GIOHANG, 
+CHITIETGIOHANG 
+Giỏ hàng tạm gắn với 
+từng bàn 
+D3 Đơn hàng 
+DONHANG, 
+CHITIETDONHANG 
+Đơn hàng chính thức và 
+chi tiết 
+D4 Hóa đơn HOADON, THANHTOAN 
+Hóa đơn và giao dịch 
+thanh toán 
+D5 Nhân viên NHANVIEN, TAIKHOAN 
+Thông tin NV và tài 
+khoản 
+
+--- Page 42 ---
+42 
+ 
+D6 Bàn BAN 
+Danh sách bàn và trạng 
+thái 
+3.2. Mô hình hóa cấu trúc (Structural Model) 
+Sơ đồ lớp (Class Diagram) 
+ 
+Hình 0.18. Sơ đồ các lớp (Class) 
+TAIKHOAN: Các thuộc tính (đều kiểu String, Not Null): TenDangNhap (PK), MatKhau, 
+QuyenHan, và MaNV (FK, Unique). Phương thức: DangNhap(), DangXuat(). 
+NHANVIEN: Các thu ộc tính (đ ều ki ểu String, Not Null): MaNV (PK), HoTen, 
+SoDienThoai, ViTri, và TrangThai. Phương th ức: TraCuuThongTin(), XemThongTin(), 
+ThemNhanVien(), SuaThongTin(), XoaNhanVien(). 
+
+--- Page 43 ---
+43 
+ 
+BAN: Các thuộc tính (đ ều kiểu String, Not Null): MaBan (PK), TenBan, TrangThai, và 
+QRCode (Unique). Phương th ức: TraCuu(), XemThongTin(), ThemBan(), 
+SuaThongTinBan(), XoaBan(), CapNhatTrangThai(). 
+MENU: Các thuộc tính (đều kiểu String): MaMenu (PK, Not Null), TenMenu (Not Null), 
+và MoTa (Nullable). Phương thức: TraCuu(), Xem(). 
+MON: Các thuộc tính (Not Null): Nhóm String g ồm MaMon (PK), TenMon, TrangThai, 
+MaMenu (FK); và DonGia (decimal, > 0). Riêng HinhAnh (String, Nullable). Phương thức: 
+ThemMon(), SuaThongTinMon(), XoaMon(), CapNhatTrangThaiMon(). 
+GIOHANG: Các thuộc tính (Not Null): MaGio (String, PK), ThoiGianTao (DateTime), 
+và MaBan (String, FK, Unique). Phương th ức: XemGioHang(), ThemMonVaoGio(), 
+XoaMonKhoiGio(), TaoDonHang(). 
+CHITIETGIOHANG: Các thuộc tính: Nhóm Not Null gồm MaGio, MaMon (đều String, 
+PK/FK) và SoLuong (int, > 0). Riêng GhiChu (String, Nullable). Phương th ức: 
+ChinhSoLuongMon(). 
+DONHANG: Các thuộc tính: Nhóm Not Null g ồm MaDH (String, PK), TrangThaiOrder 
+(String), MaBan (String, FK) và ThoiGianDat (DateTime). Nhóm Nullable (ki ểu String, 
+FK) g ồm MaNV và MaHD. Phương th ức: XemThongTinDonHang(), GuiDonHang(), 
+SuaThongTinDonHang(), XoaDonHang(), CapNhatTrangThaiDonHang(). 
+CHITIETDONHANG: Các thuộc tính: Nhóm Not Null gồm MaDH, MaMon (đều String, 
+FK), SoLuong (int, > 0) và DonGia (decimal, > 0). Riêng GhiChu (String, Nullable). (Lớp 
+chi tiết phụ thuộc toàn phần nên không có phương thức độc lập). 
+HOADON: Các thu ộc tính (Not Null): MaHD (String, PK), MaNV (String, FK), 
+ThoiGianXuat (DateTime), và TongTien (decimal, >= 0). Phương thức: TraCuuHoaDon(), 
+XemHoaDon(), TaoHoaDon(), XoaHoaDon(), XuatHoaDon(), InHoaDon(). 
+THANHTOAN: Các thu ộc tính (Not Null): Nhóm String g ồm MaThanhToan (PK), 
+PhuongThuc (Enum), MaHD (FK, Unique), MaNV (FK); ThoiGianThanhToan 
+(DateTime); và SoTien (decimal, > 0). Phương th ức: XacNhanHoaDon(), 
+ChonPhuongThucThanhToan(), XuLyThanhToan(). 
+--- Page 44 ---
+44 
+ 
+3.3. Mô hình hóa hành vi (Behavior Model) 
+3.3.1. Sơ đồ luồng tương tác Sequence diagram 
+a. Luồng gọi món 
+Quy trình: Khách hàng tự quét mã QR tại bàn, lướt menu, thêm món vào gi ỏ và gửi yêu 
+cầu đặt món thẳng đến bếp. 
+--- Page 45 ---
+45 
+ 
+ 
+
+--- Page 46 ---
+46 
+ 
+Hình 0.19. Sơ đồ luồng gọi món 
+Luồng quét QR & xem menu (1-8): Khách quét mã tại bàn -> MenuController lấy danh 
+mục và danh sách món từ Database -> UI hiển thị thực đơn. 
+ 
+Hình 0.20. Luồng quét QR & xem menu 
+ 
+Luồng thêm món vào gi ỏ (9-17): Khách ch ọn món -> CartController ki ểm tra/tạo giỏ 
+hàng -> Lưu thông tin món vào Database -> UI báo thêm thành công. 
+ 
+Hình 0.21. Luồng thêm món vào giỏ 
+ 
+Luồng gửi đơn hàng (18-38): Khách chốt đơn -> OrderController lấy dữ liệu giỏ hàng -> 
+Tạo đơn hàng mới ("Chờ") vào Database -> Xóa giỏ hàng tạm -> Cập nhật trạng thái bàn 
+("Đang có khách"). 
+ 
+
+--- Page 47 ---
+47 
+ 
+ 
+Hình 0.22. Luồng gửi đơn hàng 
+b. Luồng đăng nhập 
+Quy trình: Quá trình h ệ thống kiểm tra thông tin tài kho ản của người dùng và t ự động 
+chuyển hướng họ vào giao diện làm việc tương ứng với chức danh. 
+
+--- Page 48 ---
+48 
+ 
+ 
+Hình 0.23. Sơ đồ luồng đăng nhập 
+ 
+Luồng gửi yêu cầu (1-2): Người dùng điền tài khoản/mật khẩu -> UI đẩy dữ liệu cho hệ 
+thống (AuthController) xử lý. 
+ 
+Hình 0.24. Luồng gửi yêu cầu 
+
+--- Page 49 ---
+49 
+ 
+ 
+Luồng kiểm tra DB (3 -5): AuthController lấy thông tin t ừ Database lên để so sánh mật 
+khẩu và xem tài khoản có bị khóa không. 
+ 
+Hình 0.25. Luồng kiểm tra DB 
+ 
+Luồng thất bại (6a-7a): Sai thông tin -> Hệ thống trả lỗi -> UI hiển thị lỗi lên màn hình. 
+ 
+Hình 0.26. Luồng thất bại 
+ 
+Luồng thành công & Điều hướng (6b-7b và 8a-8d): Đúng thông tin -> Hệ thống cấp mã 
+phiên làm việc (Token) -> Dựa vào chức danh (Role) để tự động đẩy người dùng vào đúng 
+trang làm việc của họ (Barista, Thu ngân, Quản lý hoặc Phục vụ). 
+
+--- Page 50 ---
+50 
+ 
+ 
+Hình 0.27. Luồng thành công & Điều hướng 
+c. Luồng xử lý đơn hàng 
+Quy trình: Chuỗi hoạt động từ lúc Barista nhận đơn, pha chế xong, đến khi Phục vụ mang 
+món ra bàn và Khách hàng được cập nhật trạng thái.  
+
+--- Page 51 ---
+51 
+ 
+ 
+
+--- Page 52 ---
+52 
+ 
+Hình 0.28. Sơ đồ luồng xử lý đơn hàng 
+Luồng tải đơn hàng (1-6): Barista yêu cầu -> OrderController xác thực & lấy đơn "Chờ" 
+từ Database -> UI hiển thị danh sách. 
+ 
+Hình 0.29. Luồng tải đơn hàng 
+ 
+Luồng bắt đầu pha chế (7-15): Barista chọn đơn -> OrderController kiểm tra trạng thái -
+> Cập nhật đơn thành "Đang làm" vào Database -> UI chuyển đơn sang tab xử lý. 
+ 
+Hình 0.30. Luồng bắt đầu pha chế 
+ 
+Luồng hoàn thành pha chế (16-21): Barista báo xong -> OrderController cập nhật trạng 
+thái "Hoàn thành" vào Database -> UI chuyển đơn sang tab hoàn thành. 
+
+--- Page 53 ---
+53 
+ 
+ 
+Hình 0.31. Luồng hoàn thành pha chế 
+ 
+Luồng nhận & giao món (22-32): Phục vụ tải đơn "Hoàn thành" -> Bấm xác nhận giao -
+> OrderController cập nhật trạng thái "Đã giao" vào Database -> UI chuyển đơn sang tab 
+đã giao. 
+ 
+Hình 0.32. Luồng nhận & giao món 
+ 
+Luồng cập nhật cho khách (33-38): Khách hàng gửi yêu cầu kiểm tra -> OrderController 
+lấy trạng thái mới nhất từ Database -> UI hiển thị trạng thái "Đã giao" cho khách. 
+
+--- Page 54 ---
+54 
+ 
+ 
+Hình 0.33. Luồng cập nhật cho khách 
+d. Luồng thanh toán 
+Quy trình: Thu ngân xem hóa đơn c ủa một bàn, thao tác thu ti ền (tiền mặt hoặc chuyển 
+khoản) và hệ thống ghi nhận doanh thu, in hóa đơn.  
+
+--- Page 55 ---
+55 
+ 
+ 
+
+--- Page 56 ---
+56 
+ 
+Hình 0.34. Sơ đồ luồng xử lý đơn hàng 
+ 
+Luồng tải thông tin đơn (1-7): Thu ngân chọn bàn -> PaymentController xác thực -> Lấy 
+chi tiết đơn và tính tiền từ Database -> UI hiển thị hóa đơn. 
+ 
+Hình 0.35. Luồng tải thông tin 
+ 
+Luồng chọn phương thức (8-11): Thu ngân chọn cách thanh toán và xác nhận -> UI đẩy 
+dữ liệu cho PaymentController xử lý. 
+ 
+Hình 0.36. Sơ đồ Luồng chọn phương thức 
+Luồng thanh toán tiền mặt (12-15): Nhánh tiền mặt -> PaymentController cập nhật đơn 
+thành "Đã thanh toán" -> Lưu biên lai vào Database. 
+
+--- Page 57 ---
+57 
+ 
+ 
+Hình 0.37. Sơ đồ Luồng thanh toán tiền mặt 
+Luồng thanh toán chuyển khoản/QR (16-22): Nhánh chuyển khoản -> Hệ thống tạo mã 
+QR -> Khách quét mã -> Thu ngân xác nh ận tiền vào -> Cập nhật đơn thành "Đã thanh 
+toán" vào Database. 
+ 
+Hình 0.38. Sơ đồ Luồng thanh toán chuyển khoản/QR 
+ 
+Luồng hoàn tất & In hóa đơn (23-25): Thanh toán thành công -> Hệ thống trả kết quả -
+> UI tự động kích hoạt lệnh in hóa đơn giấy. 
+
+--- Page 58 ---
+58 
+ 
+ 
+Hình 0.39. Sơ đồ Luồng hoàn tất & In hóa đơn 
+e. Luồng thêm nhân viên 
+Quy trình: Quản lý tạo hồ sơ mới cho nhân viên vào hệ thống, kèm theo việc cấp tài khoản 
+đăng nhập để nhân viên làm việc . 
+
+--- Page 59 ---
+59 
+ 
+ 
+Hình 0.40. Sơ đồ luồng thêm nhân viên 
+Luồng tải danh sách (1 -7): Quản lý m ở trang -> StaffController xác th ực -> Kéo danh 
+sách nhân viên từ Database -> UI hiển thị danh sách. 
+
+--- Page 60 ---
+60 
+ 
+ 
+Hình 0.41. Sơ đồ Luồng tải danh sách 
+ 
+Luồng nhập thông tin (8-11): Quản lý mở form thêm mới -> Điền thông tin nhân viên -> 
+Bấm gửi thông tin trên UI. 
+ 
+Hình 0.42. Sơ đồ Luồng nhập thông tin 
+Luồng kiểm tra dữ liệu (12-15): StaffController nhận yêu cầu -> Truy xuất Database để 
+kiểm tra trùng lặp thông tin (username, phone). 
+
+--- Page 61 ---
+61 
+ 
+ 
+Hình 0.43. Sơ đồ Luồng kiểm tra dữ liệu 
+ 
+Luồng lỗi / Không hợp lệ (16-17): Dữ liệu bị trùng -> Hệ thống trả về lỗi -> UI hiển thị 
+thông báo lỗi. 
+ 
+Hình 0.44. Sơ đồ Luồng lỗi / Không hợp lệ 
+ 
+Luồng hợp lệ & Lưu (18-24): Dữ liệu đúng -> StaffController lưu hồ sơ vào Database -> 
+Tạo tài khoản đăng nhập (tùy chọn) -> UI báo thành công và tải lại trang. 
+
+--- Page 62 ---
+62 
+ 
+ 
+Hình 0.45. Sơ đồ Luồng hợp lệ & lưu 
+3.3.2. Sơ đồ luồng xử lý Activity Diagram 
+Quản lí thực đơn : 
+
+--- Page 63 ---
+63 
+ 
+ 
+Hình 0.46. Sơ đồ luồng xử lý quản lý thực đơn 
+Quản lí thanh toán:  
+
+--- Page 64 ---
+64 
+ 
+ 
+Hình 0.47. Sơ đồ luồng xử lý quản lý thanh toán 
+Thêm, sửa, xóa giỏ hàng: 
+
+--- Page 65 ---
+65 
+ 
+ 
+Hình 0.48. Sơ đồ luồng sử lý thêm, sửa, xóa giỏ hàng 
+Xem giỏ hàng: 
+
+--- Page 66 ---
+66 
+ 
+ 
+Hình 0.49. Sơ đồ luồng xử lý xem giỏ hàng 
+
+--- Page 67 ---
+67 
+ 
+ 
+Quản lí hóa đơn:  
+ 
+Hình 0.50. Sơ đồ luồng xử lý quản lí hóa đơn 
+ 
+Quản lí nhân viên: 
+
+--- Page 68 ---
+68 
+ 
+ 
+Hình 0.51. Sơ đồ luồng xử lý quản lý nhân viên 
+ 
+Quản lí bàn: 
+
+--- Page 69 ---
+69 
+ 
+ 
+Hình 0.52. Sơ đồ luồng xử lý quản lý bàn 
+   
+Quản lý đơn hàng: 
+
+--- Page 70 ---
+70 
+ 
+ 
+Hình 0.53. Sơ đồ luồng xử lý quản lý bàn 
+  
+
+--- Page 71 ---
+71 
+ 
+CHƯƠNG 4: THIẾT KẾ HỆ THỐNG VÀ GIAO DIỆN 
+4.1. Thiết kế Cơ sở dữ liệu 
+4.1.2. Sơ đồ thực thể mối quan hệ (ERD) 
+ 
+Hình 0.1. Sơ đồ thực thể mối quan hệ 
+Hệ thống bao gồm 11 thực thể, bao gồm 
+• NHANVIEN: Lưu trữ thông tin cá nhân và vai trò của nhân viên. PK: MaNV. 
+• TAIKHOAN: Dữ liệu đăng nhập và phân quyền hệ thống. PK: TenDangNhap. FK: 
+MaNV. 
+• MENU: Danh mục phân loại các nhóm món. PK: MaMenu. 
+• MON: Danh sách sản phẩm kinh doanh chi tiết. PK: MaMon. FK: MaMenu. 
+• BAN: Định danh và trạng thái vị trí ngồi của khách. PK: MaBan. 
+• GIOHANG: Ghi nhận phiên gọi món tạm thời của khách qua mã QR. PK: MaGio. 
+FK: MaBan. 
+• CHITIETGIOHANG: Chi tiết các món khách đang ch ọn tạm thời. PK t ổ hợp: 
+MaGio, MaMon. FK: MaGio, MaMon. 
+• DONHANG: Đơn hàng chính th ức được ghi nh ận để tiến hành pha ch ế/phục vụ. 
+PK: MaDH. FK: MaBan, MaNV, MaHD. 
+• CHITIETDONHANG: Chi tiết danh sách món trong đơn hàng đang x ử lý. PK tổ 
+hợp: MaDH, MaMon. FK: MaDH, MaMon. 
+
+--- Page 72 ---
+72 
+ 
+• HOADON: Chứng từ tổng hợp doanh thu cuối cùng của một hoặc nhiều đơn hàng. 
+PK: MaHD. FK: MaNV. 
+• THANHTOAN: Ghi nhận dữ liệu đối soát giao dịch tài chính. PK: MaThanhToan. 
+FK: MaHD, MaNV. 
+4.1.2. Ràng buộc Toàn vẹn (Integrity Constraints)  
+a. Miền giá trị (Domain Constraints)  
+• Quy định tập giá trị cho phép của các thuộc tính trạng thái và phân loại: 
+• BAN.TrangThai: "Trống", "Đang có khách". 
+• MON.TrangThai: "Còn món", "Hết món". 
+• DONHANG.TrangThaiOrder: "Chờ", "Đang làm", "Hoàn thành", "Đã giao". 
+• THANHTOAN.PhuongThuc (Enum): "TienMat", "CK", "Visa". 
+b. Khóa chính tổ hợp (Composite Primary Keys)  
+• CHITIETGIOHANG (MaGio, MaMon): Một món chỉ xuất hiện một dòng duy nhất 
+trên cùng m ột giỏ hàng (nếu khách ch ọn thêm, h ệ thống chỉ cập nhật thuộc tính 
+SoLuong). 
+• CHITIETDONHANG (MaDH, MaMon): Tương tự, một sản phẩm chỉ ghi nhận một 
+dòng chi tiết trên cùng một đơn hàng chính thức. 
+c. Khóa ngoại (Foreign Keys)  
+• Mọi giá trị khóa ngoại (FK) xuất hiện trong bảng phụ thuộc phải tồn tại tương ứng 
+ở dạng khóa chính (PK) trong bảng tham chiếu gốc. 
+d. Ràng buộc Bản số (Cardinality Constraints) 
+Loại quan hệ Các cặp thực thể / Lớp tham gia 
+1 - 1  
+(Một - Một / M ột - Không ho ặc 
+Một)  
+NHANVIEN 1 - 1 TAIKHOAN 
+BAN 1 - 0..1  GIOHANG 
+HOADON 1 - 0..1 THANHTOAN 
+1 - N 
+(Một - Nhiều) 
+NHANVIEN 1 - N HOADON 
+NHANVIEN 1 - N DONHANG 
+NHANVIEN 1 - N THANHTOAN 
+--- Page 73 ---
+73 
+ 
+BAN 1 - N DONHANG 
+HOADON 1 - N DONHANG 
+MENU 1 - N MON 
+MON 1 - N CHITIETGIOHANG 
+MON 1 - N CHITIETDONHANG 
+Composition CHITIETDONHANG ph ụ thuộc 
+DONHANG 
+CHITIETGIOHANG ph ụ thuộc 
+GIOHANG 
+Bảng 1. Bảng ràng buộc Bản số. 
+4.2. Thiết kế kiến trúc hệ thống 
+4.2.1. Kiến trúc tổng quan (Client - Server Architecture) 
+Hệ thống Nhà Ba Teria đư ợc thiết kế theo kiến trúc 3 t ầng (Three-tier Architecture), 
+tách biệt rõ ràng giữa tầng trình bày (Presentation), tầng xử lý nghiệp vụ (Business Logic) 
+và tầng dữ liệu (Data). 
+--- Page 74 ---
+74 
+ 
+ 
+Hình 0.2. Sơ đồ kiến trúc tổng quan hệ thống. 
+Mô tả vai trò từng tầng: 
+Tầng Vai trò Công nghệ 
+Presentation 
+Hiển thị giao diện, tương tác người dùng, 
+gửi/nhận dữ liệu qua API 
+React 18, Vite, 
+CSS3 
+Business 
+Logic 
+Xử lý nghiệp vụ, xác thực, phân quyền, 
+điều phối dữ liệu 
+Express.js, Node.js, 
+JWT 
+Data Lưu trữ, truy vấn dữ liệu quan hệ 
+Supabase 
+(PostgreSQL) 
+Bảng 2. Bảng vai trò từng tầng trong kiến trúc hệ thống 
+4.2.2. Công nghệ sử dụng 
+Thành phần Công nghệ Mục đích 
+
+--- Page 75 ---
+75 
+ 
+Frontend 
+Framework 
+React Xây d ựng giao di ện SPA 
+(Single Page Application) 
+Build Tool Vite Biên d ịch và đóng gói mã 
+nguồn Frontend 
+Routing React Router DOM Điều hướng các trang trong 
+ứng dụng SPA 
+Icon Library Lucide React Bộ icon SVG nh ất quán, 
+nhẹ 
+Backend 
+Runtime 
+Node.js Môi trường chạy JavaScript 
+phía server 
+Backend 
+Framework 
+Express.js Xây dựng RESTful API 
+Authentication JSON Web Token 
+(JWT) 
+Xác th ực và phân quy ền 
+người dùng 
+Database PostgreSQL 
+(Supabase) 
+Hệ quản trị CSDL quan h ệ 
+trên Cloud 
+Database SDK @supabase/supabase-
+js 
+Kết n ối và truy v ấn 
+Supabase từ Backend 
+CORS cors Cho phép giao ti ếp cross -
+origin gi ữa Frontend và 
+Backend 
+Env 
+Management 
+dotenv Quản lý biến môi trường 
+Bảng 3. Bảng công nghệ sử dụng. 
+--- Page 76 ---
+76 
+ 
+4.2.3. Cơ chế xác thực và phân quyền 
+a. Luồng xác thực JWT 
+ 
+Hình 0.3. . Sơ đồ luồng xác thực JWT. 
+b. Ma trận phân quyền truy cập 
+Module / Tính 
+năng 
+Khách Barista Phục 
+vụ 
+Thu 
+ngân 
+Quản 
+lý 
+Xem menu, 
+đặt món 
+V x x x x 
+Giỏ hàng, g ửi 
+đơn 
+V x x x x 
+Theo dõi đơn 
+hàng 
+V x x x x 
+Xem b ảng 
+đơn (Order 
+Board) 
+x V V V V 
+
+--- Page 77 ---
+77 
+ 
+Chuyển Ch ờ 
+→ Đang làm 
+x V x x V 
+Chuyển Đang 
+làm → Hoàn 
+thành 
+x V x x V 
+Chuyển Hoàn 
+thành → Đã 
+giao 
+x x V x V 
+Thanh toán, 
+xuất hóa đơn 
+x x x V V 
+Quản lý Menu 
+/ Bàn / NV 
+x x x x V 
+Bảng 4. Bảng ma trận phân quyền truy cập. 
+4.2.4. Cấu trúc thư mục dự án 
+cafe-app/ 
+├── client/                          # Frontend (React + Vite) 
+│   ├── public/ 
+│   │   └── images/                  # Hình ảnh tĩnh (menu, background) 
+│   ├── src/ 
+│   │   ├── components/ 
+│   │   │   └── Layout/ 
+│   │   │       ├── DesktopLayout.jsx   # Layout Sidebar cho Desktop 
+│   │   │       └── DesktopLayout.css 
+│   │   ├── context/ 
+│   │   │   └── AuthContext.jsx      # Quản lý trạng thái xác thực 
+│   │   ├── pages/ 
+│   │   │   ├── Customer/            # Giao diện khách hàng 
+--- Page 78 ---
+78 
+ 
+│   │   │   │   ├── CustomerMenu.jsx # Trang đặt món 
+│   │   │   │   ├── Cart.jsx         # Giỏ hàng 
+│   │   │   │   └── OrderStatus.jsx  # Theo dõi đơn hàng 
+│   │   │   ├── Staff/ 
+│   │   │   │   └── OrderBoard.jsx   # Bảng quản lý đơn (Barista/Phục vụ) 
+│   │   │   ├── Cashier/ 
+│   │   │   │   ├── Payment.jsx      # Trang thanh toán 
+│   │   │   │   └── InvoiceList.jsx  # Danh sách hóa đơn 
+│   │   │   ├── Manager/ 
+│   │   │   │   ├── MenuMgmt.jsx     # Quản lý menu & món 
+│   │   │   │   ├── TableMgmt.jsx    # Quản lý bàn 
+│   │   │   │   └── StaffMgmt.jsx    # Quản lý nhân viên 
+│   │   │   └── Login/ 
+│   │   │       └── Login.jsx        # Trang đăng nhập 
+│   │   ├── services/ 
+│   │   │   └── api.js               # Lớp giao tiếp API (fetch wrapper) 
+│   │   ├── App.jsx                  # Cấu hình routing & ProtectedRoute 
+│   │   ├── App.css                  # Style chung cho app 
+│   │   └── index.css                # CSS variables & design tokens 
+│   ├── vercel.json                  # Cấu hình deploy Vercel (SPA rewrite) 
+│   └── vite.config.js 
+│ 
+├── server/                          # Backend (Express.js) 
+│   ├── config/ 
+│   │   └── db.js                    # Khởi tạo Supabase Client 
+│   ├── middleware/ 
+│   │   └── auth.js                  # JWT Auth Middleware 
+│   ├── routes/ 
+│   │   ├── auth.js                  # /api/auth — Đăng nhập 
+--- Page 79 ---
+79 
+ 
+│   │   ├── menu.js                  # /api/menu — Menu & Món 
+│   │   ├── cart.js                  # /api/cart — Giỏ hàng 
+│   │   ├── orders.js                # /api/orders — Đơn hàng 
+│   │   ├── tables.js                # /api/tables — Bàn 
+│   │   ├── invoices.js              # /api/invoices — Hóa đơn 
+│   │   ├── payments.js              # /api/payments — Thanh toán 
+│   │   └── staff.js                 # /api/staff — Nhân viên 
+│   ├── server.js                    # Entry point, khởi tạo Express 
+│   └── .env                         # Biến môi trường 
+│ 
+└── database/ 
+└── schema.sql                   # Script khởi tạo CSDL 
+4.3. Thiết kế giao diện 
+4.3.1. Nguyên tắt thiết kế giao diện 
+Giao diện hệ thống Nhà Ba Teria được thiết kế tuân theo các nguyên tắc sau: 
+Nguyên tắc Mô tả chi tiết 
+Mobile-first Ưu tiên thiết kế cho thiết bị di động (tối ưu iPhone 14 Pro 
+Max — 430×932px). Giao di ện khách hàng và nhân viên 
+phục vụ/barista được tối ưu hoàn toàn cho màn hình c ảm 
+ứng 
+Responsive 
+Layout 
+Giao diện quản lý và thu ngân sử dụng Desktop Layout với 
+Sidebar đi ều hư ớng, t ự động thích ứng trên nhi ều kích 
+thước màn hình 
+Glassmorphism Áp dụng hiệu ứng kính m ờ (backdrop-filter blur) cho các 
+thành ph ần giao di ện chính: khung đăng nh ập, header, 
+thanh phân loại, thẻ món ăn 
+--- Page 80 ---
+80 
+ 
+Hệ màu chủ đạo Tông màu nâu cafe (primary:#8B4513), cream (#FFF8F0), 
+trắng - tạo cảm giác ấm áp, sang trọng phù hợp với thương 
+hiệu quán cafe 
+Nhất quán Sử dụng hệ thống CSS Variables (Design Tokens) cho toàn 
+bộ màu sắc, spacing, border-radius, shadow, đảm bảo đồng 
+nhất trên mọi trang 
+Trực quan Sử dụng icon từ thư viện Lucide React thay cho text thuần, 
+giúp người dùng thao tác nhanh chóng mà không c ần đọc 
+nhiều 
+Bảng 5. Bảng nguyên tắc thiết kế giao diện 
+4.3.2. Nhóm giao diện Khách hàng (Customer - Mobile) 
+• Đối tượng sử dụng: Khách hàng (không cần đăng nhập) 
+• Thiết bị: Điện thoại di động 
+• Phương th ức truy c ập: Quét mã QR trên bàn → M ở trình duy ệt → Route 
+/order/:tableId 
+MH-01: Trang Đặt món - Tab “Tất cả” 
+--- Page 81 ---
+81 
+ 
+ 
+Hình 0.4. Giao diện trang đặt món. 
+• Mô tả: Đây là màn hình chính c ủa khách hàng sau khi quét mã QR. Giao di ện bao 
+gồm: 
+• Header: Logo "Nhà Ba Teria", nhãn số bàn (VD: "Bàn 01"), nút theo dõi đơn hàng 
+(icon giỏ hàng) ở góc phải. Header sử dụng hiệu ứng glassmorphism với tông nâu 
+trong suốt. 
+• Thanh tìm kiếm: Cho phép tìm ki ếm món ăn theo tên. Khi cu ộn xuống, thanh tìm 
+kiếm tự động thu gọn thành nút tròn icon kính lúp, nằm cạnh thanh phân loại để tiết 
+kiệm không gian. 
+• Thanh phân loại (Category Tabs): D ạng thanh cuộn ngang gồm các nút: "T ất cả", 
+"Cà phê", "Trà", "Sinh tố", "Nước ép",... Cố định (sticky) ngay dưới header khi cuộn 
+trang. 
+• Danh sách món: Ở tab "Tất cả", các món được nhóm theo danh mục với tiêu đề và 
+đường kẻ phân cách. Mỗi thẻ món hiển thị: hình ảnh, tên món, giá tiền, nút "Thêm". 
+• Background: Hình n ền quán cafe đư ợc làm m ờ (blur 8px) k ết hợp overlay tr ắng 
+trong suốt, tạo chiều sâu cho giao diện. 
+• Các thành phần tương tác: 
+
+--- Page 82 ---
+82 
+ 
+• Bấm nút + Thêm → Thêm món vào gi ỏ, nút chuyển thành bộ điều khiển số lượng 
+(- / số / +) 
+• Bấm icon giỏ hàng trên header → Chuy ển đến trang Giỏ hàng hoặc Theo dõi đơn 
+hàng (nếu đã có đơn đang xử lý) 
+MH-02: Trang Đặt món - Tab phân loại cụ thể 
+ 
+Hình 0.5. Giao diện trang đặt món phân loại cụ thể 
+• Mô tả: Khi khách chọn một tab phân lo ại cụ thể (VD: "Cà phê"), ch ỉ hiển thị các 
+món thuộc danh m ục đó dư ới dạng lưới 2 c ột, không có đư ờng phân cách nhóm. 
+Tab đang chọn được highlight bằng màu nâu primary. 
+MH-03: Giỏ hàng (Cart) 
+
+--- Page 83 ---
+83 
+ 
+ 
+Hình 0.6. Giao diện trang giỏ hàng. 
+Mô tả: Trang giỏ hàng hiển thị danh sách các món đã chọn trước khi gửi đơn. Bao gồm: 
+• Header: Nút quay lại (←), tiêu đề "Giỏ hàng", nhãn bàn 
+• Danh sách món trong gi ỏ: Mỗi item hiển thị: hình ảnh thu nhỏ (64×64px), tên 
+món, đơn giá, bộ điều khiển số lượng, thành tiền, nút ghi chú (icon bút), nút xóa 
+(icon thùng rác) 
+• Thanh tóm t ắt (c ố định dư ới cùng): T ổng s ố món, t ổng ti ền (font l ớn, màu 
+accent), nút "Gửi đơn hàng" (full-width, màu primary) 
+Các thành phần tương tác: 
+• Nút +/- → Thay đổi số lượng món 
+• Icon bút chì → Mở ô nhập ghi chú cho từng món (VD: "ít đường", "nhiều đá") 
+• Icon thùng rác → Xóa món khỏi giỏ 
+• Nút "Gửi đơn hàng" → Gọi API tạo đơn, chuyển sang trang theo dõi 
+MH-04: Theo dõi đơn hàng (Order Status) 
+
+--- Page 84 ---
+84 
+ 
+ 
+Hình 0.7. Giao diện trang theo dõi đơn hàng. 
+Mô tả: Sau khi gửi đơn thành công, khách được chuyển đến trang theo dõi trạng thái đơn 
+hàng theo thời gian thực. Bao gồm: 
+• Header: Nút quay lại, tiêu đề "Theo dõi đơn hàng", mã đơn (VD: "DH001"), nút 
+refresh 
+• Hero section: Icon tr ạng thái lớn (72px) v ới màu tương ứng, tiêu đ ề trạng thái 
+(VD: "Đang pha chế"), mô tả phụ 
+• Thanh tiến độ (Progress Steps): 4 bư ớc ngang: Đã đ ặt → Đang làm → Hoàn 
+thành → Đã giao. Bước hiện tại được phóng to và highlight 
+• Chi tiết đơn hàng: Danh sách món đã đặt kèm số lượng, đơn giá và tổng tiền 
+• Auto-refresh: Trang tự động polling mỗi 5 giây để cập nhật trạng thái mới nhất 
+MH-05: Giỏ hàng trống (Empty Cart) 
+
+--- Page 85 ---
+85 
+ 
+ 
+Hình 0.8. Trang giỏ hàng trống. 
+• Mô tả: Khi giỏ hàng chưa có món nào, hi ển thị trạng thái tr ống với icon gi ỏ 
+hàng lớn và thông báo "Giỏ hàng trống", kèm nút quay lại menu để tiếp tục chọn 
+món. 
+4.3.3. Giao diện Đăng nhập (Login) 
+MH-06: Màn hình Đăng nhập 
+
+--- Page 86 ---
+86 
+ 
+ 
+Hình 0.9. Trang đăng nhập. 
+Mô tả: Trang đăng nhập dành cho nhân viên và quản lý. Thiết kế nổi bật với: 
+• Background: Hình ảnh quán cafe (background.jpg) đư ợc làm m ờ (blur 10px) ph ủ 
+toàn màn hình, kết hợp lớp overlay tối (rgba 40%) để tạo chiều sâu 
+• Khung đăng nhập (Glassmorphism): Nền trắng trong suốt 85%, hiệu ứng backdrop-
+filter: blur(12px), viền sáng nhẹ, bo góc lớn, đổ bóng 
+• Logo: Icon cafe trong h ộp gradient nâu (72×72px), tên h ệ thống "Nhà Ba Teria", 
+phụ đề "Hệ thống quản lý quán cafe" 
+• Form đăng nh ập: Ô nh ập Tài kho ản, ô nh ập Mật khẩu (có nút hi ện/ẩn mật khẩu), 
+nút "Đăng nhập" (full-width) 
+• Demo accounts: Khu v ực hiển thị các tài kho ản demo (admin, thungan, phucvu, 
+barista) dưới dạng badge có thể bấm để tự điền 
+Các thành phần tương tác: 
+• Bấm badge tài khoản demo → Tự động điền tên đăng nhập và mật khẩu 
+• Icon mắt → Hiện/ẩn mật khẩu 
+
+--- Page 87 ---
+87 
+ 
+• Nút "Đăng nhập" → Xác thực và redirect theo vai trò 
+4.3.4. Nhóm giao diện Nhân viên (Staff - Mobile) 
+• Đối tượng sử dụng: Barista, Phục vụ 
+• Thiết bị: Điện thoại di động 
+• Phương thức truy cập: Đăng nhập → Tự động redirect đến /staff/orders 
+MH-07: Bảng đơn hàng - Tab "Chờ" 
+ 
+Hình 0.10. Giao diện trang “Chờ” tại bảng đơn hàng 
+Mô tả: Màn hình chính của Barista/Phục vụ, hiển thị danh sách đơn hàng theo trạng thái. 
+Bao gồm: 
+• Header: Logo "Nhà Ba Teria", tên nhân viên đang đăng nhập, nút refresh, nút đăng 
+xuất 
+• Thanh tab trạng thái: 4 tab: Chờ (vàng), Đang làm (xanh dương), Hoàn thành (xanh 
+lá), Đã giao (nâu). Mỗi tab hiển thị badge đếm số đơn 
+• Danh sách đơn hàng (Card): M ỗi card gồm: mã đơn, nhãn bàn, th ời gian đặt, danh 
+sách món (tên + số lượng), nút hành động ở dưới cùng 
+
+--- Page 88 ---
+88 
+ 
+• Nút hành động: Với tab "Chờ", nút là "Bắt đầu làm" (màu xanh dương) — chỉ hiển 
+thị cho role barista 
+MH-08: Bảng đơn hàng - Tab "Đang làm" 
+ 
+Hình 0.11. Giao diện Trang “Đang làm” tại bảng đơn hàng 
+Mô tả: Hiển thị các đơn hàng đang đư ợc Barista pha ch ế. Nút hành đ ộng chuyển thành 
+"Hoàn thành" (màu xanh lá). Khi bấm, đơn sẽ chuyển sang tab "Hoàn thành". 
+MH-09: Bảng đơn hàng - Tab "Hoàn thành" (Phục vụ) 
+
+--- Page 89 ---
+89 
+ 
+ 
+Hình 0.12. Giao diện Trang “Hoàn thành” tại bảng đơn hàng 
+Mô tả: Dành cho Ph ục vụ - hiển thị các đơn đã pha ch ế xong, chờ giao cho khách. Nút 
+hành động là "Đã giao" (màu nâu). Khi b ấm, đơn chuy ển sang tr ạng thái "Đã giao" và 
+khách hàng sẽ nhận được cập nhật trên trang theo dõi. 
+4.3.5. Nhóm giao diện Thu ngân (Cashier - Desktop) 
+• Đối tượng sử dụng: Thu ngân 
+• Thiết bị: Máy tính Desktop 
+• Phương thức truy cập: Đăng nhập → Redirect đến /cashier/payment 
+• Layout: Desktop Layout với Sidebar điều hướng bên trái 
+MH-10: Thanh toán - Chọn bàn và xem đơn hàng 
+
+--- Page 90 ---
+90 
+ 
+ 
+Hình 0.13. Giao diện trang thanh toán 
+Mô tả: Giao diện thanh toán chính của Thu ngân. Bao gồm: 
+• Sidebar (bên trái): Logo, danh sách menu đi ều hướng (Thanh toán, Hóa đơn, 
+Order Board), thông tin user đang đăng nhập, nút Đăng xuất. Sidebar có thể thu 
+gọn (collapsed) để tăng diện tích hiển thị 
+• Khu vực chính: Lưới bàn (Grid) hiển thị tất cả bàn đang có khách (TrangThai = 
+DangCoKhach). Mỗi ô bàn hiển thị tên bàn và số lượng đơn chưa thanh toán 
+• Panel chi tiết (khi chọn bàn): Danh sách đơn hàng c ủa bàn được chọn. Chỉ đơn 
+hàng có trạng thái "Đã giao" (DaGiao) m ới cho phép tick chọn thanh toán. Các 
+đơn chưa giao hiển thị mờ kèm nhãn trạng thái. 
+• Hiển thị tổng tiền cần thanh toán (tính t ừ chi tiết đơn hàng: SUM(SoLuong × 
+DonGia)) 
+• Chọn phương thức thanh toán: Tiền mặt, Chuyển khoản, Visa 
+• Nút "Xác nhận thanh toán" → Tạo hóa đơn (HOADON) → Ghi nhận thanh toán 
+(THANHTOAN) → Kiểm tra nếu bàn không còn đơn chưa thanh toán → Gi ải 
+phóng bàn về trạng thái "Trống" 
+MH-11: Danh sách Hóa đơn (Invoice List) 
+
+--- Page 91 ---
+91 
+ 
+ 
+Hình 0.14. Giao diện trang dánh sách hóa đơn 
+Mô tả: Trang quản lý danh sách hóa đơn đã xuất. Bao gồm: 
+• Bảng dữ liệu: Mã hóa đơn, thời gian xuất, tổng tiền, nhân viên xuất, phương thức 
+thanh toán 
+4.3.6. Nhóm giao diện Quản lý (Manager - Desktop) 
+• Đối tượng sử dụng: Quản lý (Admin) 
+• Thiết bị: Máy tính Desktop 
+• Phương thức truy cập: Đăng nhập → Redirect đến /manager/menu 
+• Layout: Desktop Layout v ới Sidebar đ ầy đủ (6 mục: Quản lý Menu, Qu ản lý 
+Bàn, Nhân viên, Thanh toán, Hóa đơn, Order Board) 
+MH-12: Quản lý Menu - Danh sách món 
+
+--- Page 92 ---
+92 
+ 
+ 
+Hình 0.15. Giao diện trang quản lý Menu 
+Mô tả: Trang quản lý thực đơn cho phép Admin thêm/sửa/xóa các món. Bao gồm: 
+• Thanh công cụ: Nút "Thêm món mới", ô tìm kiếm, bộ lọc theo danh mục 
+• Danh sách món: Hiển thị dạng bảng với các cột: Hình ảnh, Mã món, Tên món, 
+Danh mục, Đơn giá, Trạng thái (Còn món/Hết món), Hành động (Sửa/Xóa) 
+• Toggle trạng thái: Nút bật/tắt nhanh trạng thái Còn món ↔ Hết món mà không 
+cần mở form sửa 
+MH-13: Quản lý Menu – Modal thêm/sửa món 
+ 
+Hình 0.16. Giao diện Trang Quản lý Menu - Thêm/Sửa món 
+
+--- Page 93 ---
+93 
+ 
+Mô tả: Modal popup hiển thị form nhập liệu: 
+• Mã món (tự sinh khi thêm mới, readonly khi sửa) 
+• Tên món (bắt buộc) 
+• Danh mục / Menu (dropdown chọn từ danh sách MENU) 
+• Đơn giá (bắt buộc, định dạng số) 
+• Tên file hình ảnh 
+• Trạng thái (Còn món / Hết món) 
+• Nút "Thêm mới" / "Cập nhật" và nút "Hủy" 
+MH-14: Quản lý Bàn – Danh sách bàn 
+ 
+Hình 0.17. Giao diện Trang Quản lý Bàn 
+Mô tả: Trang quản lý bàn hiển thị tất cả các bàn trong quán. Mỗi bàn hiển thị dưới dạng 
+card với: 
+• Tên bàn (VD: "Bàn 01") 
+• Trạng thái: "Trống" (xanh lá) hoặc "Đang có khách" (đỏ/cam) 
+• Mã QR (nếu có) 
+• Nút Sửa, Xóa 
+MH-15: Quản lý Bàn – Modal thêm/sửa bàn 
+
+--- Page 94 ---
+94 
+ 
+ 
+Hình 0.18. Giao diện Trang Quản lý Bàn - Thêm/Sửa bàn. 
+Mô tả: Modal form bao gồm: Mã bàn (tự sinh), Tên bàn, Trạng thái, đường dẫn QR Code. 
+MH-16: Quản lý Nhân viên – Danh sách nhân viên 
+ 
+Hình 0.19. Giao diện trang quản lý nhân viên 
+Mô tả: Trang quản lý nhân viên với bảng dữ liệu hiển thị: 
+• Mã NV, Họ tên, Số điện thoại, Vị trí, Trạng thái (Đang làm/Đã nghỉ) 
+• Tên đăng nhập, Quyền hạn (nếu có tài khoản) 
+• Nút Sửa, Xóa cho từng hàng 
+• Nút "Thêm nhân viên" ở thanh công cụ phía trên 
+
+--- Page 95 ---
+95 
+ 
+MH-17: Quản lý Nhân viên – Modal thêm/sửa nhân viên 
+ 
+Hình 0.20. Giao diện trang Trang Quản lý Nhân viên - Thêm/Sửa nhân viên. 
+Mô tả: Modal form gồm 2 phần: 
+• Thông tin nhân viên: Mã NV (tự sinh), Họ tên, Số điện thoại, Vị trí (dropdown: 
+Barista/Phục vụ/Thu ngân/Quản lý), Trạng thái 
+• Thông tin tài kho ản (tùy ch ọn): Tên đăng nh ập, M ật kh ẩu, Quy ền h ạn 
+(admin/thungan/phucvu/barista) 
+MH-18: Sidebar điều hướng Desktop Layout 
+ 
+Hình 0.21. Giao diện thanh Sidebar điều hướng. 
+
+--- Page 96 ---
+96 
+ 
+Mô tả: Sidebar điều hướng dùng chung cho giao diện Thu ngân và Quản lý: 
+• Trạng thái m ở rộng: Hiển thị icon + label cho m ỗi mục (VD: Qu ản lý Menu, 
+Quản lý Bàn,...) 
+• Trạng thái thu gọn: Chỉ hiển thị icon, tiết kiệm không gian 
+• Footer: Avatar chữ cái đầu, tên nhân viên, vai trò, nút Đăng xuất 
+• Highlight: Mục đang active được highlight bằng background primary 
+4.3.7. Bảng tổng hợp danh sách màn hình 
+Mã Tên màn hình Vai trò Route 
+MH-
+01 
+Đặt món – Tab "T ất 
+cả" 
+Khách 
+hàng 
+/order/:tableId 
+MH-
+02 
+Đặt món – Tab phân 
+loại 
+Khách 
+hàng 
+/order/:tableId 
+MH-
+03 
+Giỏ hàng 
+Khách 
+hàng 
+/cart/:tableId 
+MH-
+04 
+Theo dõi đơn hàng 
+Khách 
+hàng 
+/order-
+status/:orderId 
+MH-
+05 
+Giỏ hàng trống 
+Khách 
+hàng 
+/cart/:tableId 
+MH-
+06 
+Đăng nhập 
+NV / Qu ản 
+lý 
+/login 
+MH-
+07 
+Order Board – Tab 
+"Chờ" 
+Barista /staff/orders 
+MH-
+08 
+Order Board – Tab 
+"Đang làm" 
+Barista /staff/orders 
+--- Page 97 ---
+97 
+ 
+MH-
+09 
+Order Board – Tab 
+"Hoàn thành" 
+Phục vụ /staff/orders 
+MH-
+10 
+Thanh toán – Chọn 
+bàn 
+Thu ngân /cashier/payment 
+MH-
+11 
+Danh sách hóa đơn 
+Thu ngân /cashier/invoices 
+MH-
+12 
+Quản lý Menu – DS 
+món 
+Quản lý /manager/menu 
+MH-
+13 
+Quản lý Menu – 
+Modal 
+Quản lý /manager/menu 
+MH-
+14 
+Quản lý Bàn – DS bàn 
+Quản lý /manager/tables 
+MH-
+15 
+Quản lý Bàn – Modal 
+Quản lý /manager/tables 
+MH-
+16 
+Quản lý NV – DS 
+nhân viên 
+Quản lý /manager/staff 
+MH-
+17 
+Quản lý NV – Modal 
+Quản lý /manager/staff 
+MH-
+18 
+Sidebar Desktop 
+Layout 
+Thu ngân / 
+QL 
+Mọi trang Desktop 
+ 
+  
+--- Page 98 ---
+98 
+ 
+CHƯƠNG 5: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN 
+5.1. Kết quả đạt được của nghiên cứu 
+Qua quá trình khảo sát, phân tích và thiết kế, nhóm đã hoàn thiện đồ án "Thiết kế hệ 
+thống phục vụ cho quán cà phê Nhà Ba Teria" với các kết quả cụ thể như sau: 
+• Về mặt lý thuyết: Nhóm đã tìm hiểu và áp dụng thành công các phương pháp trong 
+Phân tích thi ết kế hệ thống, vận dụng thành th ạo ngôn ngữ mô hình hóa UML đ ể 
+trực quan hóa các yêu cầu nghiệp vụ phức tạp. 
+• Về mặt thực tiễn: 
+o Xác định và chuẩn hóa thành công các luồng quy trình nghiệp vụ cốt lõi của 
+quán, bao gồm: Gọi món qua QR, Xử lý đơn hàng, Thanh toán, Quản lý nhân 
+sự. 
+o Xây dựng hoàn chỉnh bộ tài liệu thiết kế hệ thống với các sơ đồ UML chi tiết 
+(Use Case Diagram, Activity Diagram, Sequence Diagram, Class Diagram), 
+bao phủ toàn bộ các phân hệ của hệ thống. 
+o Thiết kế thành công cấu trúc Cơ sở dữ liệu (Mô hình ERD) gồm 11 thực thể 
+chính với các ràng buộc toàn vẹn dữ liệu chặt chẽ. 
+o Đề xuất kiến trúc ph ần mềm 3 l ớp (Client - Server) hiện đại và hoàn thi ện 
+demo bản thiết kế giao diện theo nguyên tắc Mobile-first, ứng dụng xu hướng 
+thiết k ế Glassmorphism mang l ại tr ải nghi ệm t ối ưu cho c ả nhân viên và 
+khách hàng. 
+5.2. Ưu điểm và hạn chế của hệ thống thiết kế 
+• Ưu điểm: 
+o Giải quyết triệt để tình trạng nhầm lẫn, sai sót trong quá trình order th ủ 
+công nhờ tính năng quét mã QR gọi món trực tiếp tại bàn. 
+o Đồng bộ hóa thông tin trạng thái đơn hàng theo thời gian thực (real-time) 
+giữa bộ phận phục vụ, Barista và thu ngân, giúp t ối ưu hóa t ốc độ phục 
+vụ, đặc biệt trong các khung giờ cao điểm. 
+o Giao diện phân quyền rõ ràng, tối ưu UX/UI cho từng vai trò người dùng 
+chuyên biệt (Mobile cho Khách hàng/Barista/Ph ục vụ; Desktop cho Thu 
+ngân/Quản lý). 
+--- Page 99 ---
+99 
+ 
+o Nền tảng công nghệ và kiến trúc cơ sở dữ liệu được thiết kế rõ ràng, linh 
+hoạt, tạo tiền đề tốt cho việc mở rộng tính năng sau này. 
+• Hạn chế: 
+o Do giới hạn về thời gian và phạm vi môn học, đề tài mới tập trung ở bước 
+phân tích, thiết kế logic và prototype giao di ện, chưa tiến hành lập trình 
+thành một phần mềm hoàn chỉnh chạy trên thực tế. 
+o Hệ thống chưa đi sâu thi ết kế việc tích hợp trực tiếp với các cổng thanh 
+toán điện tử (như MoMo, VNPay, ZaloPay) hay kết nối sâu với các phần 
+cứng ngoại vi (máy in bill mạng LAN). 
+o Chưa có các phân h ệ nâng cao như Chăm sóc khách hàng (CRM) hay 
+Quản lý thẻ thành viên. 
+5.3. Hướng phát triển trong tương lai 
+Để hệ thống trở nên hoàn thiện và có tính ứng dụng cao hơn vào thực tiễn kinh doanh, 
+nhóm đề xuất một số hướng phát triển trong tương lai: 
+• Tích hợp cổng thanh toán trực tuyến: Nghiên cứu và kết nối API với các ví 
+điện tử, ứng dụng ngân hàng để đa dạng hóa phương thức thanh toán, mang lại 
+sự tiện lợi tối đa cho khách hàng. 
+• Xây dựng phân h ệ CRM & Marketing:  Bổ sung tính năng lưu tr ữ thông tin 
+khách hàng, hạng thẻ thành viên, tích điểm đổi quà và phát hành Voucher khuyến 
+mãi tự động. 
+• Phát triển tính năng phân tích dữ liệu: Xây dựng các báo cáo thông minh giúp 
+chủ quán dự báo xu hư ớng tiêu dùng, xác đ ịnh các món "Best -seller" và c ảnh 
+báo tự động khi nguyên vật liệu trong kho sắp hết. 
+ 
+ 
+--- Page 100 ---
+100 
+ 
+TÀI LIỆU THAM KHẢO 
+Đào Thiện Quốc. (2026). Slide bài giảng Phân tích thiết kế hệ thống. 
+iPOS.vn. (2024). Báo cáo thị trường kinh doanh ẩm thực tại Việt Nam năm 2023 và triển 
+vọng 2024. https://ipos.vn/bao-cao-nganh-fnb-2024/ 
+Statista. (2024, May). Coffee market in Vietnam - Statistics & facts. 
+https://www.statista.com/topics/7590/coffee-market-in-vietnam/ 
+Kenneth E. Kendall, & Julie E. Kendall. (2019). Systems analysis and design (10th ed.). 
+Pearson. 
+Alan Dennis, Barbara Wixom, & David Tegarden. (2020). Systems analysis and design: 
+An object-oriented approach with UML (6th ed.). Wiley. 
+  
+--- Page 101 ---
+101 
+ 
+PHỤ LỤC 
+BẢNG PHÂN CÔNG VÀ ĐÁNH GIÁ 
+STT Họ và tên Vai trò Nội dung công việc chi tiết Đánh giá 
+1 Nguyễn Lê 
+Hải Long 
+Trưởng 
+nhóm 
+- Định hướng nội dung toàn bài. 
+- Xây dựng logic hệ thống và sơ đồ mẫu: 
+Use Case tổng quát (3.1.1), Activity 
+Diagram (Gọi món, Xử lý đơn hàng), 
+Sequence Diagram (Gọi món). 
+- Hỗ trợ hoàn thiện nội dung mục 2.1 
+- Tổng hợp nội dung, chỉnh sửa và hoàn 
+thiện báo cáo cuối cùng. 
+100% 
+2 Trịnh Minh 
+Đạt 
+Thành 
+viên 
+- Nắm chính thiết kế các sơ đồ Activity 
+(3.3.2) cho toàn bộ các quy trình nghiệp 
+vụ. 
+- Tham gia xây dựng sơ đồ thực thể mối 
+quan hệ ERD (4.1.2). 
+- Phối hợp xây dựng nội dung trình chiếu 
+(Slide thuyết trình). 
+100% 
+3 Ngô Gia Toàn Thành 
+viên 
+- Viết nội dung phần mở đầu: Lời cảm 
+ơn, Lời mở đầu. 
+- Nắm chính thiết kế sơ đồ Use Case 
+Diagram (3.1.1, 3.1.2) cho các phân hệ. 
+- Phụ trợ vẽ sơ đồ Activity và Sequence 
+Diagram theo mẫu của trưởng nhóm. 
+100% 
+4 Trần Đức 
+Phát 
+Thành 
+viên 
+- Nắm chính thiết kế sơ đồ luồng dữ liệu 
+DFD mức 0, mức 1 và mức 2 (3.1.3). 
+- Xây dựng bản Demo hệ thống 
+(Prototype/Giao diện thực tế) cho các 
+màn hình chính. 
+- Phụ trách mục 4.2: Thiết kế kiến trúc hệ 
+thống (Client-Server, Công nghệ sử 
+dụng). 
+100% 
+5 Lam Chí Hiển Thành 
+viên 
+- Nắm chính thiết kế Sơ đồ lớp Class 
+Diagram (3.2.1) và Sơ đồ ERD (4.1.2). 
+- Viết nội dung Chương 4.1: Thiết kế Cơ 
+sở dữ liệu và các ràng buộc toàn vẹn. 
+- Thiết kế sơ đồ Sequence Diagram cho 
+quy trình Xử lý đơn hàng (3.3.1). 
+100% 
+6 Trần Anh Tú Thành 
+viên 
+- Thu thập dữ liệu, viết nội dung Chương 
+2.1: Khảo sát thực tế quy trình nghiệp vụ. 
+- Thực hiện liệt kê và đặc tả chi tiết các 
+yêu cầu chức năng (2.3, 2.5). 
+- Nắm chính vẽ Sơ đồ phân rã chức năng 
+(2.6). 
+- Phụ trợ vẽ sơ đồ Use Case các phân hệ 
+con. 
+100% 
+--- Page 102 ---
+102 
+ 
+7 Nguyễn Thúy 
+Ngân 
+Thành 
+viên 
+- Viết nội dung Chương 1: Tổng quan đề 
+tài (Lý do, Mục tiêu, Phạm vi). 
+- Tổng hợp và hoàn thiện nội dung 
+Chương 2 (Kết quả khảo sát). 
+- Phụ trách Format (định dạng) văn bản 
+toàn bài theo chuẩn. 
+- Thiết kế nội dung và hình thức Slide 
+thuyết trình chính. 
+100% 
+8 Nguyễn 
+Hoàng Phúc 
+Thành 
+viên 
+- Nghiên cứu và liệt kê các nhóm yêu cầu 
+phi chức năng (2.4): Hiệu năng, Bảo mật, 
+Tính khả dụng... 
+- Thu thập thông tin làm Danh mục từ 
+viết tắt, Danh mục hình ảnh, Danh mục 
+bảng biểu. 
+- Tổng hợp tài liệu tham khảo và làm 
+phần Phụ lục của báo cáo. 
+- Rà soát lỗi chính tả cho toàn bộ nội 
+dung văn bản. 
+100% 
+ 

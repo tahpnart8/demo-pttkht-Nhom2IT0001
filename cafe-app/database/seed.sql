@@ -1,5 +1,5 @@
 -- Xóa dữ liệu cũ (Do các bảng có khóa ngoại, nên cần xóa ngược thứ tự hoặc cascade đã lo)
-TRUNCATE TABLE "THANHTOAN", "CHITIETDONHANG", "DONHANG", "HOADON", "CHITIETGIOHANG", "GIOHANG", "BAN", "MON", "MENU", "TAIKHOAN", "NHANVIEN" CASCADE;
+TRUNCATE TABLE "CHITIETKIEMKHO", "PHIEUKIEMKHO", "CHITIETPHIEUXUAT", "PHIEUXUAT", "CHITIETPHIEUNHAP", "PHIEUNHAP", "NCC", "CONGTHUC", "NGUYENLIEU", "THANHTOAN", "CHITIETDONHANG", "DONHANG", "HOADON", "CHITIETGIOHANG", "GIOHANG", "BAN", "MON", "MENU", "TAIKHOAN", "NHANVIEN" CASCADE;
 
 -- 1. SEED NHÂN VIÊN
 INSERT INTO "NHANVIEN" ("MaNV", "HoTen", "SoDienThoai", "ViTri", "TrangThai") VALUES
@@ -55,3 +55,29 @@ INSERT INTO "BAN" ("MaBan", "TenBan", "TrangThai", "QRCode") VALUES
 ('B13', 'Bàn 13', 'Trong', 'QR_B13'),
 ('B14', 'Bàn 14', 'Trong', 'QR_B14'),
 ('B15', 'Bàn 15', 'Trong', 'QR_B15');
+
+-- 6. SEED NGUYÊN LIỆU
+INSERT INTO "NGUYENLIEU" ("MaNL", "TenNL", "DonViTinh", "SoLuongTon", "MucToiThieu") VALUES
+('NL01', 'Cà phê bột', 'Gram', 5000, 1000),
+('NL02', 'Sữa đặc', 'Lon', 20, 5),
+('NL03', 'Sữa tươi', 'Hộp', 15, 5),
+('NL04', 'Trà đen', 'Gram', 3000, 500),
+('NL05', 'Cam tươi', 'Kg', 10, 2),
+('NL06', 'Đào ngâm', 'Lon', 5, 2);
+
+-- 7. SEED NHÀ CUNG CẤP
+INSERT INTO "NCC" ("MaNCC", "TenNCC", "SoDienThoai", "DiaChi") VALUES
+('NCC01', 'Đại lý Cà Phê Trung Nguyên', '0909123456', 'Quận 1, TP.HCM'),
+('NCC02', 'Công ty Sữa Vinamilk', '0918123456', 'Quận 7, TP.HCM'),
+('NCC03', 'Chợ đầu mối trái cây', '0927123456', 'Quận Thủ Đức, TP.HCM');
+
+-- 8. SEED CÔNG THỨC (Mapping)
+INSERT INTO "CONGTHUC" ("MaMon", "MaNL", "DinhLuong") VALUES
+('MON01', 'NL01', 25),
+('MON01', 'NL02', 20),
+('MON02', 'NL01', 15),
+('MON02', 'NL02', 20),
+('MON02', 'NL03', 30),
+('MON05', 'NL04', 10),
+('MON05', 'NL05', 50),
+('MON05', 'NL06', 20);
