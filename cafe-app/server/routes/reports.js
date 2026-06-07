@@ -149,7 +149,12 @@ router.get('/xuatnhap', authMiddleware(['admin', 'quản lý']), async (req, res
             });
         }
 
-        res.json({ nhap: ctNhap, xuat: ctXuat });
+        res.json({ 
+            nhap: ctNhap, 
+            xuat: ctXuat,
+            phieunhap: phieunhap || [],
+            phieuxuat: phieuxuat || []
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

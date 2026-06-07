@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import DesktopLayout from '../../components/Layout/DesktopLayout';
-import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageOpen, AlertTriangle, Calendar, Download } from 'lucide-react';
+import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageOpen, AlertTriangle, Calendar, Download, X } from 'lucide-react';
 import { api } from '../../services/api';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -11,6 +11,8 @@ import './Reports.css';
 
 export default function Reports() {
   const [activeTab, setActiveTab] = useState('doanhthu'); // 'doanhthu' | 'haohut' | 'xuatnhap'
+  const [selectedDate, setSelectedDate] = useState(null); // Cho modal Xuất nhập kho
+  const [selectedPKK, setSelectedPKK] = useState(null);   // Cho modal Hao hụt kho
   
   const [startDate, setStartDate] = useState(() => {
     let d = new Date(); d.setMonth(d.getMonth() - 5); d.setDate(1); return d.toISOString().slice(0, 10);
@@ -147,25 +149,30 @@ export default function Reports() {
   }, [chartData]);
 
   // Chế biến báo cáo Xuất nhập tồn
-  const xuatNhapSummary = useMemo(() => {
-    if (activeTab !== 'xuatnhap') return [];
+  const dailyXuatNhapSummary = useMemo(() => {
+    if (activeTab !== 'xuatnhap' || !xuatnhapData.phieunhap) return [];
     const summary = {};
-    
-    // Cộng dồn Nhập
-    xuatnhapData.nhap.forEach(n => {
-      if (!summary[n.MaNL]) summary[n.MaNL] = { TenNL: n.NGUYENLIEU?.TenNL || n.MaNL, TongNhap: 0, TienNhap: 0, TongXuat: 0, LyDo: [] };
-      summary[n.MaNL].TongNhap += n.SoLuong;
-      summary[n.MaNL].TienNhap += (n.SoLuong * n.DonGiaNhap);
+
+    // Ghi nhận các ngày có Nhập
+    xuatnhapData.phieunhap.forEach(pn => {
+      const date = pn.NgayNhap.slice(0, 10);
+      if (!summary[date]) summary[date] = { date, countNhap: 0, countXuat: 0, totalTienNhap: 0 };
+      summary[date].countNhap += 1;
+      
+      const ct = xuatnhapData.nhap.filter(n => n.MaPN === pn.MaPN);
+      const tien = ct.reduce((sum, item) => sum + (item.SoLuong * item.DonGiaNhap), 0);
+      summary[date].totalTienNhap += tien;
     });
 
-    // Cộng dồn Xuất
-    xuatnhapData.xuat.forEach(x => {
-      if (!summary[x.MaNL]) summary[x.MaNL] = { TenNL: x.NGUYENLIEU?.TenNL || x.MaNL, TongNhap: 0, TienNhap: 0, TongXuat: 0, LyDo: [] };
-      summary[x.MaNL].TongXuat += x.SoLuong;
-      if (x.LyDo && !summary[x.MaNL].LyDo.includes(x.LyDo)) summary[x.MaNL].LyDo.push(x.LyDo);
+    // Ghi nhận các ngày có Xuất
+    xuatnhapData.phieuxuat.forEach(px => {
+      const date = px.NgayXuat.slice(0, 10);
+      if (!summary[date]) summary[date] = { date, countNhap: 0, countXuat: 0, totalTienNhap: 0 };
+      summary[date].countXuat += 1;
     });
 
-    return Object.values(summary);
+    // Sắp xếp giảm dần theo ngày
+    return Object.values(summary).sort((a, b) => b.date.localeCompare(a.date));
   }, [xuatnhapData, activeTab]);
 
   const handleExport = () => {
@@ -325,31 +332,26 @@ export default function Reports() {
           {/* TAB 2: HAO HỤT */}
           {activeTab === 'haohut' && (
             <div style={{ background: 'var(--surface)', padding: 20, borderRadius: 12, boxShadow: 'var(--shadow-sm)' }}>
-              <h3>Danh sách Chênh lệch Tồn kho</h3>
+              <h3>Danh sách Các Kỳ Kiểm Kho</h3>
               <p style={{ color: 'var(--text-light)', fontSize: 13, marginBottom: 15 }}>Dữ liệu được trích xuất từ các Phiếu Kiểm Kho trong kỳ.</p>
               
               <table className="data-table">
-                <thead><tr><th>Phiếu Kiểm</th><th>Ngày</th><th>Nguyên liệu</th><th>Lý thuyết</th><th>Thực tế</th><th>Độ lệch</th><th>Ghi chú</th></tr></thead>
+                <thead><tr><th>Phiếu Kiểm</th><th>Ngày Kiểm</th><th>Nhân viên</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
                 <tbody>
-                  {haohutData.chitiet.map((ct, idx) => {
-                    const pkk = haohutData.phieukiem.find(p => p.MaPKK === ct.MaPKK);
-                    return (
-                      <tr key={idx}>
-                        <td><strong>{ct.MaPKK}</strong></td>
-                        <td>{pkk ? new Date(pkk.NgayKiem).toLocaleDateString('vi-VN') : ''}</td>
-                        <td>{ct.NGUYENLIEU?.TenNL}</td>
-                        <td>{ct.SLLyThuyet} {ct.NGUYENLIEU?.DonViTinh}</td>
-                        <td>{ct.SLThucTe} {ct.NGUYENLIEU?.DonViTinh}</td>
-                        <td>
-                          {ct.ChenhLech < 0 ? <span className="badge badge-danger">{ct.ChenhLech} (Hao hụt)</span> :
-                           ct.ChenhLech > 0 ? <span className="badge badge-success">+{ct.ChenhLech} (Dư)</span> :
-                           <span className="badge" style={{ background: 'var(--border)' }}>Khớp (0)</span>}
-                        </td>
-                        <td>{ct.GhiChu}</td>
-                      </tr>
-                    );
-                  })}
-                  {haohutData.chitiet.length === 0 && <tr><td colSpan="7" style={{ textAlign: 'center' }}>Không có phiếu kiểm kho nào trong kỳ.</td></tr>}
+                  {haohutData.phieukiem?.map((pkk, idx) => (
+                    <tr key={idx}>
+                      <td><strong>{pkk.MaPKK}</strong></td>
+                      <td>{new Date(pkk.NgayKiem).toLocaleDateString('vi-VN')}</td>
+                      <td>{pkk.NHANVIEN?.HoTen || '—'}</td>
+                      <td>
+                        {pkk.TrangThai === 'Lech' ? <span className="badge badge-danger">Có hao hụt</span> : <span className="badge badge-success">Khớp</span>}
+                      </td>
+                      <td>
+                        <button className="btn btn-sm btn-outline" onClick={() => setSelectedPKK(pkk.MaPKK)}>Xem chi tiết</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {(!haohutData.phieukiem || haohutData.phieukiem.length === 0) && <tr><td colSpan="5" style={{ textAlign: 'center' }}>Không có phiếu kiểm kho nào trong kỳ.</td></tr>}
                 </tbody>
               </table>
             </div>
@@ -358,26 +360,116 @@ export default function Reports() {
           {/* TAB 3: XUẤT NHẬP KHO */}
           {activeTab === 'xuatnhap' && (
             <div style={{ background: 'var(--surface)', padding: 20, borderRadius: 12, boxShadow: 'var(--shadow-sm)' }}>
-              <h3>Tổng hợp Xuất Nhập Kho</h3>
+              <h3>Tổng hợp Xuất Nhập Kho Theo Ngày</h3>
               
               <table className="data-table" style={{ marginTop: 15 }}>
-                <thead><tr><th>Nguyên liệu</th><th>Tổng lượng Nhập</th><th>Tổng tiền Nhập</th><th>Tổng lượng Xuất</th><th>Lý do xuất</th></tr></thead>
+                <thead><tr><th>Ngày</th><th>Số Phiếu Nhập</th><th>Số Phiếu Xuất</th><th>Tổng Tiền Nhập</th><th>Thao tác</th></tr></thead>
                 <tbody>
-                  {xuatNhapSummary.map((item, idx) => (
+                  {dailyXuatNhapSummary.map((item, idx) => (
                     <tr key={idx}>
-                      <td><strong>{item.TenNL}</strong></td>
-                      <td><span style={{ color: 'var(--success)', fontWeight: 600 }}>+{item.TongNhap}</span></td>
-                      <td>{formatPrice(item.TienNhap)}</td>
-                      <td><span style={{ color: 'var(--danger)', fontWeight: 600 }}>-{item.TongXuat}</span></td>
-                      <td>{item.LyDo.join(', ')}</td>
+                      <td><strong>{new Date(item.date).toLocaleDateString('vi-VN')}</strong></td>
+                      <td><span style={{ color: 'var(--success)', fontWeight: 600 }}>{item.countNhap}</span></td>
+                      <td><span style={{ color: 'var(--danger)', fontWeight: 600 }}>{item.countXuat}</span></td>
+                      <td>{formatPrice(item.totalTienNhap)}</td>
+                      <td><button className="btn btn-sm btn-outline" onClick={() => setSelectedDate(item.date)}>Xem chi tiết</button></td>
                     </tr>
                   ))}
-                  {xuatNhapSummary.length === 0 && <tr><td colSpan="5" style={{ textAlign: 'center' }}>Không có giao dịch xuất/nhập trong kỳ.</td></tr>}
+                  {dailyXuatNhapSummary.length === 0 && <tr><td colSpan="5" style={{ textAlign: 'center' }}>Không có giao dịch xuất/nhập trong kỳ.</td></tr>}
                 </tbody>
               </table>
             </div>
           )}
 
+        </div>
+      )}
+
+      {/* MODAL CHI TIẾT HAO HỤT */}
+      {selectedPKK && (
+        <div className="modal-overlay" onClick={() => setSelectedPKK(null)}>
+          <div className="modal-content" style={{ maxWidth: 800 }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Chi Tiết Phiếu Kiểm Kho: {selectedPKK}</h3>
+              <button className="btn btn-icon btn-ghost" onClick={() => setSelectedPKK(null)}><X size={18} /></button>
+            </div>
+            <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              <table className="data-table">
+                <thead><tr><th>Nguyên liệu</th><th>Lý thuyết</th><th>Thực tế</th><th>Độ lệch</th><th>Ghi chú</th></tr></thead>
+                <tbody>
+                  {haohutData.chitiet.filter(ct => ct.MaPKK === selectedPKK).map((ct, idx) => (
+                    <tr key={idx}>
+                      <td>{ct.NGUYENLIEU?.TenNL}</td>
+                      <td>{ct.SLLyThuyet} {ct.NGUYENLIEU?.DonViTinh}</td>
+                      <td>{ct.SLThucTe} {ct.NGUYENLIEU?.DonViTinh}</td>
+                      <td>
+                        {ct.ChenhLech < 0 ? <span className="badge badge-danger">{ct.ChenhLech} (Hao hụt)</span> :
+                         ct.ChenhLech > 0 ? <span className="badge badge-success">+{ct.ChenhLech} (Dư)</span> :
+                         <span className="badge" style={{ background: 'var(--border)' }}>Khớp (0)</span>}
+                      </td>
+                      <td>{ct.GhiChu}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL CHI TIẾT XUẤT NHẬP */}
+      {selectedDate && (
+        <div className="modal-overlay" onClick={() => setSelectedDate(null)}>
+          <div className="modal-content" style={{ maxWidth: 800 }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Chi Tiết Giao Dịch Kho Ngày: {new Date(selectedDate).toLocaleDateString('vi-VN')}</h3>
+              <button className="btn btn-icon btn-ghost" onClick={() => setSelectedDate(null)}><X size={18} /></button>
+            </div>
+            <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              <h4 style={{ color: 'var(--success)', marginBottom: 10 }}>1. Các khoản NHẬP KHO</h4>
+              <table className="data-table" style={{ marginBottom: 20 }}>
+                <thead><tr><th>Mã Phiếu</th><th>Nguyên Liệu</th><th>Số Lượng</th><th>Đơn Giá</th><th>Thành Tiền</th></tr></thead>
+                <tbody>
+                  {xuatnhapData.nhap.filter(n => {
+                    const pn = xuatnhapData.phieunhap?.find(p => p.MaPN === n.MaPN);
+                    return pn && pn.NgayNhap.slice(0, 10) === selectedDate;
+                  }).map((n, idx) => (
+                    <tr key={idx}>
+                      <td>{n.MaPN}</td>
+                      <td>{n.NGUYENLIEU?.TenNL}</td>
+                      <td><span style={{ color: 'var(--success)', fontWeight: 600 }}>+{n.SoLuong}</span></td>
+                      <td>{formatPrice(n.DonGiaNhap)}</td>
+                      <td>{formatPrice(n.SoLuong * n.DonGiaNhap)}</td>
+                    </tr>
+                  ))}
+                  {xuatnhapData.nhap.filter(n => {
+                    const pn = xuatnhapData.phieunhap?.find(p => p.MaPN === n.MaPN);
+                    return pn && pn.NgayNhap.slice(0, 10) === selectedDate;
+                  }).length === 0 && <tr><td colSpan="5" style={{ textAlign: 'center' }}>Không có nhập kho trong ngày.</td></tr>}
+                </tbody>
+              </table>
+
+              <h4 style={{ color: 'var(--danger)', marginBottom: 10 }}>2. Các khoản XUẤT KHO</h4>
+              <table className="data-table">
+                <thead><tr><th>Mã Phiếu</th><th>Nguyên Liệu</th><th>Số Lượng</th><th>Lý Do</th></tr></thead>
+                <tbody>
+                  {xuatnhapData.xuat.filter(x => {
+                    const px = xuatnhapData.phieuxuat?.find(p => p.MaPX === x.MaPX);
+                    return px && px.NgayXuat.slice(0, 10) === selectedDate;
+                  }).map((x, idx) => (
+                    <tr key={idx}>
+                      <td>{x.MaPX}</td>
+                      <td>{x.NGUYENLIEU?.TenNL}</td>
+                      <td><span style={{ color: 'var(--danger)', fontWeight: 600 }}>-{x.SoLuong}</span></td>
+                      <td>{x.LyDo}</td>
+                    </tr>
+                  ))}
+                  {xuatnhapData.xuat.filter(x => {
+                    const px = xuatnhapData.phieuxuat?.find(p => p.MaPX === x.MaPX);
+                    return px && px.NgayXuat.slice(0, 10) === selectedDate;
+                  }).length === 0 && <tr><td colSpan="4" style={{ textAlign: 'center' }}>Không có xuất kho trong ngày.</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
     </DesktopLayout>
