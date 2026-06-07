@@ -4,6 +4,7 @@ import { LineChart, ArrowUpCircle, ArrowDownCircle, DollarSign, Trophy, PackageO
 import { api } from '../../services/api';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import html2pdf from 'html2pdf.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 import './Reports.css';
@@ -143,43 +144,25 @@ export default function Reports() {
   }, [xuatnhapData, activeTab]);
 
   const handleExport = () => {
-    let csvStr = '\uFEFF'; // BOM for Excel UTF-8
+    const element = document.getElementById('report-pdf-content');
+    const header = document.getElementById('pdf-hidden-header');
+    if (!element) return;
     
-    if (activeTab === 'doanhthu') {
-      csvStr += "BÁO CÁO DOANH THU\n\n";
-      csvStr += `Tổng Doanh Thu,${revenueData.doanhThu}\n`;
-      csvStr += `Tổng Chi Phí Nhập Kho,${revenueData.chiPhiNhap}\n`;
-      csvStr += `Lợi Nhuận Gộp,${revenueData.loiNhuan}\n\n`;
-      
-      csvStr += "TOP MÓN BÁN CHẠY\n";
-      csvStr += "Hạng,Tên Món,Đã Bán\n";
-      bestSellers.forEach((item, index) => {
-        csvStr += `${index + 1},"${item.TenMon}",${item.SoLuong}\n`;
-      });
-    } else if (activeTab === 'haohut') {
-      csvStr += "BÁO CÁO HAO HỤT KHO\n\n";
-      csvStr += "Phiếu Kiểm,Ngày,Nguyên Liệu,Lý Thuyết,Thực Tế,Độ Lệch,Ghi Chú\n";
-      haohutData.chitiet.forEach(ct => {
-        const pkk = haohutData.phieukiem.find(p => p.MaPKK === ct.MaPKK);
-        const date = pkk ? new Date(pkk.NgayKiem).toLocaleDateString('vi-VN') : '';
-        csvStr += `"${ct.MaPKK}","${date}","${ct.NGUYENLIEU?.TenNL}",${ct.SLLyThuyet},${ct.SLThucTe},${ct.ChenhLech},"${ct.GhiChu || ''}"\n`;
-      });
-    } else if (activeTab === 'xuatnhap') {
-      csvStr += "BÁO CÁO XUẤT NHẬP TỒN\n\n";
-      csvStr += "Nguyên Liệu,Tổng Nhập,Tiền Nhập,Tổng Xuất,Lý Do Xuất\n";
-      xuatNhapSummary.forEach(item => {
-        csvStr += `"${item.TenNL}",${item.TongNhap},${item.TienNhap},${item.TongXuat},"${item.LyDo.join('; ')}"\n`;
-      });
-    }
+    // Hiện tiêu đề lên trước khi chụp
+    if (header) header.style.display = 'block';
+    
+    const opt = {
+      margin:       [10, 10, 10, 10],
+      filename:     `Bao_Cao_${activeTab}_${new Date().toISOString().slice(0,10)}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } // landscape để chứa vừa bảng và biểu đồ
+    };
 
-    const blob = new Blob([csvStr], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `Bao_Cao_${activeTab}_${new Date().toISOString().slice(0,10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    html2pdf().set(opt).from(element).save().then(() => {
+      // Ẩn tiêu đề đi sau khi xuất xong
+      if (header) header.style.display = 'none';
+    });
   };
 
   return (
@@ -200,7 +183,7 @@ export default function Reports() {
           
           {/* Export Button */}
           <button className="btn btn-primary" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Download size={18} /> Xuất file CSV
+            <Download size={18} /> Xuất file PDF
           </button>
         </div>
       </div>
@@ -212,7 +195,13 @@ export default function Reports() {
       </div>
 
       {loading ? <div className="page-loading"><div className="spinner" /></div> : (
-        <div className="reports-container" style={{ marginTop: 20 }}>
+        <div className="reports-container" id="report-pdf-content" style={{ marginTop: 20, padding: '10px' }}>
+          
+          {/* Tiêu đề ẩn cho PDF */}
+          <div id="pdf-hidden-header" style={{ display: 'none' }} className="pdf-header">
+            <h2 style={{ textAlign: 'center', color: 'var(--primary)' }}>BÁO CÁO NHÀ BA TERIA</h2>
+            <p style={{ textAlign: 'center', color: 'var(--text-light)', marginBottom: 20 }}>Thời gian trích xuất: {new Date().toLocaleDateString('vi-VN')}</p>
+          </div>
           
           {/* TAB 1: DOANH THU */}
           {activeTab === 'doanhthu' && (
