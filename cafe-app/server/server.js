@@ -10,6 +10,9 @@ const cartRoutes = require('./routes/cart');
 const invoiceRoutes = require('./routes/invoices');
 const paymentRoutes = require('./routes/payments');
 const staffRoutes = require('./routes/staff');
+const inventoryRoutes = require('./routes/inventory');
+const recipeRoutes = require('./routes/recipe');
+const reportsRoutes = require('./routes/reports');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +30,9 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/staff', staffRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/recipe', recipeRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
