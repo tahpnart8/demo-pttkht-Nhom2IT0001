@@ -56,7 +56,7 @@ export default function InvoiceList() {
       {loading ? <div className="page-loading"><div className="spinner" /></div> : (
         <table className="data-table">
           <thead>
-            <tr><th>Mã HĐ</th><th>Thời gian</th><th>Tổng tiền</th><th>Thu ngân</th><th>Thao tác</th></tr>
+            <tr><th>Mã HĐ</th><th>Thời gian</th><th>Bàn</th><th>Tổng tiền</th><th>Thu ngân</th><th>Thao tác</th></tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
@@ -65,6 +65,7 @@ export default function InvoiceList() {
               <tr key={inv.MaHD}>
                 <td><strong>{inv.MaHD}</strong></td>
                 <td>{formatDate(inv.ThoiGianXuat)}</td>
+                <td>{inv.DONHANG?.[0]?.BAN?.TenBan || '—'}</td>
                 <td style={{fontWeight:700,color:'var(--accent)'}}>{formatPrice(inv.TongTien)}</td>
                 <td>{inv.NHANVIEN?.HoTen || '—'}</td>
                 <td className="actions">
@@ -88,6 +89,7 @@ export default function InvoiceList() {
             <div className="modal-body">
               <p><strong>Thời gian:</strong> {formatDate(detail.ThoiGianXuat)}</p>
               <p><strong>Thu ngân:</strong> {detail.NHANVIEN?.HoTen || '—'}</p>
+              <p><strong>Bàn:</strong> {detail.DONHANG?.[0]?.BAN?.TenBan || '—'}</p>
               <hr style={{margin:'12px 0',border:'none',borderTop:'1px solid var(--border-light)'}} />
               {(detail.DONHANG || []).map(o => (
                 <div key={o.MaDH} style={{marginBottom:12}}>

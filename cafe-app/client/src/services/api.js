@@ -68,6 +68,10 @@ export const api = {
 
   // Inventory
   getInventory: () => request('/inventory'),
+  addNguyenLieu: (data) => request('/inventory/nguyenlieu', { method: 'POST', body: JSON.stringify(data) }),
+  updateNguyenLieu: (id, data) => request(`/inventory/nguyenlieu/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteNguyenLieu: (id) => request(`/inventory/nguyenlieu/${id}`, { method: 'DELETE' }),
+  getTonLyThuyet: (startDate) => request(`/inventory/tonlythuyet?startDate=${startDate}`),
   getSuppliers: () => request('/inventory/ncc'),
   importInventory: (data) => request('/inventory/nhap', { method: 'POST', body: JSON.stringify(data) }),
   exportInventory: (data) => request('/inventory/xuat', { method: 'POST', body: JSON.stringify(data) }),

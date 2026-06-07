@@ -11,7 +11,11 @@ import './Reports.css';
 
 export default function Reports() {
   const [activeTab, setActiveTab] = useState('doanhthu'); // 'doanhthu' | 'haohut' | 'xuatnhap'
-  const [dateRange, setDateRange] = useState('6months'); // '6months' | 'thisMonth' | 'all'
+  
+  const [startDate, setStartDate] = useState(() => {
+    let d = new Date(); d.setMonth(d.getMonth() - 5); d.setDate(1); return d.toISOString().slice(0, 10);
+  });
+  const [endDate, setEndDate] = useState(() => new Date().toISOString().slice(0, 10));
   
   // Data states
   const [revenueData, setRevenueData] = useState({ doanhThu: 0, chiPhiNhap: 0, loiNhuan: 0, chiTietDoanhThu: [], chiTietChiPhi: [] });
@@ -21,28 +25,26 @@ export default function Reports() {
   
   const [loading, setLoading] = useState(true);
 
-  // Helper to get date range
-  const getDates = () => {
+  const setShortcut = (type) => {
     const end = new Date();
     const start = new Date();
-    if (dateRange === '6months') {
-      start.setMonth(start.getMonth() - 5); // 6 months including current
+    if (type === 'thisMonth') {
       start.setDate(1);
-      start.setHours(0,0,0,0);
-    } else if (dateRange === 'thisMonth') {
-      start.setDate(1);
-      start.setHours(0,0,0,0);
+    } else if (type === '6months') {
+      start.setMonth(start.getMonth() - 5); start.setDate(1);
     } else {
       start.setFullYear(2000); // All time
     }
-    return { startDate: start.toISOString(), endDate: end.toISOString() };
+    setStartDate(start.toISOString().slice(0, 10));
+    setEndDate(end.toISOString().slice(0, 10));
   };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const { startDate, endDate } = getDates();
-      const params = { startDate, endDate };
+      const s = new Date(startDate); s.setHours(0,0,0,0);
+      const e = new Date(endDate); e.setHours(23,59,59,999);
+      const params = { startDate: s.toISOString(), endDate: e.toISOString() };
 
       try {
         if (activeTab === 'doanhthu') {
@@ -63,45 +65,68 @@ export default function Reports() {
       }
     };
     fetchData();
-  }, [activeTab, dateRange]);
+  }, [activeTab, startDate, endDate]);
 
   const formatPrice = (p) => new Intl.NumberFormat('vi-VN').format(p) + 'đ';
 
-  // Chế biến dữ liệu biểu đồ 6 tháng
+  // Chế biến dữ liệu biểu đồ
   const chartData = useMemo(() => {
-    if (activeTab !== 'doanhthu' || !revenueData.chiTietDoanhThu) return [];
+    if (activeTab !== 'doanhthu') return [];
     
-    // Tạo mảng 6 tháng gần nhất (để làm nhãn trục X)
-    const months = [];
-    const now = new Date();
-    for (let i = 5; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push({
-        key: `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`,
-        label: `Tháng ${d.getMonth() + 1}`,
-        DoanhThu: 0,
-        ChiPhi: 0
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    
+    const dataPoints = {};
+    
+    if (diffDays <= 31) {
+      // Nhóm theo ngày
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const key = d.toISOString().slice(0, 10);
+        dataPoints[key] = {
+          key,
+          label: `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`,
+          DoanhThu: 0,
+          ChiPhi: 0
+        };
+      }
+      
+      revenueData.chiTietDoanhThu.forEach(hd => {
+        const key = hd.ThoiGianXuat.slice(0, 10);
+        if (dataPoints[key]) dataPoints[key].DoanhThu += hd.TongTien;
+      });
+      revenueData.chiTietChiPhi.forEach(pn => {
+        const key = pn.NgayNhap.slice(0, 10);
+        if (dataPoints[key]) dataPoints[key].ChiPhi += pn.TongTienNhap;
+      });
+      
+    } else {
+      // Nhóm theo tháng
+      const startMonth = new Date(start.getFullYear(), start.getMonth(), 1);
+      const endMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+      
+      for (let d = new Date(startMonth); d <= endMonth; d.setMonth(d.getMonth() + 1)) {
+        const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+        dataPoints[key] = {
+          key,
+          label: `T${d.getMonth() + 1}/${d.getFullYear().toString().slice(-2)}`,
+          DoanhThu: 0,
+          ChiPhi: 0
+        };
+      }
+      
+      revenueData.chiTietDoanhThu.forEach(hd => {
+        const key = hd.ThoiGianXuat.slice(0, 7);
+        if (dataPoints[key]) dataPoints[key].DoanhThu += hd.TongTien;
+      });
+      revenueData.chiTietChiPhi.forEach(pn => {
+        const key = pn.NgayNhap.slice(0, 7);
+        if (dataPoints[key]) dataPoints[key].ChiPhi += pn.TongTienNhap;
       });
     }
 
-    // Nhét Doanh thu
-    revenueData.chiTietDoanhThu.forEach(hd => {
-      const d = new Date(hd.ThoiGianXuat);
-      const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
-      const monthObj = months.find(m => m.key === key);
-      if (monthObj) monthObj.DoanhThu += hd.TongTien;
-    });
-
-    // Nhét Chi phí
-    revenueData.chiTietChiPhi.forEach(pn => {
-      const d = new Date(pn.NgayNhap);
-      const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
-      const monthObj = months.find(m => m.key === key);
-      if (monthObj) monthObj.ChiPhi += pn.TongTienNhap;
-    });
-
-    return months;
-  }, [revenueData, activeTab]);
+    return Object.values(dataPoints);
+  }, [revenueData, activeTab, startDate, endDate]);
 
   const chartJSData = useMemo(() => {
     return {
@@ -171,14 +196,18 @@ export default function Reports() {
         <h1><LineChart size={28} /> Báo cáo & Thống kê</h1>
         
         <div style={{ display: 'flex', gap: 10 }}>
-          {/* Lọc thời gian */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)' }}>
+          {/* Lọc thời gian tuỳ chọn */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '6px 16px', borderRadius: 8, border: '1px solid var(--border)' }}>
             <Calendar size={18} color="var(--text-light)" />
-            <select value={dateRange} onChange={e => setDateRange(e.target.value)} style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 14 }}>
-              <option value="thisMonth">Tháng này</option>
-              <option value="6months">6 tháng gần nhất</option>
-              <option value="all">Tất cả thời gian</option>
-            </select>
+            <input type="date" style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 13 }} value={startDate} onChange={e => setStartDate(e.target.value)} />
+            <span style={{ color: 'var(--text-light)' }}>-</span>
+            <input type="date" style={{ border: 'none', outline: 'none', background: 'transparent', fontSize: 13 }} value={endDate} onChange={e => setEndDate(e.target.value)} />
+            
+            <div style={{ display: 'flex', gap: 4, marginLeft: 10, borderLeft: '1px solid var(--border)', paddingLeft: 10 }}>
+              <button className="btn btn-sm btn-ghost" onClick={() => setShortcut('thisMonth')} style={{ fontSize: 12, padding: '4px 8px' }}>Tháng này</button>
+              <button className="btn btn-sm btn-ghost" onClick={() => setShortcut('6months')} style={{ fontSize: 12, padding: '4px 8px' }}>6 Tháng</button>
+              <button className="btn btn-sm btn-ghost" onClick={() => setShortcut('all')} style={{ fontSize: 12, padding: '4px 8px' }}>Tất cả</button>
+            </div>
           </div>
           
           {/* Export Button */}
