@@ -80,7 +80,7 @@ export default function Login() {
           </div>
 
           <button type="submit" className="btn btn-primary btn-lg btn-block login-btn" disabled={loading}>
-            {loading ? <span className="spinner" style={{width: 20, height: 20, borderWidth: 2}} /> : <><LogIn size={18} /> Đăng nhập</>}
+            {loading ? <span className="spinner" style={{ width: 20, height: 20, borderWidth: 2 }} /> : <><LogIn size={18} /> Đăng nhập</>}
           </button>
         </form>
 
@@ -89,8 +89,8 @@ export default function Login() {
           <div className="demo-accounts">
             <span onClick={() => { setUsername('admin'); setPassword('123456'); }}>admin</span>
             <span onClick={() => { setUsername('thungan'); setPassword('123456'); }}>thungan</span>
-            <span onClick={() => { setUsername('phucvu'); setPassword('123456'); }}>phucvu</span>
-            <span onClick={() => { setUsername('barista'); setPassword('123456'); }}>barista</span>
+            <span onClick={() => { setUsername('phucvu1'); setPassword('123456'); }}>phucvu</span>
+            <span onClick={() => { setUsername('barista1'); setPassword('123456'); }}>barista</span>
           </div>
           <p className="demo-pw">Mật khẩu: <strong>123456</strong></p>
         </div>
